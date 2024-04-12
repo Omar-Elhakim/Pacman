@@ -24,7 +24,7 @@ bool _QSearchSq(node_t *node, void *data);
 void ColorSqList();
 void InitSquares();
 void AllocateSqP(node_t *node, void *data);
-void InsertNeighbors(gqueue_t *queue, Square ***prev, Square *from);
+void BFS(gqueue_t *queue, Square ***prev, Square *from);
 void findPath(Square *from, Square *to);
 void destroySquareList();
 void makeWall(int x, int y);

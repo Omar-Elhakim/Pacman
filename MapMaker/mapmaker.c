@@ -3,10 +3,9 @@
 #include <stdio.h>
 #include <string.h>
 
-// const int numTiles = 10;
 // number of vertical and horizontal cells
-const int vc = 20;
-const int hc = 10;
+const int vc = 40 / 2;
+const int hc = 30 / 2;
 
 float    WindowWidth = 800, WindowHeight = 600;
 float    SquareWidth = 0, SquareHeight = 0;
@@ -70,10 +69,10 @@ bool isPath(int x, int y) {
     return true;
 }
 
-void InsertNeighbors(gqueue_t *queue, Square ***prev, Square *from) {
+void BFS(gqueue_t *queue, Square ***prev, Square *from) {
     int row = 0, col = 0;
-    int dr[4] = {0, 0, -1, 1};
-    int dl[4] = {-1, 1, 0, 0};
+    int dr[4] = {-1, 1, 0, 0};
+    int dc[4] = {0, 0, -1, 1};
 
     gqueue_t *TN = create_queue(AllocateSqP);
     enqueue(TN, from);
@@ -85,7 +84,7 @@ void InsertNeighbors(gqueue_t *queue, Square ***prev, Square *from) {
     while (!queue_is_empty(TN)) {
         Square *s = ((Square *)*(size_t *)queue_front(TN));
         for (int i = 0; i < 4; i++) {
-            col = s->pos.x + dl[i];
+            col = s->pos.x + dc[i];
             row = s->pos.y + dr[i];
             if (isPath(col, row) && !visited[row][col]) {
                 visited[row][col] = true;
@@ -111,7 +110,7 @@ void findPath(Square *from, Square *to) {
         }
     }
 
-    InsertNeighbors(Neighbors, prev, from);
+    BFS(Neighbors, prev, from);
     Square *temp = to;
     int     row = 0, col = 0;
     do {
