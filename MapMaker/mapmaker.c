@@ -51,7 +51,7 @@ void InitSquares() {
 
 // just takes square address
 void AllocateSqP(node_t *node, void *data) {
-    size_t *temp = malloc(sizeof(size_t));
+    size_t *temp = (size_t *)malloc(sizeof(size_t));
     *temp = (size_t)data;
     node_set_data(node, temp);
 }

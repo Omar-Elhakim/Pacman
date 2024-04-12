@@ -2,6 +2,9 @@
 
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
+#ifdef __cplusplus
+extern "C" {
+#endif // cpp
 
 typedef struct node_t          node_t;
 typedef struct linked_list_t   linked_list_t;
@@ -37,4 +40,7 @@ linked_list_t *itr_list(list_iterator_t *iterator);
 int16_t dump_list(linked_list_t *list, void (*print_data)(void *));
 int16_t reverse_dump_list(linked_list_t *list, void (*print_data)(void *));
 
+#ifdef __cplusplus
+}
+#endif // cpp
 #endif // LINKED_LIST_H

@@ -5,6 +5,10 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif // cpp
+
 typedef struct gqueue_t gqueue_t;
 
 gqueue_t *create_queue(void (*add_data)(node_t *, void *data));
@@ -23,4 +27,7 @@ linked_list_t *queue_list(gqueue_t *queue);
 
 void destroy_queue(gqueue_t **queue);
 
+#ifdef __cplusplus
+}
+#endif // cpp
 #endif // !QUEUE_H

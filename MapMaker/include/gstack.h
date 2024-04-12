@@ -4,6 +4,10 @@
 #ifndef STACK_H
 #define STACK_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif // cpp
+
 typedef struct stack_t      stack_t;
 typedef struct ArrayStack_t ArrayStack_t;
 
@@ -27,4 +31,7 @@ void clear_stack(stack_t *stack);
 void destroy_ArrayStack(ArrayStack_t **stack);
 void clear_ArrayStack(ArrayStack_t *stack);
 
+#ifdef __cplusplus
+}
+#endif // cpp
 #endif // !STACK_H
