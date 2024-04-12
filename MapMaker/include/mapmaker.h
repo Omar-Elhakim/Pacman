@@ -27,4 +27,6 @@ void AllocateSqP(node_t *node, void *data);
 void InsertNeighbors(gqueue_t *queue, Square ***prev, Square *from);
 void findPath(Square *from, Square *to);
 void destroySquareList();
+void makeWall(int x, int y);
+void makePath(int x, int y);
 int  game();

@@ -151,6 +151,16 @@ void makeWall(int x, int y) {
     SquareList[y][x].BackgroundColor = BLACK;
 }
 
+void makePath(int x, int y) {
+    SquareList[y][x].TileType = PATH;
+    Color temp = BLACK;
+    if (isEven(x + y)) {
+        temp = BROWN;
+    } else
+        temp = WHITE;
+    SquareList[y][x].BackgroundColor = temp;
+}
+
 bool MouseInBoundries(Vector2 MousePos) {
     if (MousePos.x < WindowWidth && MousePos.y < WindowWidth && MousePos.y > 0 && MousePos.x > 0) {
         return true;
@@ -186,6 +196,9 @@ int game() {
         }
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && MouseInBoundries(GetMousePosition())) {
             makeWall((int)(GetMouseX() / SquareWidth), (int)(GetMouseY() / SquareHeight));
+        }
+        if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT) && MouseInBoundries(GetMousePosition())) {
+            makePath((int)(GetMouseX() / SquareWidth), (int)(GetMouseY() / SquareHeight));
         }
         EndDrawing();
     }
