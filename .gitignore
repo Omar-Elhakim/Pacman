@@ -364,3 +364,16 @@ FodyWeavers.xsd
 
 
 *vcxp*
+# Cmake ignore
+
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
