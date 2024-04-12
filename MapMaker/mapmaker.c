@@ -3,11 +3,15 @@
 #include <stdio.h>
 #include <string.h>
 
-const int numTiles = 10;
-float     WindowWidth = 800;
-float     SquareWidth = 0;
-Square  **SquareList = NULL;
-Color     pathColor = GREEN;
+// const int numTiles = 10;
+// number of vertical and horizontal cells
+const int vc = 20;
+const int hc = 10;
+
+float    WindowWidth = 800, WindowHeight = 600;
+float    SquareWidth = 0, SquareHeight = 0;
+Square **SquareList = NULL;
+Color    pathColor = GREEN;
 
 int main() {
     InitSquares();
@@ -21,8 +25,8 @@ void _PrintSq(void *SqAddr) { ((Square *)(*((size_t *)SqAddr)))->BackgroundColor
 bool _QSearchSq(node_t *node, void *data) { return *((size_t *)node_data(node)) == (size_t)data; }
 
 void ColorSqList() {
-    for (int i = 0; i < numTiles; i++) {
-        for (int j = 0; j < numTiles; j++) {
+    for (int i = 0; i < hc; i++) {
+        for (int j = 0; j < vc; j++) {
             if (isEven(i + j)) {
                 SquareList[i][j].BackgroundColor = BROWN;
             } else
@@ -32,18 +36,20 @@ void ColorSqList() {
 }
 
 void InitSquares() {
-    SquareList = (Square **)malloc(numTiles * sizeof(Square *));
-    SquareWidth = WindowWidth / numTiles;
-    for (int i = 0; i < numTiles; i++) {
-        SquareList[i] = (Square *)malloc(numTiles * sizeof(Square));
-        for (int j = 0; j < numTiles; j++) {
+    SquareList = (Square **)malloc(hc * sizeof(Square *));
+    SquareWidth = WindowWidth / vc;
+    SquareHeight = WindowHeight / hc;
+    for (int i = 0; i < hc; i++) {
+        SquareList[i] = (Square *)malloc(vc * sizeof(Square));
+        for (int j = 0; j < vc; j++) {
             SquareList[i][j].TileType = PATH;
             SquareList[i][j].obj = NULL;
             SquareList[i][j].pos.x = j;
             SquareList[i][j].pos.y = i;
             SquareList[i][j].rec.x = j * SquareWidth;
-            SquareList[i][j].rec.y = i * SquareWidth;
-            SquareList[i][j].rec.width = SquareList[i][j].rec.height = SquareWidth;
+            SquareList[i][j].rec.y = i * SquareHeight;
+            SquareList[i][j].rec.width = SquareWidth;
+            SquareList[i][j].rec.height = SquareHeight;
         }
     }
     ColorSqList();
@@ -57,7 +63,7 @@ void AllocateSqP(node_t *node, void *data) {
 }
 
 bool isPath(int x, int y) {
-    if (y >= numTiles || x >= numTiles || y < 0 || x < 0)
+    if (y >= hc || x >= vc || y < 0 || x < 0)
         return false;
     if (SquareList[y][x].TileType == WALL)
         return false;
@@ -71,9 +77,9 @@ void InsertNeighbors(gqueue_t *queue, Square ***prev, Square *from) {
 
     gqueue_t *TN = create_queue(AllocateSqP);
     enqueue(TN, from);
-    bool visited[numTiles][numTiles];
-    for (int i = 0; i < numTiles; i++)
-        for (int j = 0; j < numTiles; j++)
+    bool visited[hc][vc];
+    for (int i = 0; i < hc; i++)
+        for (int j = 0; j < vc; j++)
             visited[i][j] = false;
 
     while (!queue_is_empty(TN)) {
@@ -97,10 +103,10 @@ void InsertNeighbors(gqueue_t *queue, Square ***prev, Square *from) {
 void findPath(Square *from, Square *to) {
     linked_list_t *Path = create_list(AllocateSqP);
     gqueue_t      *Neighbors = create_queue(AllocateSqP);
-    Square      ***prev = (Square ***)malloc(numTiles * sizeof(Square **));
-    for (int i = 0; i < numTiles; i++) {
-        prev[i] = (Square **)malloc(numTiles * sizeof(Square *));
-        for (int j = 0; j < numTiles; j++) {
+    Square      ***prev = (Square ***)malloc(hc * sizeof(Square **));
+    for (int i = 0; i < hc; i++) {
+        prev[i] = (Square **)malloc(vc * sizeof(Square *));
+        for (int j = 0; j < vc; j++) {
             prev[i][j] = NULL;
         }
     }
@@ -127,20 +133,20 @@ void findPath(Square *from, Square *to) {
 
     destroy_queue(&Neighbors);
     destroy_list(&Path);
-    for (int i = 0; i < numTiles; i++) {
+    for (int i = 0; i < hc; i++) {
         free(prev[i]);
     }
     free(prev);
 }
 
 void destroySquareList() {
-    for (int i = 0; i < numTiles; i++) {
+    for (int i = 0; i < hc; i++) {
         free(SquareList[i]);
     }
     free(SquareList);
 }
 
-void makePath(int x, int y) {
+void makeWall(int x, int y) {
     SquareList[y][x].TileType = WALL;
     SquareList[y][x].BackgroundColor = BLACK;
 }
@@ -154,13 +160,13 @@ bool MouseInBoundries(Vector2 MousePos) {
 
 int game() {
     SetTraceLogLevel(LOG_NONE);
-    InitWindow(WindowWidth, WindowWidth, "mapmaker");
+    InitWindow(WindowWidth, WindowHeight, "mapmaker");
     SetTargetFPS(60);
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(WHITE);
-        for (int i = 0; i < numTiles; i++) {
-            for (int j = 0; j < numTiles; j++) {
+        for (int i = 0; i < hc; i++) {
+            for (int j = 0; j < vc; j++) {
                 DrawRectangleRec(SquareList[i][j].rec, SquareList[i][j].BackgroundColor);
             }
         }
@@ -169,17 +175,17 @@ int game() {
         }
         if (IsKeyPressed(KEY_R)) {
             ColorSqList();
-            for (int i = 0; i < numTiles; i++) {
-                for (int j = 0; j < numTiles; j++) {
+            for (int i = 0; i < hc; i++) {
+                for (int j = 0; j < vc; j++) {
                     SquareList[i][j].TileType = PATH;
                 }
             }
         }
         if (IsKeyPressed(KEY_F)) {
-            findPath(&SquareList[0][0], &SquareList[numTiles - 1][numTiles - 1]);
+            findPath(&SquareList[0][0], &SquareList[hc - 1][vc - 1]);
         }
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && MouseInBoundries(GetMousePosition())) {
-            makePath((int)(GetMouseX() / SquareWidth), (int)(GetMouseY() / SquareWidth));
+            makeWall((int)(GetMouseX() / SquareWidth), (int)(GetMouseY() / SquareHeight));
         }
         EndDrawing();
     }
