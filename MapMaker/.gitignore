@@ -3,3 +3,5 @@ build/
 cmake-build-debug/
 graph
 vgcore*
+.cmake/
+*.cbp
