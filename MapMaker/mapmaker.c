@@ -7,19 +7,19 @@
 const int vc = 40 / 2;
 const int hc = 30 / 2;
 
-float    WindowWidth = 800, WindowHeight = 600;
-float    SquareWidth = 0, SquareHeight = 0;
-Square **SquareList = NULL;
-Color    pathColor = GREEN;
+float  WindowWidth = 800, WindowHeight = 600;
+float  CellWidth = 0, CellHeight = 0;
+Cell **CellList = NULL;
+Color  pathColor = GREEN;
 
 int main() {
-    InitSquares();
+    InitCells();
     game();
-    destroySquareList();
+    destroyCellList();
     return 0;
 }
 
-void _PrintSq(void *SqAddr) { ((Square *)(*((size_t *)SqAddr)))->BackgroundColor = pathColor; }
+void _PrintSq(void *SqAddr) { ((Cell *)(*((size_t *)SqAddr)))->BackgroundColor = pathColor; }
 
 bool _QSearchSq(node_t *node, void *data) { return *((size_t *)node_data(node)) == (size_t)data; }
 
@@ -27,28 +27,28 @@ void ColorSqList() {
     for (int i = 0; i < hc; i++) {
         for (int j = 0; j < vc; j++) {
             if (isEven(i + j)) {
-                SquareList[i][j].BackgroundColor = BROWN;
+                CellList[i][j].BackgroundColor = BROWN;
             } else
-                SquareList[i][j].BackgroundColor = WHITE;
+                CellList[i][j].BackgroundColor = WHITE;
         }
     }
 }
 
-void InitSquares() {
-    SquareList = (Square **)malloc(hc * sizeof(Square *));
-    SquareWidth = WindowWidth / vc;
-    SquareHeight = WindowHeight / hc;
+void InitCells() {
+    CellList = (Cell **)malloc(hc * sizeof(Cell *));
+    CellWidth = WindowWidth / vc;
+    CellHeight = WindowHeight / hc;
     for (int i = 0; i < hc; i++) {
-        SquareList[i] = (Square *)malloc(vc * sizeof(Square));
+        CellList[i] = (Cell *)malloc(vc * sizeof(Cell));
         for (int j = 0; j < vc; j++) {
-            SquareList[i][j].TileType = PATH;
-            SquareList[i][j].obj = NULL;
-            SquareList[i][j].pos.x = j;
-            SquareList[i][j].pos.y = i;
-            SquareList[i][j].rec.x = j * SquareWidth;
-            SquareList[i][j].rec.y = i * SquareHeight;
-            SquareList[i][j].rec.width = SquareWidth;
-            SquareList[i][j].rec.height = SquareHeight;
+            CellList[i][j].TileType = PATH;
+            CellList[i][j].obj = NULL;
+            CellList[i][j].pos.x = j;
+            CellList[i][j].pos.y = i;
+            CellList[i][j].rec.x = j * CellWidth;
+            CellList[i][j].rec.y = i * CellHeight;
+            CellList[i][j].rec.width = CellWidth;
+            CellList[i][j].rec.height = CellHeight;
         }
     }
     ColorSqList();
@@ -64,12 +64,12 @@ void AllocateSqP(node_t *node, void *data) {
 bool isPath(int x, int y) {
     if (y >= hc || x >= vc || y < 0 || x < 0)
         return false;
-    if (SquareList[y][x].TileType == WALL)
+    if (CellList[y][x].TileType == WALL)
         return false;
     return true;
 }
 
-void BFS(gqueue_t *queue, Square ***prev, Square *from) {
+void BFS(gqueue_t *queue, Cell ***prev, Cell *from) {
     int row = 0, col = 0;
     int dr[4] = {-1, 1, 0, 0};
     int dc[4] = {0, 0, -1, 1};
@@ -82,15 +82,15 @@ void BFS(gqueue_t *queue, Square ***prev, Square *from) {
             visited[i][j] = false;
 
     while (!queue_is_empty(TN)) {
-        Square *s = ((Square *)*(size_t *)queue_front(TN));
+        Cell *s = ((Cell *)*(size_t *)queue_front(TN));
         for (int i = 0; i < 4; i++) {
             col = s->pos.x + dc[i];
             row = s->pos.y + dr[i];
             if (isPath(col, row) && !visited[row][col]) {
                 visited[row][col] = true;
                 prev[row][col] = s;
-                enqueue(queue, &SquareList[row][col]);
-                enqueue(TN, &SquareList[row][col]);
+                enqueue(queue, &CellList[row][col]);
+                enqueue(TN, &CellList[row][col]);
             }
         }
         dequeue(TN);
@@ -99,20 +99,20 @@ void BFS(gqueue_t *queue, Square ***prev, Square *from) {
     destroy_queue(&TN);
 }
 
-void findPath(Square *from, Square *to) {
+void findPath(Cell *from, Cell *to) {
     linked_list_t *Path = create_list(AllocateSqP);
     gqueue_t      *Neighbors = create_queue(AllocateSqP);
-    Square      ***prev = (Square ***)malloc(hc * sizeof(Square **));
+    Cell        ***prev = (Cell ***)malloc(hc * sizeof(Cell **));
     for (int i = 0; i < hc; i++) {
-        prev[i] = (Square **)malloc(vc * sizeof(Square *));
+        prev[i] = (Cell **)malloc(vc * sizeof(Cell *));
         for (int j = 0; j < vc; j++) {
             prev[i][j] = NULL;
         }
     }
 
     BFS(Neighbors, prev, from);
-    Square *temp = to;
-    int     row = 0, col = 0;
+    Cell *temp = to;
+    int   row = 0, col = 0;
     do {
         row = temp->pos.y;
         col = temp->pos.x;
@@ -138,26 +138,26 @@ void findPath(Square *from, Square *to) {
     free(prev);
 }
 
-void destroySquareList() {
+void destroyCellList() {
     for (int i = 0; i < hc; i++) {
-        free(SquareList[i]);
+        free(CellList[i]);
     }
-    free(SquareList);
+    free(CellList);
 }
 
 void makeWall(int x, int y) {
-    SquareList[y][x].TileType = WALL;
-    SquareList[y][x].BackgroundColor = BLACK;
+    CellList[y][x].TileType = WALL;
+    CellList[y][x].BackgroundColor = BLACK;
 }
 
 void makePath(int x, int y) {
-    SquareList[y][x].TileType = PATH;
+    CellList[y][x].TileType = PATH;
     Color temp = BLACK;
     if (isEven(x + y)) {
         temp = BROWN;
     } else
         temp = WHITE;
-    SquareList[y][x].BackgroundColor = temp;
+    CellList[y][x].BackgroundColor = temp;
 }
 
 bool MouseInBoundries(Vector2 MousePos) {
@@ -176,7 +176,7 @@ int game() {
         ClearBackground(WHITE);
         for (int i = 0; i < hc; i++) {
             for (int j = 0; j < vc; j++) {
-                DrawRectangleRec(SquareList[i][j].rec, SquareList[i][j].BackgroundColor);
+                DrawRectangleRec(CellList[i][j].rec, CellList[i][j].BackgroundColor);
             }
         }
         if (IsKeyPressed(KEY_Q)) {
@@ -186,18 +186,18 @@ int game() {
             ColorSqList();
             for (int i = 0; i < hc; i++) {
                 for (int j = 0; j < vc; j++) {
-                    SquareList[i][j].TileType = PATH;
+                    CellList[i][j].TileType = PATH;
                 }
             }
         }
         if (IsKeyPressed(KEY_F)) {
-            findPath(&SquareList[0][0], &SquareList[hc - 1][vc - 1]);
+            findPath(&CellList[0][0], &CellList[hc - 1][vc - 1]);
         }
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && MouseInBoundries(GetMousePosition())) {
-            makeWall((int)(GetMouseX() / SquareWidth), (int)(GetMouseY() / SquareHeight));
+            makeWall((int)(GetMouseX() / CellWidth), (int)(GetMouseY() / CellHeight));
         }
         if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT) && MouseInBoundries(GetMousePosition())) {
-            makePath((int)(GetMouseX() / SquareWidth), (int)(GetMouseY() / SquareHeight));
+            makePath((int)(GetMouseX() / CellWidth), (int)(GetMouseY() / CellHeight));
         }
         EndDrawing();
     }

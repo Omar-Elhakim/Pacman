@@ -11,22 +11,22 @@ typedef struct Vector2i {
     int x, y;
 } Vector2i;
 
-typedef struct Square {
+typedef struct Cell {
     Rectangle  rec;
     Rectangle *obj;
     TileType_t TileType;
     Color      BackgroundColor;
     Vector2i   pos;
-} Square;
+} Cell;
 
 void _PrintSq(void *addr);
 bool _QSearchSq(node_t *node, void *data);
 void ColorSqList();
-void InitSquares();
+void InitCells();
 void AllocateSqP(node_t *node, void *data);
-void BFS(gqueue_t *queue, Square ***prev, Square *from);
-void findPath(Square *from, Square *to);
-void destroySquareList();
+void BFS(gqueue_t *queue, Cell ***prev, Cell *from);
+void findPath(Cell *from, Cell *to);
+void destroyCellList();
 void makeWall(int x, int y);
 void makePath(int x, int y);
 int  game();
