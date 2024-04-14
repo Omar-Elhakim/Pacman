@@ -3,7 +3,7 @@
 int main(void)
 {
     SetTraceLogLevel(LOG_NONE);
-    InitWindow(800, 450, "raylib [core] example - basic window");
+    InitWindow(800, 800, "raylib [core] example - basic window");
 
     while (!WindowShouldClose())
     {
