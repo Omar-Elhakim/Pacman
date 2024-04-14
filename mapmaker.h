@@ -17,12 +17,11 @@ struct Cell {
     Color      BackgroundColor;
     Vector2i   pos;
 };
-template <class T>
-class mapmaker
-{
+
+class mapmaker {
 public:
-    const int vc = 40 / 2;
-    const int hc = 30 / 2;
+    static const int vc = 40 / 2;
+    static const int hc = 30 / 2;
     mapmaker();
     Cell cell;
     void ColorSqList();
@@ -36,3 +35,14 @@ public:
     ~mapmaker();
 };
 
+const int vc = 40 / 2;
+const int hc = 30 / 2;
+
+void ColorSqList();
+void InitCells();
+void BFS(Vector2i prev[hc][vc], Vector2i from);
+void findPath(Vector2i from , Vector2i to);
+void destroyCellList();
+void makeWall(int x, int y);
+void makePath(int x, int y);
+void game();

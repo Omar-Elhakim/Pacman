@@ -1,8 +1,8 @@
 #include "mapmaker.h"
 #include "raylib.h"
-#include <string>
 #include <queue>
 #include <vector>
+#include <stdio.h>
 // number of vertical and horizontal cells
 
 float  WindowWidth = 800, WindowHeight = 600;
@@ -10,9 +10,11 @@ float  CellWidth = 0, CellHeight = 0;
 Cell **CellList = NULL;
 Color  pathColor = GREEN;
 
-    const int vc = 40 / 2;
-    const int hc = 30 / 2;
-
+int main(){
+    InitCells();
+    game();
+    return 0;
+}
 
 void ColorSqList() {
     for (int i = 0; i < hc; i++) {
@@ -25,15 +27,14 @@ void ColorSqList() {
     }
 }
 
-
 void InitCells() {
     // TODO check if the conversion is true
-    CellList = new Cell *[hc * sizeof(Cell *)];
+    CellList = new Cell *[hc ];
     CellWidth = WindowWidth / vc;
     CellHeight = WindowHeight / hc;
     for (int i = 0; i < hc; i++) {
         // TODO check if the conversion is true
-        CellList[i] = new Cell [vc * sizeof(Cell)];
+        CellList[i] = new Cell [vc ];
         for (int j = 0; j < vc; j++) {
             CellList[i][j].TileType = PATH;
             CellList[i][j].obj = NULL;
@@ -49,7 +50,7 @@ void InitCells() {
 }
 
 
-bool isPath(int x, int y) {
+bool isPath(int x , int y) {
     if (y >= hc || x >= vc || y < 0 || x < 0)
         return false;
     if (CellList[y][x].TileType == WALL)
@@ -57,8 +58,12 @@ bool isPath(int x, int y) {
     return true;
 }
 
+void ColorVectorList(vector<Vector2i> list){
+    for(int i = 0 ; i < list.size();i++)
+        CellList[list[i].y][list[i].x].BackgroundColor = pathColor;
+}
 
-void BFS(Vector2i prev[vc][hc], Vector2i from){
+void BFS(Vector2i prev[hc][vc], Vector2i from){
     int row = 0, col = 0;
     int dr[4] = {-1, 1, 0, 0};
     int dc[4] = {0, 0, -1, 1};
@@ -77,43 +82,105 @@ void BFS(Vector2i prev[vc][hc], Vector2i from){
             if (isPath(col, row) && !visited[row][col]) {
                 visited[row][col] = true;
                 prev[row][col] = s;
+                /*
+                if(s.x != 0 &&s.y != 0 ){
+                    prev[row][col] = s;
+                }else
+                    prev[row][col] ={-1,-1};
+*/
                 TN.push(prev[row][col]);
             }
         }
     TN.pop();
     }
+    for(int i = 0 ; i< hc ;i++)
+        for(int j = 0 ; j< hc ;j++)
+            printf("%d %d - %d %d \n",i,j,prev[i][j].x,prev[i][j].y);
 }
-
-
 
 void findPath(Vector2i from, Vector2i to) {
     vector<Vector2i> Path;
-    Vector2i prev[vc][hc];
-    prev[0][0].x=prev[0][0].y=-1;
+    Vector2i prev[hc][vc];
+    for (int i = 0; i < hc; i++)
+        for (int j = 0; j < vc; j++)
+            prev[i][j] = {-1,-1};
+
     BFS(prev, from);
     Vector2i temp = to;
-    int   row = 0, col = 0;
-    do {
+    int   row = temp.y, col = temp.x;
+
+    // for(int i = 0 ; i< hc ;i++)
+    //     for(int j = 0 ; j< hc ;j++)
+    //         printf("%d %d - %d %d \n",i,j,prev[i][j].x,prev[i][j].y);
+
+    while(prev[row][col].x != -1){
         row = temp.y;
         col = temp.x;
-        if ((.x==0 && prev[row][col].y==0 && )) {
-            push_front(Path, temp);
-        } else {
+        Path.push_back(temp);
+        temp = prev[row][col];
+    }
+
+    pathColor = RED;
+    ColorVectorList(Path);
+    pathColor = GREEN;
+}
+
+void makeWall(int x, int y) {
+    CellList[y][x].TileType = WALL;
+    CellList[y][x].BackgroundColor = BLACK;
+}
+
+void makePath(int x, int y) {
+    CellList[y][x].TileType = PATH;
+    Color temp = BLACK;
+    if (isEven(x + y)) {
+        temp = BROWN;
+    } else
+        temp = WHITE;
+    CellList[y][x].BackgroundColor = temp;
+}
+
+bool MouseInBoundries(Vector2 MousePos) {
+    if (MousePos.x < WindowWidth && MousePos.y < WindowWidth && MousePos.y > 0 && MousePos.x > 0) {
+        return true;
+    } else
+        return false;
+}
+
+void game() {
+    SetTraceLogLevel(LOG_NONE);
+    InitWindow(WindowWidth, WindowHeight, "mapmaker");
+    SetTargetFPS(60);
+    while (!WindowShouldClose()) {
+        BeginDrawing();
+        ClearBackground(WHITE);
+        for (int i = 0; i < hc; i++) {
+            for (int j = 0; j < vc; j++) {
+                DrawRectangleRec(CellList[i][j].rec, CellList[i][j].BackgroundColor);
+            }
+        }
+        if (IsKeyPressed(KEY_Q)) {
             break;
         }
-        temp = prev[row][col];
-    } while (temp != from);
-    push_front(Path, from);
-
-    dump_list(queue_list(Neighbors), _PrintSq);
-    pathColor = RED;
-    dump_list(Path, _PrintSq);
-    pathColor = GREEN;
-
-    destroy_queue(&Neighbors);
-    destroy_list(&Path);
-    for (int i = 0; i < hc; i++) {
-        free(prev[i]);
+        if (IsKeyPressed(KEY_R)) {
+            ColorSqList();
+            for (int i = 0; i < hc; i++) {
+                for (int j = 0; j < vc; j++) {
+                    CellList[i][j].TileType = PATH;
+                }
+            }
+        }
+        if (IsKeyPressed(KEY_F)) {
+            findPath({0,0}, {vc -1,hc -1});
+        }
+        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && MouseInBoundries(GetMousePosition())) {
+            makeWall((int)(GetMouseX() / CellWidth), (int)(GetMouseY() / CellHeight));
+        }
+        if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT) && MouseInBoundries(GetMousePosition())) {
+            makePath((int)(GetMouseX() / CellWidth), (int)(GetMouseY() / CellHeight));
+        }
+        EndDrawing();
     }
-    free(prev);
+    CloseWindow();
+    
 }
