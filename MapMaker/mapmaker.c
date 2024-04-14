@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 
+bool MouseInBoundries(Vector2 MousePos);
+
 // number of vertical and horizontal cells
 const int vc = 40 / 2;
 const int hc = 30 / 2;
@@ -19,11 +21,45 @@ int main() {
     return 0;
 }
 
-void _PrintSq(void *SqAddr) { ((Cell *)(*((size_t *)SqAddr)))->BackgroundColor = pathColor; }
+int game() {
+    SetTraceLogLevel(LOG_NONE);
+    InitWindow(WindowWidth, WindowHeight, "mapmaker");
+    SetTargetFPS(60);
+    while (!WindowShouldClose()) {
+        BeginDrawing();
+        ClearBackground(WHITE);
+        for (int i = 0; i < hc; i++) {
+            for (int j = 0; j < vc; j++) {
+                DrawRectangleRec(CellList[i][j].rec, CellList[i][j].BackgroundColor);
+            }
+        }
+        if (IsKeyPressed(KEY_Q)) {
+            break;
+        }
+        if (IsKeyPressed(KEY_R)) {
+            ColorClList();
+            for (int i = 0; i < hc; i++) {
+                for (int j = 0; j < vc; j++) {
+                    CellList[i][j].TileType = PATH;
+                }
+            }
+        }
+        if (IsKeyPressed(KEY_F)) {
+            findPath(&CellList[0][0], &CellList[hc - 1][vc - 1]);
+        }
+        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && MouseInBoundries(GetMousePosition())) {
+            makeWall((int)(GetMouseX() / CellWidth), (int)(GetMouseY() / CellHeight));
+        }
+        if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT) && MouseInBoundries(GetMousePosition())) {
+            makePath((int)(GetMouseX() / CellWidth), (int)(GetMouseY() / CellHeight));
+        }
+        EndDrawing();
+    }
+    CloseWindow();
+    return EXIT_SUCCESS;
+}
 
-bool _QSearchSq(node_t *node, void *data) { return *((size_t *)node_data(node)) == (size_t)data; }
-
-void ColorSqList() {
+void ColorClList() {
     for (int i = 0; i < hc; i++) {
         for (int j = 0; j < vc; j++) {
             if (isEven(i + j)) {
@@ -38,27 +74,20 @@ void InitCells() {
     CellList = (Cell **)malloc(hc * sizeof(Cell *));
     CellWidth = WindowWidth / vc;
     CellHeight = WindowHeight / hc;
-    for (int i = 0; i < hc; i++) {
-        CellList[i] = (Cell *)malloc(vc * sizeof(Cell));
-        for (int j = 0; j < vc; j++) {
-            CellList[i][j].TileType = PATH;
-            CellList[i][j].obj = NULL;
-            CellList[i][j].pos.x = j;
-            CellList[i][j].pos.y = i;
-            CellList[i][j].rec.x = j * CellWidth;
-            CellList[i][j].rec.y = i * CellHeight;
-            CellList[i][j].rec.width = CellWidth;
-            CellList[i][j].rec.height = CellHeight;
+    for (int j = 0; j < hc; j++) {
+        CellList[j] = (Cell *)malloc(vc * sizeof(Cell));
+        for (int i = 0; i < vc; i++) {
+            CellList[j][i].TileType = PATH;
+            CellList[j][i].obj = NULL;
+            CellList[j][i].pos.x = i;
+            CellList[j][i].pos.y = j;
+            CellList[j][i].rec.x = i * CellWidth;
+            CellList[j][i].rec.y = j * CellHeight;
+            CellList[j][i].rec.width = CellWidth;
+            CellList[j][i].rec.height = CellHeight;
         }
     }
-    ColorSqList();
-}
-
-// just takes square address
-void AllocateSqP(node_t *node, void *data) {
-    size_t *temp = (size_t *)malloc(sizeof(size_t));
-    *temp = (size_t)data;
-    node_set_data(node, temp);
+    ColorClList();
 }
 
 bool isPath(int x, int y) {
@@ -74,7 +103,7 @@ void BFS(gqueue_t *queue, Cell ***prev, Cell *from) {
     int dr[4] = {-1, 1, 0, 0};
     int dc[4] = {0, 0, -1, 1};
 
-    gqueue_t *TN = create_queue(AllocateSqP);
+    gqueue_t *TN = create_queue(_AllocateCl);
     enqueue(TN, from);
     bool visited[hc][vc];
     for (int i = 0; i < hc; i++)
@@ -100,8 +129,8 @@ void BFS(gqueue_t *queue, Cell ***prev, Cell *from) {
 }
 
 void findPath(Cell *from, Cell *to) {
-    linked_list_t *Path = create_list(AllocateSqP);
-    gqueue_t      *Neighbors = create_queue(AllocateSqP);
+    linked_list_t *Path = create_list(_AllocateCl);
+    gqueue_t      *Neighbors = create_queue(_AllocateCl);
     Cell        ***prev = (Cell ***)malloc(hc * sizeof(Cell **));
     for (int i = 0; i < hc; i++) {
         prev[i] = (Cell **)malloc(vc * sizeof(Cell *));
@@ -125,9 +154,9 @@ void findPath(Cell *from, Cell *to) {
     } while (temp != from);
     push_front(Path, from);
 
-    dump_list(queue_list(Neighbors), _PrintSq);
+    dump_list(queue_list(Neighbors), _PrintCl);
     pathColor = RED;
-    dump_list(Path, _PrintSq);
+    dump_list(Path, _PrintCl);
     pathColor = GREEN;
 
     destroy_queue(&Neighbors);
@@ -136,13 +165,6 @@ void findPath(Cell *from, Cell *to) {
         free(prev[i]);
     }
     free(prev);
-}
-
-void destroyCellList() {
-    for (int i = 0; i < hc; i++) {
-        free(CellList[i]);
-    }
-    free(CellList);
 }
 
 void makeWall(int x, int y) {
@@ -167,40 +189,24 @@ bool MouseInBoundries(Vector2 MousePos) {
         return false;
 }
 
-int game() {
-    SetTraceLogLevel(LOG_NONE);
-    InitWindow(WindowWidth, WindowHeight, "mapmaker");
-    SetTargetFPS(60);
-    while (!WindowShouldClose()) {
-        BeginDrawing();
-        ClearBackground(WHITE);
-        for (int i = 0; i < hc; i++) {
-            for (int j = 0; j < vc; j++) {
-                DrawRectangleRec(CellList[i][j].rec, CellList[i][j].BackgroundColor);
-            }
-        }
-        if (IsKeyPressed(KEY_Q)) {
-            break;
-        }
-        if (IsKeyPressed(KEY_R)) {
-            ColorSqList();
-            for (int i = 0; i < hc; i++) {
-                for (int j = 0; j < vc; j++) {
-                    CellList[i][j].TileType = PATH;
-                }
-            }
-        }
-        if (IsKeyPressed(KEY_F)) {
-            findPath(&CellList[0][0], &CellList[hc - 1][vc - 1]);
-        }
-        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && MouseInBoundries(GetMousePosition())) {
-            makeWall((int)(GetMouseX() / CellWidth), (int)(GetMouseY() / CellHeight));
-        }
-        if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT) && MouseInBoundries(GetMousePosition())) {
-            makePath((int)(GetMouseX() / CellWidth), (int)(GetMouseY() / CellHeight));
-        }
-        EndDrawing();
+void destroyCellList() {
+    for (int i = 0; i < hc; i++) {
+        free(CellList[i]);
     }
-    CloseWindow();
-    return EXIT_SUCCESS;
+    free(CellList);
+}
+
+// just takes square address
+void _AllocateCl(node_t *node, void *data) {
+    size_t *temp = (size_t *)malloc(sizeof(size_t));
+    *temp = (size_t)data;
+    node_set_data(node, temp);
+}
+
+void _PrintCl(void *ClAddr) {
+    ((Cell *)(*((size_t *)ClAddr)))->BackgroundColor = pathColor;
+}
+
+bool _QSearchCl(node_t *node, void *data) {
+    return *((size_t *)node_data(node)) == (size_t)data;
 }

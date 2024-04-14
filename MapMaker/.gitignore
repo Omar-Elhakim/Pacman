@@ -5,3 +5,4 @@ graph
 vgcore*
 .cmake/
 *.cbp
+mapmaker
