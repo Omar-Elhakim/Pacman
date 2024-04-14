@@ -19,14 +19,14 @@ typedef struct Cell {
     Vector2i   pos;
 } Cell;
 
-void _PrintSq(void *addr);
-bool _QSearchSq(node_t *node, void *data);
-void ColorSqList();
+int  game();
+void ColorClList();
 void InitCells();
-void AllocateSqP(node_t *node, void *data);
 void BFS(gqueue_t *queue, Cell ***prev, Cell *from);
 void findPath(Cell *from, Cell *to);
-void destroyCellList();
 void makeWall(int x, int y);
 void makePath(int x, int y);
-int  game();
+void destroyCellList();
+void _AllocateCl(node_t *node, void *data);
+void _PrintCl(void *addr);
+bool _QSearchCl(node_t *node, void *data);
