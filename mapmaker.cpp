@@ -1,10 +1,27 @@
 #include "mapmaker.h"
+#include "Cell.h"
 #include "Window.h"
 #include <queue>
+#include <raylib.h>
 #include <vector>
 
 CellList *cellLst = nullptr;
 int WindowWidth = 800, WindowHeight = 600;
+
+Cell *GetRandomCl() {
+    int col = GetRandomValue(0, vc - 1);
+    int row = GetRandomValue(0, hc - 1);
+    return cellLst->getCell(row, col);
+}
+
+bool isSecPassed(float seconds) {
+    static double previousTime = 0.0f;
+    if (GetTime() - previousTime >= seconds) {
+        previousTime = GetTime();
+        return true;
+    }
+    return false;
+}
 
 using namespace std;
 
@@ -17,7 +34,7 @@ bool isPath(int x, int y) {
 }
 
 void BFS(Vector2i prev[hc][vc], Vector2i from) {
-    int row = 0, col = 0;
+    int row = from.y, col = from.x;
     int dr[4] = {-1, 1, 0, 0};
     int dc[4] = {0, 0, -1, 1};
     queue<Vector2i> TN;
@@ -28,12 +45,13 @@ void BFS(Vector2i prev[hc][vc], Vector2i from) {
         for (int j = 0; j < vc; j++)
             visited[i][j] = false;
 
-    visited[from.y][from.x] = true;
+    visited[row][col] = true;
     while (!TN.empty()) {
         Vector2i s = TN.front();
         for (int i = 0; i < 4; i++) {
             col = s.x + dc[i];
             row = s.y + dr[i];
+            cellLst->getCell(s.y, s.x)->BackgroundColor = GREEN;
             if (isPath(col, row) && !visited[row][col]) {
                 visited[row][col] = true;
                 prev[row][col] = s;
@@ -64,6 +82,7 @@ void findPath(Vector2i from, Vector2i to) {
 
     cellLst->SetPathColor(RED);
     cellLst->ColorClSubList(Path);
+    cellLst->getCell(to.y, to.x)->BackgroundColor = GOLD;
     cellLst->SetPathColor(GREEN);
 }
 
@@ -73,7 +92,7 @@ void makeWall(int x, int y) {
 }
 
 void makePath(int x, int y) {
-    cellLst->getCell(y, x)->TileType = PATH;
+    cellLst->getCell(y, x)->TileType = ROAD;
     Color temp = BLACK;
     if (isEven(x + y)) {
         temp = BROWN;
@@ -90,8 +109,10 @@ bool MouseInBoundries(Vector2 MousePos) {
 }
 
 void game() {
-    Window window = Window(WindowWidth, WindowHeight);
+    Window window = Window(WindowWidth, WindowHeight, "Mapmaker");
     cellLst = new CellList();
+    bool startRandomSearch = false;
+    SetRandomSeed(GetTime());
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
@@ -104,21 +125,38 @@ void game() {
             break;
         }
         if (IsKeyPressed(KEY_R)) {
-            cellLst->ColorClList();
             for (int i = 0; i < hc; i++) {
                 for (int j = 0; j < vc; j++) {
-                    cellLst->getCell(i, j)->TileType = PATH;
+                    cellLst->getCell(i, j)->TileType = ROAD;
                 }
             }
+            cellLst->ColorClList();
+            startRandomSearch = false;
         }
         if (IsWindowResized()) {
             WindowWidth = GetScreenWidth();
             WindowHeight = GetScreenHeight();
             cellLst->Update();
         }
-
         if (IsKeyPressed(KEY_F)) {
-            findPath({0, 0}, {vc - 1, hc - 1});
+            startRandomSearch = true;
+        }
+        if (startRandomSearch && isSecPassed(0.1f)) {
+            Cell *from = GetRandomCl();
+            Cell *nWall = GetRandomCl();
+            Cell *to = GetRandomCl();
+            static int nWallCount = 0;
+            if (from == nullptr || to == nullptr || nWall == nullptr) {
+                continue;
+            }
+            if (nWallCount <= (hc * vc) / 2) {
+                makeWall(nWall->pos.x, nWall->pos.y);
+                nWallCount++;
+            }
+            if (!(from->TileType == WALL || to->TileType == WALL)) {
+                cellLst->ColorClList();
+                findPath(from->pos, to->pos);
+            }
         }
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && MouseInBoundries(GetMousePosition())) {
             makeWall((int)(GetMouseX() / cellLst->CellWidth), (int)(GetMouseY() / cellLst->CellHeight));
