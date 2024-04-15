@@ -8,11 +8,6 @@ int WindowWidth = 800, WindowHeight = 600;
 
 using namespace std;
 
-int main() {
-    game();
-    return 0;
-}
-
 bool isPath(int x, int y) {
     if (y >= hc || x >= vc || y < 0 || x < 0)
         return false;
@@ -73,7 +68,6 @@ void findPath(Vector2i from, Vector2i to) {
 }
 
 void makeWall(int x, int y) {
-    // cellLst->getCell(y, x)->
     cellLst->getCell(y, x)->TileType = WALL;
     cellLst->getCell(y, x)->BackgroundColor = BLACK;
 }
@@ -96,7 +90,7 @@ bool MouseInBoundries(Vector2 MousePos) {
 }
 
 void game() {
-    Window window = Window(WindowWidth, WindowHeight, "mapmaker");
+    Window window = Window(WindowWidth, WindowHeight);
     cellLst = new CellList();
     while (!WindowShouldClose()) {
         BeginDrawing();
