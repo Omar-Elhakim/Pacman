@@ -112,7 +112,7 @@ void game() {
     Window window = Window(WindowWidth, WindowHeight, "Mapmaker");
     cellLst = new CellList();
     bool startRandomSearch = false;
-    Vector2i source = { 0,0 }, destination = { vc - 1,hc - 1 };
+    Vector2i source = {0, 0}, destination = {vc - 1, hc - 1};
     SetRandomSeed(GetTime());
     while (!WindowShouldClose()) {
         BeginDrawing();
@@ -121,6 +121,11 @@ void game() {
             for (int j = 0; j < vc; j++) {
                 cellLst->getCell(i, j)->Draw();
             }
+        }
+        if (IsWindowResized()) {
+            WindowWidth = GetScreenWidth();
+            WindowHeight = GetScreenHeight();
+            cellLst->Update();
         }
         if (IsKeyPressed(KEY_Q)) {
             break;
@@ -131,30 +136,28 @@ void game() {
                     cellLst->getCell(i, j)->TileType = ROAD;
                 }
             }
-            source = { 0,0 };
-            destination = { vc - 1,hc - 1 };
+            source = {0, 0};
+            destination = {vc - 1, hc - 1};
             cellLst->ColorClList();
             startRandomSearch = false;
         }
-        if (IsWindowResized()) {
-            WindowWidth = GetScreenWidth();
-            WindowHeight = GetScreenHeight();
-            cellLst->Update();
-        }
         if (IsKeyPressed(KEY_S)) {
-            source = { (int)(GetMouseX() / cellLst->CellWidth), (int)(GetMouseY() / cellLst->CellHeight) };
-            cellLst->getCell(source.y,source.x)->BackgroundColor = ORANGE;
-
+            source = {(int)(GetMouseX() / cellLst->CellWidth), (int)(GetMouseY() / cellLst->CellHeight)};
+            cellLst->getCell(source.y, source.x)->BackgroundColor = ORANGE;
         }
         if (IsKeyPressed(KEY_D)) {
-            destination = { (int)(GetMouseX() / cellLst->CellWidth), (int)(GetMouseY() / cellLst->CellHeight) };
+            destination = {(int)(GetMouseX() / cellLst->CellWidth), (int)(GetMouseY() / cellLst->CellHeight)};
             cellLst->getCell(destination.y, destination.x)->BackgroundColor = ORANGE;
         }
-        if (IsKeyPressed(KEY_F)) {
+        if (IsKeyPressed(KEY_F) && !(IsKeyDown(KEY_RIGHT_SHIFT) || IsKeyDown(KEY_LEFT_SHIFT))) {
             findPath(source, destination);
-            //startRandomSearch = true;
         }
-        /*
+        if (IsKeyPressed(KEY_F) && (IsKeyDown(KEY_RIGHT_SHIFT) || IsKeyDown(KEY_LEFT_SHIFT))) {
+            if (startRandomSearch) {
+                startRandomSearch = false;
+            } else
+                startRandomSearch = true;
+        }
         if (startRandomSearch && isSecPassed(0.1f)) {
             Cell *from = GetRandomCl();
             Cell *nWall = GetRandomCl();
@@ -171,7 +174,7 @@ void game() {
                 cellLst->ColorClList();
                 findPath(from->pos, to->pos);
             }
-        }*/
+        }
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && MouseInBoundries(GetMousePosition())) {
             makeWall((int)(GetMouseX() / cellLst->CellWidth), (int)(GetMouseY() / cellLst->CellHeight));
         }
