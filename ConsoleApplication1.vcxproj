@@ -134,11 +134,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CellList.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mapmaker.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Cell.h" />
+    <ClInclude Include="CellList.h" />
     <ClInclude Include="mapmaker.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
