@@ -1,7 +1,7 @@
 #pragma once
 #include <raylib.h>
 
-typedef enum { PATH, WALL } TileType_t;
+typedef enum { ROAD, WALL } TileType_t;
 
 struct Vector2i {
     int x, y;

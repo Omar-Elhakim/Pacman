@@ -26,6 +26,8 @@ void CellList::SetCellsPos() {
 void CellList::ColorClList() {
     for (int i = 0; i < hc; i++) {
         for (int j = 0; j < vc; j++) {
+            if (list[i][j].TileType == WALL)
+                continue;
             if (isEven(i + j)) {
                 list[i][j].BackgroundColor = BROWN;
             } else
@@ -67,7 +69,7 @@ CellList::CellList() {
     SetCellsPos();
     for (int i = 0; i < hc; i++) {
         for (int j = 0; j < vc; j++) {
-            list[i][j].TileType = PATH;
+            list[i][j].TileType = ROAD;
             list[i][j].pos.x = j;
             list[i][j].pos.y = i;
             if (isEven(i + j)) {
