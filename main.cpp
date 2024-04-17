@@ -1,6 +1,9 @@
 #include "mapmaker.h"
+#include "pacman.h"
 
 int main() {
-    game();
+    //game();
+    
+    pacman::pacman();
     return 0;
 }
