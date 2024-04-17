@@ -1,9 +1,10 @@
 #include "pacman.h"
 #include "raylib.h"
 #include <iostream>
+#include <cmath>
 using namespace std;
     
-pacman::pacman() {
+void pacman::f() {
     Image pac = LoadImage("assets/pac.png");
     ImageResize(&pac, 80, 150);
     InitWindow(800, 450, "raylib [core] example - basic window");

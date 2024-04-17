@@ -1,9 +1,11 @@
 #include "mapmaker.h"
-#include "pacman.h"
-
+#include "mapmaker.cpp"
+// #include "pacman.h"
+// #include "pacman.cpp"
+#include "Game.h"
 int main() {
     //game();
-    
-    pacman::pacman();
+    Game g(800,600);
+    // pacman::f();
     return 0;
 }
