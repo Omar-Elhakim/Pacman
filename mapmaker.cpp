@@ -4,17 +4,12 @@
 #include <queue>
 #include <vector>
 
-Map *map = nullptr;
-pacman *ahmed = nullptr;
-
-Map *createdMap() {
-    return map;
-}
+Map *gmap = nullptr;
 
 Cell *GetRandomCl() {
     int col = GetRandomValue(0, vc - 1);
     int row = GetRandomValue(0, hc - 1);
-    return map->getCell(row, col);
+    return gmap->GetCell(row, col);
 }
 
 bool isSecPassed(float seconds) {
@@ -31,7 +26,7 @@ using namespace std;
 bool isPath(int x, int y) {
     if (y >= hc || x >= vc || y < 0 || x < 0)
         return false;
-    if (map->getCell(y, x)->TileType == WALL)
+    if (gmap->GetCell(y, x)->TileType == WALL)
         return false;
     return true;
 }
@@ -54,7 +49,7 @@ void BFS(Vector2i prev[hc][vc], Vector2i from) {
         for (int i = 0; i < 4; i++) {
             col = s.x + dc[i];
             row = s.y + dr[i];
-            map->getCell(s.y, s.x)->BackgroundColor = GREEN;
+            gmap->GetCell(s.y, s.x)->BackgroundColor = GREEN;
             if (isPath(col, row) && !visited[row][col]) {
                 visited[row][col] = true;
                 prev[row][col] = s;
@@ -83,25 +78,25 @@ void findPath(Vector2i from, Vector2i to) {
         temp = prev[row][col];
     } while (prev[row][col].x != -1);
 
-    map->SetPathColor(RED);
-    map->ColorClSubList(Path);
-    map->getCell(to.y, to.x)->BackgroundColor = GOLD;
-    map->SetPathColor(GREEN);
+    gmap->SetPathColor(RED);
+    gmap->ColorClSubList(Path);
+    gmap->GetCell(to.y, to.x)->BackgroundColor = GOLD;
+    gmap->SetPathColor(GREEN);
 }
 
 void makeWall(int x, int y) {
-    map->getCell(y, x)->TileType = WALL;
-    map->getCell(y, x)->BackgroundColor = BLACK;
+    gmap->GetCell(y, x)->TileType = WALL;
+    gmap->GetCell(y, x)->BackgroundColor = BLACK;
 }
 
 void makePath(int x, int y) {
-    map->getCell(y, x)->TileType = ROAD;
+    gmap->GetCell(y, x)->TileType = ROAD;
     Color temp = BLACK;
     if (isEven(x + y)) {
         temp = BROWN;
     } else
         temp = WHITE;
-    map->getCell(y, x)->BackgroundColor = temp;
+    gmap->GetCell(y, x)->BackgroundColor = temp;
 }
 
 bool MouseInBoundries(Vector2 MousePos) {
@@ -111,45 +106,49 @@ bool MouseInBoundries(Vector2 MousePos) {
         return false;
 }
 
+template <typename T> void destroyByPtr(T **obj) {
+    delete *obj;
+    *obj = nullptr;
+}
+
 void mapMaker() {
-    map = new Map();
+    gmap = new Map();
     bool startRandomSearch = false;
     Vector2i source = {0, 0}, destination = {vc - 1, hc - 1};
     SetRandomSeed(GetTime());
-    ahmed = new pacman();
+    pacman *ahmed = new pacman();
 
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(WHITE);
-        map->draw();
+        gmap->Draw();
         ahmed->draw();
         if (IsWindowResized()) {
             WindowWidth = GetScreenWidth();
             WindowHeight = GetScreenHeight();
-            map->Update();
+            gmap->Update();
         }
         if (IsKeyPressed(KEY_Q)) {
-            EndDrawing();
-            break;
+            goto Exit;
         }
         if (IsKeyPressed(KEY_R)) {
             for (int i = 0; i < hc; i++) {
                 for (int j = 0; j < vc; j++) {
-                    map->getCell(i, j)->TileType = ROAD;
+                    gmap->GetCell(i, j)->TileType = ROAD;
                 }
             }
             source = {0, 0};
             destination = {vc - 1, hc - 1};
-            map->ColorClList();
+            gmap->ColorClList();
             startRandomSearch = false;
         }
         if (IsKeyPressed(KEY_S)) {
-            source = {(int)(GetMouseX() / map->CellWidth), (int)(GetMouseY() / map->CellHeight)};
-            map->getCell(source.y, source.x)->BackgroundColor = ORANGE;
+            source = {(int)(GetMouseX() / gmap->CellWidth), (int)(GetMouseY() / gmap->CellHeight)};
+            gmap->GetCell(source.y, source.x)->BackgroundColor = ORANGE;
         }
         if (IsKeyPressed(KEY_D)) {
-            destination = {(int)(GetMouseX() / map->CellWidth), (int)(GetMouseY() / map->CellHeight)};
-            map->getCell(destination.y, destination.x)->BackgroundColor = ORANGE;
+            destination = {(int)(GetMouseX() / gmap->CellWidth), (int)(GetMouseY() / gmap->CellHeight)};
+            gmap->GetCell(destination.y, destination.x)->BackgroundColor = ORANGE;
         }
         if (IsKeyPressed(KEY_F) && !(IsKeyDown(KEY_RIGHT_SHIFT) || IsKeyDown(KEY_LEFT_SHIFT))) {
             findPath(source, destination);
@@ -173,7 +172,7 @@ void mapMaker() {
                 nWallCount++;
             }
             if (!(from->TileType == WALL || to->TileType == WALL)) {
-                map->ColorClList();
+                gmap->ColorClList();
                 findPath(from->pos, to->pos);
             }
         }
@@ -186,10 +185,89 @@ void mapMaker() {
         if (IsKeyDown(KEY_LEFT))
             ahmed->moveLeft();
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && MouseInBoundries(GetMousePosition())) {
-            makeWall((int)(GetMouseX() / map->CellWidth), (int)(GetMouseY() / map->CellHeight));
+            makeWall((int)(GetMouseX() / gmap->CellWidth), (int)(GetMouseY() / gmap->CellHeight));
         }
         if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT) && MouseInBoundries(GetMousePosition())) {
-            makePath((int)(GetMouseX() / map->CellWidth), (int)(GetMouseY() / map->CellHeight));
+            makePath((int)(GetMouseX() / gmap->CellWidth), (int)(GetMouseY() / gmap->CellHeight));
+        }
+        EndDrawing();
+    }
+Exit:
+    destroyByPtr(&gmap);
+    destroyByPtr(&ahmed);
+}
+
+void mapMaker(Map *map) {
+    gmap = map;
+    Vector2i source = {0, 0}, destination = {vc - 1, hc - 1};
+    bool startRandomSearch = false;
+    SetRandomSeed(GetTime());
+
+    while (!WindowShouldClose()) {
+        BeginDrawing();
+        ClearBackground(WHITE);
+        gmap->Draw();
+        if (IsWindowResized()) {
+            WindowWidth = GetScreenWidth();
+            WindowHeight = GetScreenHeight();
+            gmap->Update();
+        }
+        if (IsKeyPressed(KEY_Q)) {
+            gmap->ColorClList();
+            ClearBackground(WHITE);
+            EndDrawing();
+            break;
+        }
+        if (IsKeyPressed(KEY_R)) {
+            for (int i = 0; i < hc; i++) {
+                for (int j = 0; j < vc; j++) {
+                    gmap->GetCell(i, j)->TileType = ROAD;
+                }
+            }
+            source = {0, 0};
+            destination = {vc - 1, hc - 1};
+            gmap->ColorClList();
+            startRandomSearch = false;
+        }
+        if (IsKeyPressed(KEY_S)) {
+            source = {(int)(GetMouseX() / gmap->CellWidth), (int)(GetMouseY() / gmap->CellHeight)};
+            gmap->GetCell(source.y, source.x)->BackgroundColor = ORANGE;
+        }
+        if (IsKeyPressed(KEY_D)) {
+            destination = {(int)(GetMouseX() / gmap->CellWidth), (int)(GetMouseY() / gmap->CellHeight)};
+            gmap->GetCell(destination.y, destination.x)->BackgroundColor = ORANGE;
+        }
+        if (IsKeyPressed(KEY_F) && !(IsKeyDown(KEY_RIGHT_SHIFT) || IsKeyDown(KEY_LEFT_SHIFT))) {
+            findPath(source, destination);
+        }
+        if (IsKeyPressed(KEY_F) && (IsKeyDown(KEY_RIGHT_SHIFT) || IsKeyDown(KEY_LEFT_SHIFT))) {
+            if (startRandomSearch) {
+                startRandomSearch = false;
+            } else
+                startRandomSearch = true;
+        }
+        if (startRandomSearch && isSecPassed(0.1f)) {
+            Cell *from = GetRandomCl();
+            Cell *nWall = GetRandomCl();
+            Cell *to = GetRandomCl();
+            static int nWallCount = 0;
+            if (!(from == nullptr || to == nullptr || nWall == nullptr)) {
+                // continue;
+                if (nWallCount <= (hc * vc) / 2) {
+                    makeWall(nWall->pos.x, nWall->pos.y);
+                    nWallCount++;
+                }
+                if (!(from->TileType == WALL || to->TileType == WALL)) {
+                    gmap->ColorClList();
+                    findPath(from->pos, to->pos);
+                }
+            }
+        }
+        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && MouseInBoundries(GetMousePosition())) {
+            makeWall((int)(GetMouseX() / gmap->CellWidth), (int)(GetMouseY() / gmap->CellHeight));
+        }
+        if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT) && MouseInBoundries(GetMousePosition())) {
+            makePath((int)(GetMouseX() / gmap->CellWidth), (int)(GetMouseY() / gmap->CellHeight));
         }
         EndDrawing();
     }

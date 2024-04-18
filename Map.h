@@ -9,20 +9,23 @@ const int vc = 40 / 2;
 const int hc = 30 / 2;
 
 class Map {
+    void BFS(Vector2i prev[][vc], Vector2i from);
+    void SetCellsPos();
+    void SetCellsSize();
+    void MakeList();
+    bool isPath(int x, int y);
 
   public:
     Color pathColor = GREEN;
     Cell **list;
     float CellWidth, CellHeight;
-    void makeList();
-    void SetCellsSize();
-    void SetCellsPos();
     void ColorClList();
     void ColorClSubList(std::vector<Vector2i> list);
     void SetPathColor(Color color);
     void Update();
-    void draw();
-    Cell *getCell(int row, int col);
+    void Draw();
+    void FindPath(Vector2i from, Vector2i to);
+    Cell *GetCell(int row, int col);
     Map();
     ~Map();
 };

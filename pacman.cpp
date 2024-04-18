@@ -126,33 +126,6 @@ void pacman::f() {
     position.y += direction.y;
 }
 
-/*
-void pacman::funco(Texture2D pacman1, Vector2 position, Vector2 direction, Rectangle box, Image pac, float speed,
-                   float x, int a) {
-
-    while (!WindowShouldClose()) {
-        BeginDrawing();
-        ClearBackground(BLACK);
-        DrawTextureRec(pacman1, box, position, WHITE);
-        if (IsKeyDown(KEY_RIGHT)) {
-            // pacman::moveright(position, direction, box, pac, speed, x, a);
-        }
-        if (IsKeyDown(KEY_LEFT)) {
-            pacman::moveleft(position, direction, box, pac, speed, x, a);
-        }
-        if (IsKeyDown(KEY_UP)) {
-            pacman::moveup(position, direction, box, pac, speed, x, a);
-        }
-        if (IsKeyDown(KEY_DOWN)) {
-            pacman::movedown(position, direction, box, pac, speed, x, a);
-        }
-        EndDrawing();
-    }
-
-    CloseWindow();
-}
-*/
-
 void pacman::moveRight() {
     direction = {0, 0};
     box.height = pac.height / 4.f;
@@ -267,6 +240,5 @@ void pacman::moveDown() {
 };
 
 pacman::~pacman() {
-    // UnloadImage(pac);
     UnloadTexture(pacman1);
 }

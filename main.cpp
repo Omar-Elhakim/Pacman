@@ -7,6 +7,6 @@ int main() {
     Window window = Window(WindowWidth, WindowHeight, "Mapmaker");
     Level l1 = Level(WindowWidth, WindowHeight);
     mapMaker();
-    // l1.notgame();
+    // l1.start();
     return 0;
 }

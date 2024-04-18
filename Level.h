@@ -7,11 +7,11 @@ class Level {
   private:
     Vector2i source, dest;
     int WindowWidth, WindowHeight;
-    pacman tebry;
+    pacman *tebry;
 
   public:
     Map *map = nullptr;
     Level(int WindowWidth, int WindowHeight);
     ~Level();
-    void notgame();
+    void start();
 };

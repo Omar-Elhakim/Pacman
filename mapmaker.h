@@ -14,4 +14,5 @@ void makeWall(int x, int y);
 void makePath(int x, int y);
 bool MouseInBoundries(Vector2 MousePos);
 void mapMaker();
+void mapMaker(Map *map);
 #endif // MAPMAKER_H
