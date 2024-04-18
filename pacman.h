@@ -3,7 +3,7 @@
 #include <cmath>
 
 class Pacman {
-  private:
+  public:
     Image PacmanImage;
     Texture2D pacmanText;
     Rectangle AnimationBox;
