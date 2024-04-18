@@ -3,21 +3,20 @@
 #include <cmath>
 
 class pacman {
-  public:
-    pacman();
-    ~pacman();
-    Image pac;
-    Texture2D pacman1;
-    Rectangle box;
-    Vector2 position;
+private:
+    Image PacmanImage;
+    Rectangle AnimationBox;
+    Vector2 InitialPosition;
     Vector2 direction;
-    float speed;
     float x;
     int a;
-    void f();
+
+public:
+    pacman();
+    ~pacman();
+    Texture2D Pacman;
+    float speed;
     void draw();
-    // void funco(Texture2D pacman1, Vector2 position, Vector2 direction, Rectangle box, Image pac, float speed, float
-    // x, int a);
     void moveRight();
     void moveLeft();
     void moveUp();

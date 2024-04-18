@@ -4,18 +4,17 @@
 #include "pacman.h"
 #include "raylib.h"
 
-Level::Level(int WindowWidth, int WindowHeight) : WindowWidth(WindowWidth), WindowHeight(WindowHeight) {
-    map = new Map();
+Level::Level(int WindowWidth, int WindowHeight,Map *map) : WindowWidth(WindowWidth), WindowHeight(WindowHeight),map(map) {
     source = {0, 0}, dest = {vc - 1, hc - 1};
-    tebry = pacman();
+    Pacman = new pacman();
 }
 
-void Level::notgame() {
+void Level::StartGame() {
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(WHITE);
         map->draw();
-        tebry.draw();
+        Pacman->draw();
         if (IsWindowResized()) {
             WindowWidth = GetScreenWidth();
             WindowHeight = GetScreenHeight();
@@ -43,9 +42,19 @@ void Level::notgame() {
             dest = {(int)(GetMouseX() / map->CellWidth), (int)(GetMouseY() / map->CellHeight)};
             map->getCell(dest.y, dest.x)->BackgroundColor = ORANGE;
         }
-        if (IsKeyPressed(KEY_F) && !(IsKeyDown(KEY_RIGHT_SHIFT) || IsKeyDown(KEY_LEFT_SHIFT))) {
+        if (IsKeyPressed(KEY_F)) {
             findPath(source, dest);
         }
+
+        if (IsKeyDown(KEY_UP))
+            Pacman->moveUp();
+        if (IsKeyDown(KEY_DOWN))
+            Pacman->moveDown();
+        if (IsKeyDown(KEY_RIGHT))
+            Pacman->moveRight();
+        if (IsKeyDown(KEY_LEFT))
+            Pacman->moveLeft();
+
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && MouseInBoundries(GetMousePosition())) {
             makeWall((int)(GetMouseX() / map->CellWidth), (int)(GetMouseY() / map->CellHeight));
         }

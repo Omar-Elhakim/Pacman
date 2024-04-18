@@ -3,13 +3,10 @@
 #include "raylib.h"
 #include <queue>
 #include <vector>
+using namespace std;
 
 Map *map = nullptr;
-pacman *ahmed = nullptr;
-
-Map *createdMap() {
-    return map;
-}
+pacman *Pacman = nullptr;
 
 Cell *GetRandomCl() {
     int col = GetRandomValue(0, vc - 1);
@@ -26,7 +23,6 @@ bool isSecPassed(float seconds) {
     return false;
 }
 
-using namespace std;
 
 bool isPath(int x, int y) {
     if (y >= hc || x >= vc || y < 0 || x < 0)
@@ -111,18 +107,18 @@ bool MouseInBoundries(Vector2 MousePos) {
         return false;
 }
 
-void mapMaker() {
+Map* mapMaker() {
     map = new Map();
     bool startRandomSearch = false;
     Vector2i source = {0, 0}, destination = {vc - 1, hc - 1};
     SetRandomSeed(GetTime());
-    ahmed = new pacman();
+    //Pacman = new pacman();
 
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(WHITE);
         map->draw();
-        ahmed->draw();
+      //  Pacman->draw();
         if (IsWindowResized()) {
             WindowWidth = GetScreenWidth();
             WindowHeight = GetScreenHeight();
@@ -166,7 +162,7 @@ void mapMaker() {
             Cell *to = GetRandomCl();
             static int nWallCount = 0;
             if (from == nullptr || to == nullptr || nWall == nullptr) {
-                // continue;
+                continue;
             }
             if (nWallCount <= (hc * vc) / 2) {
                 makeWall(nWall->pos.x, nWall->pos.y);
@@ -177,15 +173,15 @@ void mapMaker() {
                 findPath(from->pos, to->pos);
             }
         }
-        if (IsKeyDown(KEY_UP))
-            ahmed->moveUp();
+        /*if (IsKeyDown(KEY_UP))
+            Pacman->moveUp();
         if (IsKeyDown(KEY_DOWN))
-            ahmed->moveDown();
+            Pacman->moveDown();
         if (IsKeyDown(KEY_RIGHT))
-            ahmed->moveRight();
+            Pacman->moveRight();
         if (IsKeyDown(KEY_LEFT))
-            ahmed->moveLeft();
-        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && MouseInBoundries(GetMousePosition())) {
+            Pacman->moveLeft();
+        */if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && MouseInBoundries(GetMousePosition())) {
             makeWall((int)(GetMouseX() / map->CellWidth), (int)(GetMouseY() / map->CellHeight));
         }
         if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT) && MouseInBoundries(GetMousePosition())) {
@@ -193,4 +189,18 @@ void mapMaker() {
         }
         EndDrawing();
     }
+    for (int i = 0; i < hc; i++) {
+        for (int j = 0; j < vc; j++) {
+            
+            switch (map->getCell(i, j)->TileType) {
+            case(ROAD):
+                map->getCell(i, j)->BackgroundColor = BLACK;
+                break;
+            case(WALL):
+                map->getCell(i, j)->BackgroundColor = BLUE;
+                break;
+            }
+        }
+    }
+    return map;
 }
