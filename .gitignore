@@ -380,3 +380,7 @@ _deps
 .idea/
 vgcore*
 .clang*
+
+
+# ignore vscode folder 
+.vscode/

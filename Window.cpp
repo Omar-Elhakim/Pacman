@@ -1,4 +1,3 @@
-#pragma once
 #include "Window.h"
 #include "raylib.h"
 

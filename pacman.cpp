@@ -1,157 +1,141 @@
 #include "pacman.h"
 #include "raylib.h"
-#include <iostream>
-using namespace std;
-    
+
 pacman::pacman() {
-    Image pac = LoadImage("assets/pac.png");
+    speed = 0.05f;
+    x = 0;
+    a = 0;
+
+    pac = LoadImage("assets/pac.png");
     ImageResize(&pac, 80, 150);
-    InitWindow(800, 450, "raylib [core] example - basic window");
-    Texture2D pacman1 = LoadTextureFromImage(pac);
-    Rectangle box{ 0,0,floor(pac.width / 2.f),floor(pac.height / 4.f) };
-    Vector2 position{ 150,150 };
-    Vector2 direction = { 0, 0 };
-    float speed = 0.05f;
-    float x = 0;
-    int a = 0;
-    //funco(pacman1, position, direction, box, pac, speed, x, a);
-    while (!WindowShouldClose())
-    {
-        
-        BeginDrawing();
-        ClearBackground(BLACK);
-        DrawText("ana zhe2t <3", 150, 200, 50, DARKBLUE);
-        DrawTextureRec(pacman1, box, position, WHITE);
+    pacman1 = LoadTextureFromImage(pac);
+    UnloadImage(pac);
 
-
-        if (IsKeyDown(KEY_RIGHT)) {
-            direction = { 0, 0 };
-            box.height = pac.height / 4.f;
-            box.y = 0 * box.width;
-            a++;
-            if (a % 5 == 0) {
-                x++;
-            }
-            if (x > 2)x = 0;
-            box.x = x * box.width;
-            direction.x += speed;
-
-        }
-        if (direction.x > 0) {
-            box.height = pac.height / 4.f;
-            box.y = 0 * box.width;
-            a++;
-            if (a % 250 == 0) {
-                x++;
-            }
-            if (x > 2)x = 0;
-            box.x = x * box.width;
-        }
-
-
-
-
-
-        if (IsKeyDown(KEY_LEFT)) {
-            direction = { 0, 0 };
-            box.height = pac.height / 4.f;
-            box.y = 1 * box.width;
-            a++;
-            if (a % 250 == 0) {
-                x++;
-            }
-            if (x > 2)x = 0;
-            box.x = x * box.width;
-            direction.x -= speed;
-        }
-        if (direction.x < 0) {
-            box.height = pac.height / 4.f;
-            box.y = 1 * box.width;
-            a++;
-            if (a % 250 == 0) {
-                x++;
-            }
-            if (x > 2)x = 0;
-            box.x = x * box.width;
-        }
-
-
-
-
-
-
-        if (IsKeyDown(KEY_UP)) {
-            direction = { 0, 0 };
-            box.height = pac.height / 4.f;
-            box.y = 2 * box.width;
-            a++;
-            if (a % 250 == 0) {
-                x++;
-            }
-            if (x > 2)x = 0;
-            box.x = x * box.width;
-            direction.y -= speed;
-        }
-        if (direction.y < 0) {
-            box.height = pac.height / 4.f;
-            box.y = 2 * box.width;
-            a++;
-            if (a % 250 == 0) {
-                x++;
-            }
-            if (x > 2)x = 0;
-            box.x = x * box.width;
-        }
-
-
-
-
-
-        if (IsKeyDown(KEY_DOWN)) {
-            direction = { 0, 0 };
-            box.height = pac.height / 5.f;
-            box.y = 3 * box.width;
-            a++;
-            if (a % 250 == 0) {
-                x++;
-            }
-            if (x > 2)x = 0;
-            box.x = x * box.width;
-            direction.y += speed;
-        }
-        if (direction.y > 0) {
-            box.height = pac.height / 5.f;
-            box.y = 3 * box.width;
-            a++;
-            if (a % 250 == 0) {
-                x++;
-            }
-            if (x > 2)x = 0;
-            box.x = x * box.width;
-        }
-
-
-        position.x += direction.x;
-        position.y += direction.y;
-
-        EndDrawing();
-    }
-
-    CloseWindow();
-   
+    box = {0, 0, 40, 37};
+    position = {150, 150};
+    direction = {0, 0};
 }
 
+void pacman::draw() {
+    DrawText("ana zhe2t <3", 150, 200, 50, DARKBLUE);
+    DrawTextureRec(pacman1, box, position, WHITE);
+}
+
+void pacman::f() {
+    if (IsKeyDown(KEY_RIGHT)) {
+        direction = {0, 0};
+        box.height = pac.height / 4.f;
+        box.y = 0 * box.width;
+        a++;
+        if (a % 5 == 0) {
+            x++;
+        }
+        if (x > 2)
+            x = 0;
+        box.x = x * box.width;
+        direction.x += speed;
+    }
+    if (direction.x > 0) {
+        box.height = pac.height / 4.f;
+        box.y = 0 * box.width;
+        a++;
+        if (a % 250 == 0) {
+            x++;
+        }
+        if (x > 2)
+            x = 0;
+        box.x = x * box.width;
+    }
+
+    if (IsKeyDown(KEY_LEFT)) {
+        direction = {0, 0};
+        box.height = pac.height / 4.f;
+        box.y = 1 * box.width;
+        a++;
+        if (a % 250 == 0) {
+            x++;
+        }
+        if (x > 2)
+            x = 0;
+        box.x = x * box.width;
+        direction.x -= speed;
+    }
+    if (direction.x < 0) {
+        box.height = pac.height / 4.f;
+        box.y = 1 * box.width;
+        a++;
+        if (a % 250 == 0) {
+            x++;
+        }
+        if (x > 2)
+            x = 0;
+        box.x = x * box.width;
+    }
+
+    if (IsKeyDown(KEY_UP)) {
+        direction = {0, 0};
+        box.height = pac.height / 4.f;
+        box.y = 2 * box.width;
+        a++;
+        if (a % 250 == 0) {
+            x++;
+        }
+        if (x > 2)
+            x = 0;
+        box.x = x * box.width;
+        direction.y -= speed;
+    }
+    if (direction.y < 0) {
+        box.height = pac.height / 4.f;
+        box.y = 2 * box.width;
+        a++;
+        if (a % 250 == 0) {
+            x++;
+        }
+        if (x > 2)
+            x = 0;
+        box.x = x * box.width;
+    }
+
+    if (IsKeyDown(KEY_DOWN)) {
+        direction = {0, 0};
+        box.height = pac.height / 5.f;
+        box.y = 3 * box.width;
+        a++;
+        if (a % 250 == 0) {
+            x++;
+        }
+        if (x > 2)
+            x = 0;
+        box.x = x * box.width;
+        direction.y += speed;
+    }
+    if (direction.y > 0) {
+        box.height = pac.height / 5.f;
+        box.y = 3 * box.width;
+        a++;
+        if (a % 250 == 0) {
+            x++;
+        }
+        if (x > 2)
+            x = 0;
+        box.x = x * box.width;
+    }
+
+    position.x += direction.x;
+    position.y += direction.y;
+}
 
 /*
-  void pacman::funco(Texture2D pacman1, Vector2 position, Vector2 direction, Rectangle box, Image pac, float speed, float x, int a) {
-      
-    while (!WindowShouldClose())
-    {
+void pacman::funco(Texture2D pacman1, Vector2 position, Vector2 direction, Rectangle box, Image pac, float speed,
+                   float x, int a) {
+
+    while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(BLACK);
         DrawTextureRec(pacman1, box, position, WHITE);
         if (IsKeyDown(KEY_RIGHT)) {
-            pacman::moveright(position, direction, box, pac, speed,x,a);
+            // pacman::moveright(position, direction, box, pac, speed, x, a);
         }
         if (IsKeyDown(KEY_LEFT)) {
             pacman::moveleft(position, direction, box, pac, speed, x, a);
@@ -167,116 +151,122 @@ pacman::pacman() {
 
     CloseWindow();
 }
-  void pacman::moveright(Vector2 position, Vector2 direction, Rectangle box, Image pac, float speed, float x, int a) {
-      direction = { 0, 0 };
-      box.height = pac.height / 4.f;
-      box.y = 0 * box.width;
-      a++;
-      if (a % 250 == 0) {
-          x++;
-      }
-      if (x > 2)x = 0;
-      box.x = x * box.width;
-      direction.x += speed;
+*/
 
-      if (direction.x > 0) {
-          box.height = pac.height / 4.f;
-          box.y = 0 * box.width;
-          a++;
-          if (a % 250 == 0) {
-              x++;
-          }
-          if (x > 2)x = 0;
-          box.x = x * box.width;
-      }
+void pacman::moveRight() {
+    direction = {0, 0};
+    box.height = pac.height / 4.f;
+    box.y = 0 * box.width;
+    a++;
+    if (a % 5 == 0) {
+        x++;
+    }
+    if (x > 2)
+        x = 0;
+    box.x = x * box.width;
+    direction.x += speed;
 
+    if (direction.x > 0) {
+        box.height = pac.height / 4.f;
+        box.y = 0 * box.width;
+        a++;
+        if (a % 250 == 0) {
+            x++;
+        }
+        if (x > 2)
+            x = 0;
+        box.x = x * box.width;
+    }
 
-      position.x += direction.x;
-      position.y += direction.y;
-  }
+    position.x += direction.x;
+    position.y += direction.y;
+}
 
+void pacman::moveLeft() {
+    direction = {0, 0};
+    box.height = pac.height / 4.f;
+    box.y = 1 * box.width;
+    a++;
+    if (a % 250 == 0) {
+        x++;
+    }
+    if (x > 2)
+        x = 0;
+    box.x = x * box.width;
+    direction.x -= speed;
 
-  void pacman::moveleft(Vector2 position, Vector2 direction, Rectangle box, Image pac, float speed, float x, int a) {
-      direction = { 0, 0 };
-      box.height = pac.height / 4.f;
-      box.y = 1 * box.width;
-      a++;
-      if (a % 250 == 0) {
-          x++;
-      }
-      if (x > 2)x = 0;
-      box.x = x * box.width;
-      direction.x -= speed;
+    if (direction.x < 0) {
+        box.height = pac.height / 4.f;
+        box.y = 1 * box.width;
+        a++;
+        if (a % 250 == 0) {
+            x++;
+        }
+        if (x > 2)
+            x = 0;
+        box.x = x * box.width;
+    }
+    position.x += direction.x;
+    position.y += direction.y;
+}
 
-      if (direction.x < 0) {
-          box.height = pac.height / 4.f;
-          box.y = 1 * box.width;
-          a++;
-          if (a % 250 == 0) {
-              x++;
-          }
-          if (x > 2)x = 0;
-          box.x = x * box.width;
-      }
-      position.x += direction.x;
-      position.y += direction.y;
-  }
+void pacman::moveUp() {
+    direction = {0, 0};
+    box.height = pac.height / 4.f;
+    box.y = 2 * box.width;
+    a++;
+    if (a % 250 == 0) {
+        x++;
+    }
+    if (x > 2)
+        x = 0;
+    box.x = x * box.width;
+    direction.y -= speed;
+    if (direction.y < 0) {
+        box.height = pac.height / 4.f;
+        box.y = 2 * box.width;
+        a++;
+        if (a % 250 == 0) {
+            x++;
+        }
+        if (x > 2)
+            x = 0;
+        box.x = x * box.width;
+    }
+    position.x += direction.x;
+    position.y += direction.y;
+}
 
+void pacman::moveDown() {
+    direction = {0, 0};
+    box.height = pac.height / 5.f;
+    box.y = 3 * box.width;
+    a++;
+    if (a % 250 == 0) {
+        x++;
+    }
+    if (x > 2)
+        x = 0;
+    box.x = x * box.width;
+    direction.y += speed;
 
+    if (direction.y > 0) {
+        box.height = pac.height / 5.f;
+        box.y = 3 * box.width;
+        a++;
+        if (a % 250 == 0) {
+            x++;
+        }
+        if (x > 2)
+            x = 0;
+        box.x = x * box.width;
+    }
 
+    position.x += direction.x;
+    position.y += direction.y;
+};
 
-  void pacman::moveup(Vector2 position, Vector2 direction, Rectangle box, Image pac, float speed, float x, int a) {
-          direction = { 0, 0 };
-          box.height = pac.height / 4.f;
-          box.y = 2 * box.width;
-          a++;
-          if (a % 250 == 0) {
-              x++;
-          }
-          if (x > 2)x = 0;
-          box.x = x * box.width;
-          direction.y += speed;
-      if (direction.y > 0) {
-          box.height = pac.height / 4.f;
-          box.y = 2 * box.width;
-          a++;
-          if (a % 250 == 0) {
-              x++;
-          }
-          if (x > 2)x = 0;
-          box.x = x * box.width;
-      }
-      position.x += direction.x;
-      position.y += direction.y;
-  }
-
-
-
-  void pacman::movedown(Vector2 position, Vector2 direction, Rectangle box, Image pac, float speed, float x, int a) {
-      direction = { 0, 0 };
-      box.height = pac.height / 5.f;
-      box.y = 3 * box.width;
-      a++;
-      if (a % 250 == 0) {
-          x++;
-      }
-      if (x > 2)x = 0;
-      box.x = x * box.width;
-      direction.y -= speed;
-
-      if (direction.y < 0) {
-          box.height = pac.height / 5.f;
-          box.y = 3 * box.width;
-          a++;
-          if (a % 250 == 0) {
-              x++;
-          }
-          if (x > 2)x = 0;
-          box.x = x * box.width;
-      }
-
-
-      position.x += direction.x;
-      position.y += direction.y;
-  };
-  */
+pacman::~pacman() {
+    // UnloadImage(pac);
+    UnloadTexture(pacman1);
+}
