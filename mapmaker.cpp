@@ -176,13 +176,13 @@ void mapMaker() {
             }
         }
         if (IsKeyDown(KEY_UP))
-            pacman->moveUp();
+            pacman->goUp();
         if (IsKeyDown(KEY_DOWN))
-            pacman->moveDown();
+            pacman->goDown();
         if (IsKeyDown(KEY_RIGHT))
-            pacman->moveRight();
+            pacman->goRight();
         if (IsKeyDown(KEY_LEFT))
-            pacman->moveLeft();
+            pacman->goLeft();
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && MouseInBoundries(GetMousePosition())) {
             makeWall((int)(GetMouseX() / gmap->CellWidth), (int)(GetMouseY() / gmap->CellHeight));
         }

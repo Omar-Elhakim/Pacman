@@ -37,14 +37,16 @@ void Level::start() {
         }
         if (IsKeyPressed(KEY_F))
             findPath(source, dest);
-        if (IsKeyDown(KEY_UP))
-            pacman->moveUp();
-        if (IsKeyDown(KEY_DOWN))
-            pacman->moveDown();
-        if (IsKeyDown(KEY_RIGHT))
-            pacman->moveRight();
-        if (IsKeyDown(KEY_LEFT))
-            pacman->moveLeft();
+        if (IsKeyDown(KEY_UP)) {
+            pacman->goUp();
+        } else if (IsKeyDown(KEY_DOWN)) {
+            pacman->goDown();
+        } else if (IsKeyDown(KEY_RIGHT)) {
+            pacman->goRight();
+        } else if (IsKeyDown(KEY_LEFT)) {
+            pacman->goLeft();
+        } else
+            pacman->move();
         EndDrawing();
     }
 }

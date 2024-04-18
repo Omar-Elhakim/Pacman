@@ -20,7 +20,12 @@ void Pacman::draw() {
     DrawTextureRec(pacmanText, AnimationBox, InitialPosition, WHITE);
 }
 
-void Pacman::moveRight() {
+void Pacman::move() {
+    InitialPosition.x += direction.x;
+    InitialPosition.y += direction.y;
+}
+
+void Pacman::goRight() {
     direction = {0, 0};
     AnimationBox.height = pacmanText.height / 4.f;
     AnimationBox.y = 0 * AnimationBox.width;
@@ -44,12 +49,10 @@ void Pacman::moveRight() {
             x = 0;
         AnimationBox.x = x * AnimationBox.width;
     }
-
-    InitialPosition.x += direction.x;
-    InitialPosition.y += direction.y;
+    move();
 }
 
-void Pacman::moveLeft() {
+void Pacman::goLeft() {
     direction = {0, 0};
     AnimationBox.height = pacmanText.height / 4.f;
     AnimationBox.y = 1 * AnimationBox.width;
@@ -73,11 +76,10 @@ void Pacman::moveLeft() {
             x = 0;
         AnimationBox.x = x * AnimationBox.width;
     }
-    InitialPosition.x += direction.x;
-    InitialPosition.y += direction.y;
+    move();
 }
 
-void Pacman::moveUp() {
+void Pacman::goUp() {
     direction = {0, 0};
     AnimationBox.height = pacmanText.height / 4.f;
     AnimationBox.y = 2 * AnimationBox.width;
@@ -100,11 +102,10 @@ void Pacman::moveUp() {
             x = 0;
         AnimationBox.x = x * AnimationBox.width;
     }
-    InitialPosition.x += direction.x;
-    InitialPosition.y += direction.y;
+    move();
 }
 
-void Pacman::moveDown() {
+void Pacman::goDown() {
     direction = {0, 0};
     AnimationBox.height = pacmanText.height / 5.f;
     AnimationBox.y = 3 * AnimationBox.width;
@@ -128,9 +129,7 @@ void Pacman::moveDown() {
             x = 0;
         AnimationBox.x = x * AnimationBox.width;
     }
-
-    InitialPosition.x += direction.x;
-    InitialPosition.y += direction.y;
+    move();
 };
 
 Pacman::~Pacman() {
