@@ -141,6 +141,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CellList.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mapmaker.cpp" />
     <ClCompile Include="pacman.cpp" />
@@ -149,6 +150,7 @@
   <ItemGroup>
     <ClInclude Include="Cell.h" />
     <ClInclude Include="CellList.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="mapmaker.h" />
     <ClInclude Include="pacman.h" />
     <ClInclude Include="Window.h" />

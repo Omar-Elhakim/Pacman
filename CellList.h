@@ -7,13 +7,13 @@ const int vc = 40 / 2;
 const int hc = 30 / 2;
 
 class CellList {
+    
+  public:
     void makeList();
     void SetCellsSize();
     void SetCellsPos();
     Color pathColor = GREEN;
-    Cell **list;
-
-  public:
+    Cell** list;
     float CellWidth, CellHeight;
     void ColorClList();
     void ColorClSubList(std::vector<Vector2i> list);

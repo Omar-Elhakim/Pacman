@@ -2,12 +2,12 @@
 #include "Cell.h"
 #include "Window.h"
 #include <queue>
-#include <raylib.h>
+#include "raylib.h"
 #include <vector>
-
+#include "pacman.h"
 CellList *cellLst = nullptr;
 int WindowWidth = 800, WindowHeight = 600;
-
+pacman p;
 Cell *GetRandomCl() {
     int col = GetRandomValue(0, vc - 1);
     int row = GetRandomValue(0, hc - 1);
@@ -109,13 +109,13 @@ bool MouseInBoundries(Vector2 MousePos) {
 }
 
 void game() {
-    Window window = Window(WindowWidth, WindowHeight, "Mapmaker");
+    //Window window = Window(WindowWidth, WindowHeight, "Mapmaker");
     cellLst = new CellList();
     bool startRandomSearch = false;
     Vector2i source = {0, 0}, destination = {vc - 1, hc - 1};
     SetRandomSeed(GetTime());
-    while (!WindowShouldClose()) {
-        BeginDrawing();
+   // while (!WindowShouldClose()) {
+     //   BeginDrawing();
         ClearBackground(RAYWHITE);
         for (int i = 0; i < hc; i++) {
             for (int j = 0; j < vc; j++) {
@@ -128,7 +128,7 @@ void game() {
             cellLst->Update();
         }
         if (IsKeyPressed(KEY_Q)) {
-            break;
+            //break;
         }
         if (IsKeyPressed(KEY_R)) {
             for (int i = 0; i < hc; i++) {
@@ -164,7 +164,7 @@ void game() {
             Cell *to = GetRandomCl();
             static int nWallCount = 0;
             if (from == nullptr || to == nullptr || nWall == nullptr) {
-                continue;
+                //continue;
             }
             if (nWallCount <= (hc * vc) / 2) {
                 makeWall(nWall->pos.x, nWall->pos.y);
@@ -181,6 +181,124 @@ void game() {
         if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT) && MouseInBoundries(GetMousePosition())) {
             makePath((int)(GetMouseX() / cellLst->CellWidth), (int)(GetMouseY() / cellLst->CellHeight));
         }
-        EndDrawing();
-    }
+/*
+        DrawTextureRec(p.pacman1, p.box, p.position, BLACK);
+
+
+        if (IsKeyDown(KEY_RIGHT)) {
+            p.direction = { 0, 0 };
+            p.box.height = p.pac.height / 4.f;
+            p.box.y = 0 * p.box.width;
+            p.a++;
+            if (p.a % 5 == 0) {
+                p.x++;
+            }
+            if (p.x > 2)p.x = 0;
+            p.box.x = p.x * p.box.width;
+            p.direction.x += p.speed;
+
+        }
+        if (p.direction.x > 0) {
+            p.box.height = p.pac.height / 4.f;
+            p.box.y = 0 * p.box.width;
+            p.a++;
+            if (p.a % 250 == 0) {
+                p.x++;
+            }
+            if (p.x > 2)p.x = 0;
+            p.box.x = p.x * p.box.width;
+        }
+
+
+
+
+
+        if (IsKeyDown(KEY_LEFT)) {
+            p.direction = { 0, 0 };
+            p.box.height = p.pac.height / 4.f;
+            p.box.y = 1 * p.box.width;
+            p.a++;
+            if (p.a % 250 == 0) {
+                p.x++;
+            }
+            if (p.x > 2)p.x = 0;
+            p.box.x = p.x * p.box.width;
+            p.direction.x -= p.speed;
+        }
+        if (p.direction.x < 0) {
+            p.box.height = p.pac.height / 4.f;
+            p.box.y = 1 * p.box.width;
+            p.a++;
+            if (p.a % 250 == 0) {
+                p.x++;
+            }
+            if (p.x > 2)p.x = 0;
+            p.box.x = p.x * p.box.width;
+        }
+
+
+
+
+
+
+        if (IsKeyDown(KEY_UP)) {
+            p.direction = { 0, 0 };
+            p.box.height = p.pac.height / 4.f;
+            p.box.y = 2 * p.box.width;
+            p.a++;
+            if (p.a % 250 == 0) {
+                p.x++;
+            }
+            if (p.x > 2)p.x = 0;
+            p.box.x = p.x * p.box.width;
+            p.direction.y -= p.speed;
+        }
+        if (p.direction.y < 0) {
+            p.box.height = p.pac.height / 4.f;
+            p.box.y = 2 * p.box.width;
+            p.a++;
+            if (p.a % 250 == 0) {
+                p.x++;
+            }
+            if (p.x > 2)p.x = 0;
+            p.box.x = p.x * p.box.width;
+        }
+
+
+
+
+
+        if (IsKeyDown(KEY_DOWN)) {
+            p.direction = { 0, 0 };
+            p.box.height = p.pac.height / 5.f;
+            p.box.y = 3 * p.box.width;
+            p.a++;
+            if (p.a % 250 == 0) {
+                p.x++;
+            }
+            if (p.x > 2)p.x = 0;
+            p.box.x = p.x * p.box.width;
+            p.direction.y += p.speed;
+        }
+        if (p.direction.y > 0) {
+            p.box.height = p.pac.height / 5.f;
+            p.box.y = 3 * p.box.width;
+            p.a++;
+            if (p.a % 250 == 0) {
+                p.x++;
+            }
+            if (p.x > 2)p.x = 0;
+            p.box.x = p.x * p.box.width;
+        }
+
+
+        p.position.x += p.direction.x;
+        p.position.y += p.direction.y;
+
+        //p.f();
+        //DrawTextureRec(p.p.pacman1, p.box, p.position, WHITE);
+        */
+        //p.f();
+       // EndDrawing();
+    //}
 }

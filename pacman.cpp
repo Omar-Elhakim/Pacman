@@ -3,19 +3,22 @@
 #include <iostream>
 #include <cmath>
 using namespace std;
-    
-void pacman::f() {
-    Image pac = LoadImage("assets/pac.png");
-    ImageResize(&pac, 80, 150);
+
+
+pacman::pacman() {
     InitWindow(800, 450, "raylib [core] example - basic window");
-    Texture2D pacman1 = LoadTextureFromImage(pac);
-    Rectangle box{ 0,0,floor(pac.width / 2.f),floor(pac.height / 4.f) };
-    Vector2 position{ 150,150 };
-    Vector2 direction = { 0, 0 };
-    float speed = 0.05f;
-    float x = 0;
-    int a = 0;
-    //funco(pacman1, position, direction, box, pac, speed, x, a);
+    speed = 0.05f;
+    x = 0;
+    a = 0;
+    pac = LoadImage("assets/pac.png");
+    ImageResize(&pac, 80, 150);
+    pacman1 = LoadTextureFromImage(pac);
+    box = { 0,0,40,37 };
+    position={ 150,150 };
+    direction = { 0, 0 };
+}
+void pacman::f() {
+  //funco(pacman1, position, direction, box, pac, speed, x, a);
     while (!WindowShouldClose())
     {
         
