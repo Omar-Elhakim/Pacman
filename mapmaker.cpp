@@ -3,6 +3,7 @@
 #include "raylib.h"
 #include <queue>
 #include <vector>
+using namespace std;
 
 Map *gmap = nullptr;
 
@@ -20,8 +21,6 @@ bool isSecPassed(float seconds) {
     }
     return false;
 }
-
-using namespace std;
 
 bool isPath(int x, int y) {
     if (y >= hc || x >= vc || y < 0 || x < 0)
@@ -116,13 +115,13 @@ void mapMaker() {
     bool startRandomSearch = false;
     Vector2i source = {0, 0}, destination = {vc - 1, hc - 1};
     SetRandomSeed(GetTime());
-    pacman *ahmed = new pacman();
+    Pacman *pacman = new Pacman();
 
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(WHITE);
         gmap->Draw();
-        ahmed->draw();
+        pacman->draw();
         if (IsWindowResized()) {
             WindowWidth = GetScreenWidth();
             WindowHeight = GetScreenHeight();
@@ -165,7 +164,7 @@ void mapMaker() {
             Cell *to = GetRandomCl();
             static int nWallCount = 0;
             if (from == nullptr || to == nullptr || nWall == nullptr) {
-                // continue;
+                continue;
             }
             if (nWallCount <= (hc * vc) / 2) {
                 makeWall(nWall->pos.x, nWall->pos.y);
@@ -177,13 +176,13 @@ void mapMaker() {
             }
         }
         if (IsKeyDown(KEY_UP))
-            ahmed->moveUp();
+            pacman->goUp();
         if (IsKeyDown(KEY_DOWN))
-            ahmed->moveDown();
+            pacman->goDown();
         if (IsKeyDown(KEY_RIGHT))
-            ahmed->moveRight();
+            pacman->goRight();
         if (IsKeyDown(KEY_LEFT))
-            ahmed->moveLeft();
+            pacman->goLeft();
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && MouseInBoundries(GetMousePosition())) {
             makeWall((int)(GetMouseX() / gmap->CellWidth), (int)(GetMouseY() / gmap->CellHeight));
         }
@@ -194,7 +193,7 @@ void mapMaker() {
     }
 Exit:
     destroyByPtr(&gmap);
-    destroyByPtr(&ahmed);
+    destroyByPtr(&pacman);
 }
 
 void mapMaker(Map *map) {
@@ -270,5 +269,17 @@ void mapMaker(Map *map) {
             makePath((int)(GetMouseX() / gmap->CellWidth), (int)(GetMouseY() / gmap->CellHeight));
         }
         EndDrawing();
+    }
+    for (int i = 0; i < hc; i++) {
+        for (int j = 0; j < vc; j++) {
+            switch (map->GetCell(i, j)->TileType) {
+            case (ROAD):
+                map->GetCell(i, j)->BackgroundColor = BLACK;
+                break;
+            case (WALL):
+                map->GetCell(i, j)->BackgroundColor = BLUE;
+                break;
+            }
+        }
     }
 }

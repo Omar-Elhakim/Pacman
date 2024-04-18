@@ -6,15 +6,15 @@
 
 Level::Level(int WindowWidth, int WindowHeight) : WindowWidth(WindowWidth), WindowHeight(WindowHeight) {
     map = new Map();
-    tebry = new pacman();
+    pacman = new Pacman();
     source = {0, 0}, dest = {vc - 1, hc - 1};
 }
 
 Level::~Level() {
     delete map;
-    delete tebry;
+    delete pacman;
     map = nullptr;
-    tebry = nullptr;
+    pacman = nullptr;
 }
 
 void Level::start() {
@@ -22,7 +22,7 @@ void Level::start() {
         BeginDrawing();
         ClearBackground(WHITE);
         map->Draw();
-        tebry->draw();
+        pacman->draw();
         if (IsWindowResized()) {
             WindowWidth = GetScreenWidth();
             WindowHeight = GetScreenHeight();
@@ -35,19 +35,18 @@ void Level::start() {
             EndDrawing();
             break;
         }
-        if (IsKeyPressed(KEY_R)) {
-            for (int i = 0; i < hc; i++) {
-                for (int j = 0; j < vc; j++) {
-                    map->GetCell(i, j)->TileType = ROAD;
-                }
-            }
-            source = {0, 0};
-            dest = {vc - 1, hc - 1};
-            map->ColorClList();
-        }
-        if (IsKeyPressed(KEY_F) && !(IsKeyDown(KEY_RIGHT_SHIFT) || IsKeyDown(KEY_LEFT_SHIFT))) {
-            map->FindPath(source, dest);
-        }
+        if (IsKeyPressed(KEY_F))
+            findPath(source, dest);
+        if (IsKeyDown(KEY_UP)) {
+            pacman->goUp();
+        } else if (IsKeyDown(KEY_DOWN)) {
+            pacman->goDown();
+        } else if (IsKeyDown(KEY_RIGHT)) {
+            pacman->goRight();
+        } else if (IsKeyDown(KEY_LEFT)) {
+            pacman->goLeft();
+        } else
+            pacman->move();
         EndDrawing();
     }
 }
