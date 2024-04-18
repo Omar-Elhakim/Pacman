@@ -2,16 +2,16 @@
 #include "raylib.h"
 
 Pacman::Pacman() {
-    speed = 1.5f;
+    speed = 1.7f;
     x = 0;
     a = 0;
 
     PacmanImage = LoadImage("assets/pac.png");
-    ImageResize(&PacmanImage, 80, 150);
+    ImageResize(&PacmanImage, 60, 120);
     pacmanText = LoadTextureFromImage(PacmanImage);
     UnloadImage(PacmanImage);
 
-    AnimationBox = {0, 0, 40, 37};
+    AnimationBox = {0, 0, PacmanImage.width / 2.f,PacmanImage.height / 4.f };
     InitialPosition = {150, 150};
     direction = {0, 0};
 }
@@ -30,7 +30,7 @@ void Pacman::goRight() {
     AnimationBox.height = pacmanText.height / 4.f;
     AnimationBox.y = 0 * AnimationBox.width;
     a++;
-    if (a % 5 == 0) {
+    if (a % 10 == 0) {
         x++;
     }
     if (x > 2)
@@ -42,7 +42,7 @@ void Pacman::goRight() {
         AnimationBox.height = pacmanText.height / 4.f;
         AnimationBox.y = 0 * AnimationBox.width;
         a++;
-        if (a % 250 == 0) {
+        if (a % 10 == 0) {
             x++;
         }
         if (x > 2)
@@ -57,7 +57,7 @@ void Pacman::goLeft() {
     AnimationBox.height = pacmanText.height / 4.f;
     AnimationBox.y = 1 * AnimationBox.width;
     a++;
-    if (a % 250 == 0) {
+    if (a % 10 == 0) {
         x++;
     }
     if (x > 2)
@@ -69,7 +69,7 @@ void Pacman::goLeft() {
         AnimationBox.height = pacmanText.height / 4.f;
         AnimationBox.y = 1 * AnimationBox.width;
         a++;
-        if (a % 250 == 0) {
+        if (a % 10 == 0) {
             x++;
         }
         if (x > 2)
@@ -84,7 +84,7 @@ void Pacman::goUp() {
     AnimationBox.height = pacmanText.height / 4.f;
     AnimationBox.y = 2 * AnimationBox.width;
     a++;
-    if (a % 250 == 0) {
+    if (a % 10 == 0) {
         x++;
     }
     if (x > 2)
@@ -95,7 +95,7 @@ void Pacman::goUp() {
         AnimationBox.height = pacmanText.height / 4.f;
         AnimationBox.y = 2 * AnimationBox.width;
         a++;
-        if (a % 250 == 0) {
+        if (a % 10 == 0) {
             x++;
         }
         if (x > 2)
@@ -107,10 +107,10 @@ void Pacman::goUp() {
 
 void Pacman::goDown() {
     direction = {0, 0};
-    AnimationBox.height = pacmanText.height / 5.f;
+    AnimationBox.height = pacmanText.height / 4.f;
     AnimationBox.y = 3 * AnimationBox.width;
     a++;
-    if (a % 250 == 0) {
+    if (a % 10 == 0) {
         x++;
     }
     if (x > 2)
@@ -119,10 +119,10 @@ void Pacman::goDown() {
     direction.y += speed;
 
     if (direction.y > 0) {
-        AnimationBox.height = pacmanText.height / 5.f;
+        AnimationBox.height = pacmanText.height / 4.f;
         AnimationBox.y = 3 * AnimationBox.width;
         a++;
-        if (a % 250 == 0) {
+        if (a % 10 == 0) {
             x++;
         }
         if (x > 2)
