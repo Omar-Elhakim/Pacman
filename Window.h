@@ -1,4 +1,5 @@
-#pragma once
+#ifndef WINDOW_H
+#define WINDOW_H
 
 class Window {
   public:
@@ -6,3 +7,5 @@ class Window {
     Window(int Width, int Height, const char *title);
     ~Window();
 };
+
+#endif // WINDOW_H

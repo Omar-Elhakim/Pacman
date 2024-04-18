@@ -1,17 +1,20 @@
 #include "mapmaker.h"
 #include "Cell.h"
-#include "Window.h"
-#include <queue>
 #include "raylib.h"
+#include <queue>
 #include <vector>
-#include "pacman.h"
-CellList *cellLst = nullptr;
-int WindowWidth = 800, WindowHeight = 600;
-pacman p;
+
+Map *map = nullptr;
+pacman *ahmed = nullptr;
+
+Map *createdMap() {
+    return map;
+}
+
 Cell *GetRandomCl() {
     int col = GetRandomValue(0, vc - 1);
     int row = GetRandomValue(0, hc - 1);
-    return cellLst->getCell(row, col);
+    return map->getCell(row, col);
 }
 
 bool isSecPassed(float seconds) {
@@ -28,7 +31,7 @@ using namespace std;
 bool isPath(int x, int y) {
     if (y >= hc || x >= vc || y < 0 || x < 0)
         return false;
-    if (cellLst->getCell(y, x)->TileType == WALL)
+    if (map->getCell(y, x)->TileType == WALL)
         return false;
     return true;
 }
@@ -51,7 +54,7 @@ void BFS(Vector2i prev[hc][vc], Vector2i from) {
         for (int i = 0; i < 4; i++) {
             col = s.x + dc[i];
             row = s.y + dr[i];
-            cellLst->getCell(s.y, s.x)->BackgroundColor = GREEN;
+            map->getCell(s.y, s.x)->BackgroundColor = GREEN;
             if (isPath(col, row) && !visited[row][col]) {
                 visited[row][col] = true;
                 prev[row][col] = s;
@@ -80,25 +83,25 @@ void findPath(Vector2i from, Vector2i to) {
         temp = prev[row][col];
     } while (prev[row][col].x != -1);
 
-    cellLst->SetPathColor(RED);
-    cellLst->ColorClSubList(Path);
-    cellLst->getCell(to.y, to.x)->BackgroundColor = GOLD;
-    cellLst->SetPathColor(GREEN);
+    map->SetPathColor(RED);
+    map->ColorClSubList(Path);
+    map->getCell(to.y, to.x)->BackgroundColor = GOLD;
+    map->SetPathColor(GREEN);
 }
 
 void makeWall(int x, int y) {
-    cellLst->getCell(y, x)->TileType = WALL;
-    cellLst->getCell(y, x)->BackgroundColor = BLACK;
+    map->getCell(y, x)->TileType = WALL;
+    map->getCell(y, x)->BackgroundColor = BLACK;
 }
 
 void makePath(int x, int y) {
-    cellLst->getCell(y, x)->TileType = ROAD;
+    map->getCell(y, x)->TileType = ROAD;
     Color temp = BLACK;
     if (isEven(x + y)) {
         temp = BROWN;
     } else
         temp = WHITE;
-    cellLst->getCell(y, x)->BackgroundColor = temp;
+    map->getCell(y, x)->BackgroundColor = temp;
 }
 
 bool MouseInBoundries(Vector2 MousePos) {
@@ -108,46 +111,45 @@ bool MouseInBoundries(Vector2 MousePos) {
         return false;
 }
 
-void game() {
-    //Window window = Window(WindowWidth, WindowHeight, "Mapmaker");
-    cellLst = new CellList();
+void mapMaker() {
+    map = new Map();
     bool startRandomSearch = false;
     Vector2i source = {0, 0}, destination = {vc - 1, hc - 1};
     SetRandomSeed(GetTime());
-   // while (!WindowShouldClose()) {
-     //   BeginDrawing();
-        ClearBackground(RAYWHITE);
-        for (int i = 0; i < hc; i++) {
-            for (int j = 0; j < vc; j++) {
-                cellLst->getCell(i, j)->Draw();
-            }
-        }
+    ahmed = new pacman();
+
+    while (!WindowShouldClose()) {
+        BeginDrawing();
+        ClearBackground(WHITE);
+        map->draw();
+        ahmed->draw();
         if (IsWindowResized()) {
             WindowWidth = GetScreenWidth();
             WindowHeight = GetScreenHeight();
-            cellLst->Update();
+            map->Update();
         }
         if (IsKeyPressed(KEY_Q)) {
-            //break;
+            EndDrawing();
+            break;
         }
         if (IsKeyPressed(KEY_R)) {
             for (int i = 0; i < hc; i++) {
                 for (int j = 0; j < vc; j++) {
-                    cellLst->getCell(i, j)->TileType = ROAD;
+                    map->getCell(i, j)->TileType = ROAD;
                 }
             }
             source = {0, 0};
             destination = {vc - 1, hc - 1};
-            cellLst->ColorClList();
+            map->ColorClList();
             startRandomSearch = false;
         }
         if (IsKeyPressed(KEY_S)) {
-            source = {(int)(GetMouseX() / cellLst->CellWidth), (int)(GetMouseY() / cellLst->CellHeight)};
-            cellLst->getCell(source.y, source.x)->BackgroundColor = ORANGE;
+            source = {(int)(GetMouseX() / map->CellWidth), (int)(GetMouseY() / map->CellHeight)};
+            map->getCell(source.y, source.x)->BackgroundColor = ORANGE;
         }
         if (IsKeyPressed(KEY_D)) {
-            destination = {(int)(GetMouseX() / cellLst->CellWidth), (int)(GetMouseY() / cellLst->CellHeight)};
-            cellLst->getCell(destination.y, destination.x)->BackgroundColor = ORANGE;
+            destination = {(int)(GetMouseX() / map->CellWidth), (int)(GetMouseY() / map->CellHeight)};
+            map->getCell(destination.y, destination.x)->BackgroundColor = ORANGE;
         }
         if (IsKeyPressed(KEY_F) && !(IsKeyDown(KEY_RIGHT_SHIFT) || IsKeyDown(KEY_LEFT_SHIFT))) {
             findPath(source, destination);
@@ -164,141 +166,31 @@ void game() {
             Cell *to = GetRandomCl();
             static int nWallCount = 0;
             if (from == nullptr || to == nullptr || nWall == nullptr) {
-                //continue;
+                // continue;
             }
             if (nWallCount <= (hc * vc) / 2) {
                 makeWall(nWall->pos.x, nWall->pos.y);
                 nWallCount++;
             }
             if (!(from->TileType == WALL || to->TileType == WALL)) {
-                cellLst->ColorClList();
+                map->ColorClList();
                 findPath(from->pos, to->pos);
             }
         }
+        if (IsKeyDown(KEY_UP))
+            ahmed->moveUp();
+        if (IsKeyDown(KEY_DOWN))
+            ahmed->moveDown();
+        if (IsKeyDown(KEY_RIGHT))
+            ahmed->moveRight();
+        if (IsKeyDown(KEY_LEFT))
+            ahmed->moveLeft();
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && MouseInBoundries(GetMousePosition())) {
-            makeWall((int)(GetMouseX() / cellLst->CellWidth), (int)(GetMouseY() / cellLst->CellHeight));
+            makeWall((int)(GetMouseX() / map->CellWidth), (int)(GetMouseY() / map->CellHeight));
         }
         if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT) && MouseInBoundries(GetMousePosition())) {
-            makePath((int)(GetMouseX() / cellLst->CellWidth), (int)(GetMouseY() / cellLst->CellHeight));
+            makePath((int)(GetMouseX() / map->CellWidth), (int)(GetMouseY() / map->CellHeight));
         }
-/*
-        DrawTextureRec(p.pacman1, p.box, p.position, BLACK);
-
-
-        if (IsKeyDown(KEY_RIGHT)) {
-            p.direction = { 0, 0 };
-            p.box.height = p.pac.height / 4.f;
-            p.box.y = 0 * p.box.width;
-            p.a++;
-            if (p.a % 5 == 0) {
-                p.x++;
-            }
-            if (p.x > 2)p.x = 0;
-            p.box.x = p.x * p.box.width;
-            p.direction.x += p.speed;
-
-        }
-        if (p.direction.x > 0) {
-            p.box.height = p.pac.height / 4.f;
-            p.box.y = 0 * p.box.width;
-            p.a++;
-            if (p.a % 250 == 0) {
-                p.x++;
-            }
-            if (p.x > 2)p.x = 0;
-            p.box.x = p.x * p.box.width;
-        }
-
-
-
-
-
-        if (IsKeyDown(KEY_LEFT)) {
-            p.direction = { 0, 0 };
-            p.box.height = p.pac.height / 4.f;
-            p.box.y = 1 * p.box.width;
-            p.a++;
-            if (p.a % 250 == 0) {
-                p.x++;
-            }
-            if (p.x > 2)p.x = 0;
-            p.box.x = p.x * p.box.width;
-            p.direction.x -= p.speed;
-        }
-        if (p.direction.x < 0) {
-            p.box.height = p.pac.height / 4.f;
-            p.box.y = 1 * p.box.width;
-            p.a++;
-            if (p.a % 250 == 0) {
-                p.x++;
-            }
-            if (p.x > 2)p.x = 0;
-            p.box.x = p.x * p.box.width;
-        }
-
-
-
-
-
-
-        if (IsKeyDown(KEY_UP)) {
-            p.direction = { 0, 0 };
-            p.box.height = p.pac.height / 4.f;
-            p.box.y = 2 * p.box.width;
-            p.a++;
-            if (p.a % 250 == 0) {
-                p.x++;
-            }
-            if (p.x > 2)p.x = 0;
-            p.box.x = p.x * p.box.width;
-            p.direction.y -= p.speed;
-        }
-        if (p.direction.y < 0) {
-            p.box.height = p.pac.height / 4.f;
-            p.box.y = 2 * p.box.width;
-            p.a++;
-            if (p.a % 250 == 0) {
-                p.x++;
-            }
-            if (p.x > 2)p.x = 0;
-            p.box.x = p.x * p.box.width;
-        }
-
-
-
-
-
-        if (IsKeyDown(KEY_DOWN)) {
-            p.direction = { 0, 0 };
-            p.box.height = p.pac.height / 5.f;
-            p.box.y = 3 * p.box.width;
-            p.a++;
-            if (p.a % 250 == 0) {
-                p.x++;
-            }
-            if (p.x > 2)p.x = 0;
-            p.box.x = p.x * p.box.width;
-            p.direction.y += p.speed;
-        }
-        if (p.direction.y > 0) {
-            p.box.height = p.pac.height / 5.f;
-            p.box.y = 3 * p.box.width;
-            p.a++;
-            if (p.a % 250 == 0) {
-                p.x++;
-            }
-            if (p.x > 2)p.x = 0;
-            p.box.x = p.x * p.box.width;
-        }
-
-
-        p.position.x += p.direction.x;
-        p.position.y += p.direction.y;
-
-        //p.f();
-        //DrawTextureRec(p.p.pacman1, p.box, p.position, WHITE);
-        */
-        //p.f();
-       // EndDrawing();
-    //}
+        EndDrawing();
+    }
 }

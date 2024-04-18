@@ -1,17 +1,12 @@
-//#include "pacman.h"
-#include "Game.h"
-#include "mapmaker.h"
+#include "Level.h"
 #include "Window.h"
+#include "mapmaker.h"
+
+int WindowWidth = 800, WindowHeight = 600;
 int main() {
-    //game();
     Window window = Window(WindowWidth, WindowHeight, "Mapmaker");
-    while (!WindowShouldClose()) {
-        BeginDrawing();
-        game();
-        EndDrawing();
-    }
-    //Game g(800,600);
-    //pacman p;
-    //p.f();
+    Level l1 = Level(WindowWidth, WindowHeight);
+    mapMaker();
+    // l1.notgame();
     return 0;
 }

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CELL_H
+#define CELL_H
 #include <raylib.h>
 
 typedef enum { ROAD, WALL } TileType_t;
@@ -16,3 +17,5 @@ struct Cell {
         DrawRectangleRec(rec, BackgroundColor);
     }
 };
+
+#endif // CELL_H

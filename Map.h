@@ -1,3 +1,5 @@
+#ifndef CELLLIST_H
+#define CELLLIST_H
 #include "Cell.h"
 #include <vector>
 
@@ -6,20 +8,23 @@
 const int vc = 40 / 2;
 const int hc = 30 / 2;
 
-class CellList {
-    
+class Map {
+
   public:
+    Color pathColor = GREEN;
+    Cell **list;
+    float CellWidth, CellHeight;
     void makeList();
     void SetCellsSize();
     void SetCellsPos();
-    Color pathColor = GREEN;
-    Cell** list;
-    float CellWidth, CellHeight;
     void ColorClList();
     void ColorClSubList(std::vector<Vector2i> list);
     void SetPathColor(Color color);
     void Update();
+    void draw();
     Cell *getCell(int row, int col);
-    CellList();
-    ~CellList();
+    Map();
+    ~Map();
 };
+
+#endif // CELLLIST_H

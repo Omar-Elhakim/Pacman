@@ -1,7 +1,7 @@
-#include "CellList.h"
+#include "Map.h"
 #include <raylib.h>
 
-void CellList::SetCellsSize() {
+void Map::SetCellsSize() {
     CellWidth = static_cast<float>(GetScreenWidth()) / vc;
     CellHeight = static_cast<float>(GetScreenHeight()) / hc;
     for (int i = 0; i < hc; i++) {
@@ -12,7 +12,7 @@ void CellList::SetCellsSize() {
     }
 }
 
-void CellList::SetCellsPos() {
+void Map::SetCellsPos() {
     CellWidth = static_cast<float>(GetScreenWidth()) / vc;
     CellHeight = static_cast<float>(GetScreenHeight()) / hc;
     for (int i = 0; i < hc; i++) {
@@ -23,7 +23,7 @@ void CellList::SetCellsPos() {
     }
 }
 
-void CellList::ColorClList() {
+void Map::ColorClList() {
     for (int i = 0; i < hc; i++) {
         for (int j = 0; j < vc; j++) {
             if (list[i][j].TileType == WALL)
@@ -36,34 +36,42 @@ void CellList::ColorClList() {
     }
 }
 
-void CellList::makeList() {
+void Map::makeList() {
     list = new Cell *[hc];
     for (int i = 0; i < hc; i++)
         list[i] = new Cell[vc];
 }
 
-void CellList::SetPathColor(Color color) {
+void Map::SetPathColor(Color color) {
     pathColor = color;
 }
 
-void CellList::ColorClSubList(std::vector<Vector2i> subList) {
+void Map::ColorClSubList(std::vector<Vector2i> subList) {
     for (int i = 0; i < subList.size(); i++)
         list[subList[i].y][subList[i].x].BackgroundColor = pathColor;
 }
 
-void CellList::Update() {
+void Map::Update() {
     SetCellsSize();
     SetCellsPos();
 }
 
-Cell *CellList::getCell(int row, int col) {
+void Map::draw() {
+    for (int i = 0; i < hc; i++) {
+        for (int j = 0; j < vc; j++) {
+            getCell(i, j)->Draw();
+        }
+    }
+}
+
+Cell *Map::getCell(int row, int col) {
     if (col < vc && row < hc && col >= 0 && row >= 0) {
         return &list[row][col];
     } else
         return nullptr;
 }
 
-CellList::CellList() {
+Map::Map() {
     makeList();
     SetCellsSize();
     SetCellsPos();
@@ -80,7 +88,7 @@ CellList::CellList() {
     }
 }
 
-CellList::~CellList() {
+Map::~Map() {
     for (int i = 0; i < hc; i++) {
         delete[] list[i];
         list[i] = nullptr;
