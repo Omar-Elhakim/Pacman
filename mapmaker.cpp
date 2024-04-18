@@ -115,13 +115,13 @@ void mapMaker() {
     bool startRandomSearch = false;
     Vector2i source = {0, 0}, destination = {vc - 1, hc - 1};
     SetRandomSeed(GetTime());
-    pacman *ahmed = new pacman();
+    Pacman *pacman = new Pacman();
 
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(WHITE);
         gmap->Draw();
-        ahmed->draw();
+        pacman->draw();
         if (IsWindowResized()) {
             WindowWidth = GetScreenWidth();
             WindowHeight = GetScreenHeight();
@@ -176,13 +176,13 @@ void mapMaker() {
             }
         }
         if (IsKeyDown(KEY_UP))
-            ahmed->moveUp();
+            pacman->moveUp();
         if (IsKeyDown(KEY_DOWN))
-            ahmed->moveDown();
+            pacman->moveDown();
         if (IsKeyDown(KEY_RIGHT))
-            ahmed->moveRight();
+            pacman->moveRight();
         if (IsKeyDown(KEY_LEFT))
-            ahmed->moveLeft();
+            pacman->moveLeft();
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && MouseInBoundries(GetMousePosition())) {
             makeWall((int)(GetMouseX() / gmap->CellWidth), (int)(GetMouseY() / gmap->CellHeight));
         }
@@ -193,7 +193,7 @@ void mapMaker() {
     }
 Exit:
     destroyByPtr(&gmap);
-    destroyByPtr(&ahmed);
+    destroyByPtr(&pacman);
 }
 
 void mapMaker(Map *map) {

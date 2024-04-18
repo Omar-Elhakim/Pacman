@@ -2,20 +2,20 @@
 #include "raylib.h"
 #include <cmath>
 
-class pacman {
-private:
+class Pacman {
+  private:
     Image PacmanImage;
+    Texture2D pacmanText;
     Rectangle AnimationBox;
     Vector2 InitialPosition;
     Vector2 direction;
     float x;
+    float speed;
     int a;
 
-public:
-    pacman();
-    ~pacman();
-    Texture2D Pacman;
-    float speed;
+  public:
+    Pacman();
+    ~Pacman();
     void draw();
     void moveRight();
     void moveLeft();

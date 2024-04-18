@@ -7,7 +7,7 @@ class Level {
   private:
     Vector2i source, dest;
     int WindowWidth, WindowHeight;
-    pacman *tebry;
+    Pacman *pacman;
 
   public:
     Map *map = nullptr;

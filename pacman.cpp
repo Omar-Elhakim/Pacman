@@ -1,14 +1,14 @@
 #include "pacman.h"
 #include "raylib.h"
 
-pacman::pacman() {
+Pacman::Pacman() {
     speed = 1.5f;
     x = 0;
     a = 0;
 
     PacmanImage = LoadImage("assets/pac.png");
     ImageResize(&PacmanImage, 80, 150);
-    Pacman = LoadTextureFromImage(PacmanImage);
+    pacmanText = LoadTextureFromImage(PacmanImage);
     UnloadImage(PacmanImage);
 
     AnimationBox = {0, 0, 40, 37};
@@ -16,13 +16,13 @@ pacman::pacman() {
     direction = {0, 0};
 }
 
-void pacman::draw() {
-    DrawTextureRec(Pacman, AnimationBox, InitialPosition, WHITE);
+void Pacman::draw() {
+    DrawTextureRec(pacmanText, AnimationBox, InitialPosition, WHITE);
 }
 
-void pacman::moveRight() {
+void Pacman::moveRight() {
     direction = {0, 0};
-    AnimationBox.height = Pacman.height / 4.f;
+    AnimationBox.height = pacmanText.height / 4.f;
     AnimationBox.y = 0 * AnimationBox.width;
     a++;
     if (a % 5 == 0) {
@@ -34,7 +34,7 @@ void pacman::moveRight() {
     direction.x += speed;
 
     if (direction.x > 0) {
-        AnimationBox.height = Pacman.height / 4.f;
+        AnimationBox.height = pacmanText.height / 4.f;
         AnimationBox.y = 0 * AnimationBox.width;
         a++;
         if (a % 250 == 0) {
@@ -49,9 +49,9 @@ void pacman::moveRight() {
     InitialPosition.y += direction.y;
 }
 
-void pacman::moveLeft() {
+void Pacman::moveLeft() {
     direction = {0, 0};
-    AnimationBox.height = Pacman.height / 4.f;
+    AnimationBox.height = pacmanText.height / 4.f;
     AnimationBox.y = 1 * AnimationBox.width;
     a++;
     if (a % 250 == 0) {
@@ -63,7 +63,7 @@ void pacman::moveLeft() {
     direction.x -= speed;
 
     if (direction.x < 0) {
-        AnimationBox.height = Pacman.height / 4.f;
+        AnimationBox.height = pacmanText.height / 4.f;
         AnimationBox.y = 1 * AnimationBox.width;
         a++;
         if (a % 250 == 0) {
@@ -77,9 +77,9 @@ void pacman::moveLeft() {
     InitialPosition.y += direction.y;
 }
 
-void pacman::moveUp() {
+void Pacman::moveUp() {
     direction = {0, 0};
-    AnimationBox.height = Pacman.height / 4.f;
+    AnimationBox.height = pacmanText.height / 4.f;
     AnimationBox.y = 2 * AnimationBox.width;
     a++;
     if (a % 250 == 0) {
@@ -90,7 +90,7 @@ void pacman::moveUp() {
     AnimationBox.x = x * AnimationBox.width;
     direction.y -= speed;
     if (direction.y < 0) {
-        AnimationBox.height = Pacman.height / 4.f;
+        AnimationBox.height = pacmanText.height / 4.f;
         AnimationBox.y = 2 * AnimationBox.width;
         a++;
         if (a % 250 == 0) {
@@ -104,9 +104,9 @@ void pacman::moveUp() {
     InitialPosition.y += direction.y;
 }
 
-void pacman::moveDown() {
+void Pacman::moveDown() {
     direction = {0, 0};
-    AnimationBox.height = Pacman.height / 5.f;
+    AnimationBox.height = pacmanText.height / 5.f;
     AnimationBox.y = 3 * AnimationBox.width;
     a++;
     if (a % 250 == 0) {
@@ -118,7 +118,7 @@ void pacman::moveDown() {
     direction.y += speed;
 
     if (direction.y > 0) {
-        AnimationBox.height = Pacman.height / 5.f;
+        AnimationBox.height = pacmanText.height / 5.f;
         AnimationBox.y = 3 * AnimationBox.width;
         a++;
         if (a % 250 == 0) {
@@ -133,6 +133,6 @@ void pacman::moveDown() {
     InitialPosition.y += direction.y;
 };
 
-pacman::~pacman() {
-    UnloadTexture(Pacman);
+Pacman::~Pacman() {
+    UnloadTexture(pacmanText);
 }
