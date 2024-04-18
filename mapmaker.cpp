@@ -3,6 +3,7 @@
 #include "raylib.h"
 #include <queue>
 #include <vector>
+using namespace std;
 
 Map *gmap = nullptr;
 
@@ -20,8 +21,6 @@ bool isSecPassed(float seconds) {
     }
     return false;
 }
-
-using namespace std;
 
 bool isPath(int x, int y) {
     if (y >= hc || x >= vc || y < 0 || x < 0)
@@ -165,7 +164,7 @@ void mapMaker() {
             Cell *to = GetRandomCl();
             static int nWallCount = 0;
             if (from == nullptr || to == nullptr || nWall == nullptr) {
-                // continue;
+                continue;
             }
             if (nWallCount <= (hc * vc) / 2) {
                 makeWall(nWall->pos.x, nWall->pos.y);
@@ -270,5 +269,17 @@ void mapMaker(Map *map) {
             makePath((int)(GetMouseX() / gmap->CellWidth), (int)(GetMouseY() / gmap->CellHeight));
         }
         EndDrawing();
+    }
+    for (int i = 0; i < hc; i++) {
+        for (int j = 0; j < vc; j++) {
+            switch (map->GetCell(i, j)->TileType) {
+            case (ROAD):
+                map->GetCell(i, j)->BackgroundColor = BLACK;
+                break;
+            case (WALL):
+                map->GetCell(i, j)->BackgroundColor = BLUE;
+                break;
+            }
+        }
     }
 }

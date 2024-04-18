@@ -47,6 +47,25 @@ void Level::start() {
         }
         if (IsKeyPressed(KEY_F) && !(IsKeyDown(KEY_RIGHT_SHIFT) || IsKeyDown(KEY_LEFT_SHIFT))) {
             map->FindPath(source, dest);
+            if (IsKeyPressed(KEY_S)) {
+                source = {(int)(GetMouseX() / map->CellWidth), (int)(GetMouseY() / map->CellHeight)};
+                map->GetCell(source.y, source.x)->BackgroundColor = ORANGE;
+            }
+            if (IsKeyPressed(KEY_D)) {
+                dest = {(int)(GetMouseX() / map->CellWidth), (int)(GetMouseY() / map->CellHeight)};
+                map->GetCell(dest.y, dest.x)->BackgroundColor = ORANGE;
+            }
+            if (IsKeyPressed(KEY_F)) {
+                findPath(source, dest);
+            }
+            if (IsKeyDown(KEY_UP))
+                tebry->moveUp();
+            if (IsKeyDown(KEY_DOWN))
+                tebry->moveDown();
+            if (IsKeyDown(KEY_RIGHT))
+                tebry->moveRight();
+            if (IsKeyDown(KEY_LEFT))
+                tebry->moveLeft();
         }
         EndDrawing();
     }
