@@ -1,19 +1,24 @@
 #include "pacman.h"
 #include "raylib.h"
 
-Pacman::Pacman() {
+Pacman::Pacman(Map *map) : map(map) {
     speed = 1.7f;
     x = 0;
     a = 0;
 
     PacmanImage = LoadImage("assets/pac.png");
-    ImageResize(&PacmanImage, 60, 120);
+    ImageSize = {2 * map->CellWidth, 2 * map->CellWidth * PacmanImage.height / PacmanImage.width};
+    ImageResize(&PacmanImage, ImageSize.x, ImageSize.y);
     pacmanText = LoadTextureFromImage(PacmanImage);
     UnloadImage(PacmanImage);
 
-    AnimationBox = {0, 0, PacmanImage.width / 2.f,PacmanImage.height / 4.f };
-    InitialPosition = {150, 150};
+    AnimationBox = {0, 0, pacmanText.width / 2.f, pacmanText.height / 4.f};
+    InitialPosition = {0, 0};
     direction = {0, 0};
+}
+
+Pacman::~Pacman() {
+    UnloadTexture(pacmanText);
 }
 
 void Pacman::draw() {
@@ -132,6 +137,9 @@ void Pacman::goDown() {
     move();
 };
 
-Pacman::~Pacman() {
-    UnloadTexture(pacmanText);
+void Pacman::update() {
+    ImageSize = {2 * map->CellWidth, 2 * map->CellWidth * ImageSize.y / ImageSize.x};
+    pacmanText.width = ImageSize.x;
+    pacmanText.height = ImageSize.y;
+    AnimationBox = {0, 0, pacmanText.width / 2.f, pacmanText.height / 4.f};
 }

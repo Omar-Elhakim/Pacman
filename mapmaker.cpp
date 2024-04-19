@@ -115,7 +115,7 @@ void mapMaker() {
     bool startRandomSearch = false;
     Vector2i source = {0, 0}, destination = {vc - 1, hc - 1};
     SetRandomSeed(GetTime());
-    Pacman *pacman = new Pacman();
+    Pacman *pacman = new Pacman(gmap);
 
     while (!WindowShouldClose()) {
         BeginDrawing();
