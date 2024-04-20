@@ -1,5 +1,4 @@
-#ifndef CELLLIST_H
-#define CELLLIST_H
+#pragma once
 #include "Cell.h"
 #include <vector>
 
@@ -26,8 +25,8 @@ class Map {
     void Draw();
     void FindPath(Vector2i from, Vector2i to);
     Cell *GetCell(int row, int col);
+    Vector2i getClArrPos(Vector2 Position);
+    Vector2 getClPos(Vector2i ArrPos);
     Map();
     ~Map();
 };
-
-#endif // CELLLIST_H

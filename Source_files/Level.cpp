@@ -27,7 +27,7 @@ void Level::start() {
             WindowWidth = GetScreenWidth();
             WindowHeight = GetScreenHeight();
             map->Update();
-            pacman->update();
+            pacman->setSize();
         }
         if (IsKeyPressed(KEY_C)) {
             mapMaker(map);

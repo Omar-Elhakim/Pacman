@@ -24,5 +24,5 @@ class Pacman {
     void goLeft();
     void goUp();
     void goDown();
-    void update();
+    void setSize();
 };

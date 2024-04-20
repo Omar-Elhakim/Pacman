@@ -5,15 +5,9 @@ Pacman::Pacman(Map *map) : map(map) {
     speed = 1.7f;
     x = 0;
     a = 0;
+    setSize();
 
-    PacmanImage = LoadImage("assets/pac.png");
-    ImageSize = {2 * map->CellWidth, 2 * map->CellWidth * PacmanImage.height / PacmanImage.width};
-    ImageResize(&PacmanImage, ImageSize.x, ImageSize.y);
-    pacmanText = LoadTextureFromImage(PacmanImage);
-    UnloadImage(PacmanImage);
-
-    AnimationBox = {0, 0, pacmanText.width / 2.f, pacmanText.height / 4.f};
-    InitialPosition = {0, 0};
+    InitialPosition = map->getClPos(map->GetCell(0, 0)->arrPos);
     direction = {0, 0};
 }
 
@@ -32,7 +26,6 @@ void Pacman::move() {
 
 void Pacman::goRight() {
     direction = {0, 0};
-    AnimationBox.height = pacmanText.height / 4.f;
     AnimationBox.y = 0 * AnimationBox.width;
     a++;
     if (a % 10 == 0) {
@@ -44,7 +37,6 @@ void Pacman::goRight() {
     direction.x += speed;
 
     if (direction.x > 0) {
-        AnimationBox.height = pacmanText.height / 4.f;
         AnimationBox.y = 0 * AnimationBox.width;
         a++;
         if (a % 10 == 0) {
@@ -59,7 +51,6 @@ void Pacman::goRight() {
 
 void Pacman::goLeft() {
     direction = {0, 0};
-    AnimationBox.height = pacmanText.height / 4.f;
     AnimationBox.y = 1 * AnimationBox.width;
     a++;
     if (a % 10 == 0) {
@@ -71,7 +62,6 @@ void Pacman::goLeft() {
     direction.x -= speed;
 
     if (direction.x < 0) {
-        AnimationBox.height = pacmanText.height / 4.f;
         AnimationBox.y = 1 * AnimationBox.width;
         a++;
         if (a % 10 == 0) {
@@ -86,7 +76,6 @@ void Pacman::goLeft() {
 
 void Pacman::goUp() {
     direction = {0, 0};
-    AnimationBox.height = pacmanText.height / 4.f;
     AnimationBox.y = 2 * AnimationBox.width;
     a++;
     if (a % 10 == 0) {
@@ -97,7 +86,6 @@ void Pacman::goUp() {
     AnimationBox.x = x * AnimationBox.width;
     direction.y -= speed;
     if (direction.y < 0) {
-        AnimationBox.height = pacmanText.height / 4.f;
         AnimationBox.y = 2 * AnimationBox.width;
         a++;
         if (a % 10 == 0) {
@@ -112,7 +100,6 @@ void Pacman::goUp() {
 
 void Pacman::goDown() {
     direction = {0, 0};
-    AnimationBox.height = pacmanText.height / 4.f;
     AnimationBox.y = 3 * AnimationBox.width;
     a++;
     if (a % 10 == 0) {
@@ -124,7 +111,6 @@ void Pacman::goDown() {
     direction.y += speed;
 
     if (direction.y > 0) {
-        AnimationBox.height = pacmanText.height / 4.f;
         AnimationBox.y = 3 * AnimationBox.width;
         a++;
         if (a % 10 == 0) {
@@ -137,9 +123,14 @@ void Pacman::goDown() {
     move();
 };
 
-void Pacman::update() {
-    ImageSize = {2 * map->CellWidth, 2 * map->CellWidth * ImageSize.y / ImageSize.x};
-    pacmanText.width = ImageSize.x;
-    pacmanText.height = ImageSize.y;
+void Pacman::setSize() {
+    PacmanImage = LoadImage("assets/pac.png");
+    ImageSize = {2 * map->CellWidth, 4 * map->CellHeight};
+    ImageResize(&PacmanImage, ImageSize.x, ImageSize.y);
+
+    pacmanText = LoadTextureFromImage(PacmanImage);
+    UnloadImage(PacmanImage);
+
+    // TODO : doesn't update succeffuly
     AnimationBox = {0, 0, pacmanText.width / 2.f, pacmanText.height / 4.f};
 }
