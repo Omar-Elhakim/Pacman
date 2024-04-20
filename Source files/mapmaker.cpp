@@ -1,5 +1,5 @@
-#include "mapmaker.h"
-#include "Cell.h"
+#include "../Header files/mapmaker.h"
+#include "../Header files/Cell.h"
 #include "raylib.h"
 #include <queue>
 #include <vector>

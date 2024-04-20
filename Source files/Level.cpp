@@ -1,7 +1,7 @@
-#include "Level.h"
-#include "Cell.h"
-#include "mapmaker.h"
-#include "pacman.h"
+#include "../Header files/Level.h"
+#include "../Header files/Cell.h"
+#include "../Header files/mapmaker.h"
+#include "../Header files/pacman.h"
 #include "raylib.h"
 
 Level::Level(int WindowWidth, int WindowHeight) : WindowWidth(WindowWidth), WindowHeight(WindowHeight) {
