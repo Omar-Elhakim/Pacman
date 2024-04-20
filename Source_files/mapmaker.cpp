@@ -1,5 +1,5 @@
-#include "../Header files/mapmaker.h"
-#include "../Header files/Cell.h"
+#include "../Header_files/mapmaker.h"
+#include "../Header_files/Cell.h"
 #include "raylib.h"
 #include <queue>
 #include <vector>
@@ -167,12 +167,12 @@ void mapMaker() {
                 continue;
             }
             if (nWallCount <= (hc * vc) / 2) {
-                makeWall(nWall->pos.x, nWall->pos.y);
+                makeWall(nWall->arrPos.x, nWall->arrPos.y);
                 nWallCount++;
             }
             if (!(from->TileType == WALL || to->TileType == WALL)) {
                 gmap->ColorClList();
-                findPath(from->pos, to->pos);
+                findPath(from->arrPos, to->arrPos);
             }
         }
         if (IsKeyDown(KEY_UP))
@@ -253,12 +253,12 @@ void mapMaker(Map *map) {
             if (!(from == nullptr || to == nullptr || nWall == nullptr)) {
                 // continue;
                 if (nWallCount <= (hc * vc) / 2) {
-                    makeWall(nWall->pos.x, nWall->pos.y);
+                    makeWall(nWall->arrPos.x, nWall->arrPos.y);
                     nWallCount++;
                 }
                 if (!(from->TileType == WALL || to->TileType == WALL)) {
                     gmap->ColorClList();
-                    findPath(from->pos, to->pos);
+                    findPath(from->arrPos, to->arrPos);
                 }
             }
         }

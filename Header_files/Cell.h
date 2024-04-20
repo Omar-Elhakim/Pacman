@@ -12,7 +12,7 @@ struct Cell {
     Rectangle rec;
     TileType_t TileType;
     Color BackgroundColor;
-    Vector2i pos;
+    Vector2i arrPos;
     void Draw() {
         DrawRectangleRec(rec, BackgroundColor);
     }
