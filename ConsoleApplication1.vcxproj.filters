@@ -15,43 +15,43 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header files\Cell.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Header_files\Cell.h">
+      <Filter>Header_Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header files\Level.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Header_files\Level.h">
+      <Filter>Header_Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header files\Map.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Header_files\Map.h">
+      <Filter>Header_Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header files\mapmaker.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Header_files\mapmaker.h">
+      <Filter>Header_Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header files\pacman.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Header_files\pacman.h">
+      <Filter>Header_Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header files\Window.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Header_files\Window.h">
+      <Filter>Header_Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source files\Level.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source_files\Level.cpp">
+      <Filter>Source_Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source files\main.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source_files\main.cpp">
+      <Filter>Source_Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source files\Map.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source_files\Map.cpp">
+      <Filter>Source_Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source files\mapmaker.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source_files\mapmaker.cpp">
+      <Filter>Source_Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source files\pacman.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source_files\pacman.cpp">
+      <Filter>Source_Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source files\Window.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source_files\Window.cpp">
+      <Filter>Source_Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,6 +1,6 @@
-#include "../Header files/Level.h"
-#include "../Header files/Window.h"
-#include "../Header files/mapmaker.h"
+#include "../Header_files/Level.h"
+#include "../Header_files/Window.h"
+#include "../Header_files/mapmaker.h"
 
 int WindowWidth = 800, WindowHeight = 600;
 int main() {
