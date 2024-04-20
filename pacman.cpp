@@ -1,4 +1,7 @@
 #include "pacman.h"
+#include "mapmaker.h"
+#include "Cell.h"
+#include "Map.h"
 #include "raylib.h"
 
 Pacman::Pacman() {

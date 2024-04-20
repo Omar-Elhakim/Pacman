@@ -3,6 +3,8 @@
 #include "mapmaker.h"
 #include "pacman.h"
 #include "raylib.h"
+#include<iostream>
+using namespace std;
 
 Level::Level(int WindowWidth, int WindowHeight) : WindowWidth(WindowWidth), WindowHeight(WindowHeight) {
     map = new Map();
@@ -46,6 +48,9 @@ void Level::start() {
         }  if (IsKeyDown(KEY_LEFT) || pacman->direction.x < 0) {
             pacman->goLeft();
         } 
+        if (!map->GetCell(pacman->InitialPosition.x, pacman->InitialPosition.x)->TileType == WALL) {
+           cout << "collideed";
+        }
         EndDrawing();
     }
 }
