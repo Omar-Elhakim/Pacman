@@ -9,7 +9,7 @@ class Pacman {
     Rectangle AnimationBox;
     Vector2 ImageSize;
     Vector2 InitialPosition;
-    float x;
+    int x;
     float speed;
     int a;
     Map *map;
@@ -25,4 +25,5 @@ class Pacman {
     void goUp();
     void goDown();
     void setSize();
+    void die();
 };
