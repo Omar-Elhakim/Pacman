@@ -38,16 +38,16 @@ void Level::start() {
         }
         if (IsKeyPressed(KEY_F))
             map->FindPath(source, dest);
-        if (IsKeyDown(KEY_UP) || pacman->direction.y < 0) {
+        if (IsKeyPressed(KEY_UP) || pacman->direction.y < 0) {
             pacman->goUp();
         }
-        if (IsKeyDown(KEY_DOWN) || pacman->direction.y > 0) {
+        if (IsKeyPressed(KEY_DOWN) || pacman->direction.y > 0) {
             pacman->goDown();
         }
-        if (IsKeyDown(KEY_RIGHT) || pacman->direction.x > 0) {
+        if (IsKeyPressed(KEY_RIGHT) || pacman->direction.x > 0) {
             pacman->goRight();
         }
-        if (IsKeyDown(KEY_LEFT) || pacman->direction.x < 0) {
+        if (IsKeyPressed(KEY_LEFT) || pacman->direction.x < 0) {
             pacman->goLeft();
         }
         EndDrawing();
