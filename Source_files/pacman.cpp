@@ -1,4 +1,4 @@
-#include "../Header files/pacman.h"
+#include "../Header_files/pacman.h"
 #include "raylib.h"
 
 Pacman::Pacman(Map *map) : map(map) {
