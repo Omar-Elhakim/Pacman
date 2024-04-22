@@ -1,4 +1,4 @@
-#include "../Header files/Map.h"
+#include "../Header_files/Map.h"
 #include <queue>
 #include <raylib.h>
 #include <vector>
@@ -10,8 +10,8 @@ Map::Map() {
     for (int i = 0; i < hc; i++) {
         for (int j = 0; j < vc; j++) {
             list[i][j].TileType = ROAD;
-            list[i][j].pos.x = j;
-            list[i][j].pos.y = i;
+            list[i][j].arrPos.x = j;
+            list[i][j].arrPos.y = i;
             if (isEven(i + j)) {
                 list[i][j].BackgroundColor = BROWN;
             } else
@@ -157,4 +157,12 @@ Cell *Map::GetCell(int row, int col) {
         return &list[row][col];
     } else
         return nullptr;
+}
+
+Vector2i Map::getClArrPos(Vector2 Position) {
+    return {(int)(Position.x / CellWidth), (int)(Position.y / CellHeight)};
+}
+
+Vector2 Map::getClPos(Vector2i ArrPos) {
+    return {ArrPos.x * CellWidth, ArrPos.y / CellHeight};
 }

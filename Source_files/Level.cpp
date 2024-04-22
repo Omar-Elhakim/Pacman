@@ -1,7 +1,7 @@
-#include "../Header files/Level.h"
-#include "../Header files/Cell.h"
-#include "../Header files/mapmaker.h"
-#include "../Header files/pacman.h"
+#include "../Header_files/Level.h"
+#include "../Header_files/Cell.h"
+#include "../Header_files/mapmaker.h"
+#include "../Header_files/pacman.h"
 #include "raylib.h"
 #include<iostream>
 using namespace std;
@@ -29,7 +29,7 @@ void Level::start() {
             WindowWidth = GetScreenWidth();
             WindowHeight = GetScreenHeight();
             map->Update();
-            pacman->update();
+            pacman->setSize();
         }
         if (IsKeyPressed(KEY_C)) {
             mapMaker(map);
@@ -40,16 +40,16 @@ void Level::start() {
         }
         if (IsKeyPressed(KEY_F))
             map->FindPath(source, dest);
-        if (IsKeyDown(KEY_UP) || pacman->direction.y < 0) {
+        if (IsKeyPressed(KEY_UP) || pacman->direction.y < 0) {
             pacman->goUp();
         }
-        if (IsKeyDown(KEY_DOWN) || pacman->direction.y > 0) {
+        if (IsKeyPressed(KEY_DOWN) || pacman->direction.y > 0) {
             pacman->goDown();
         }
-        if (IsKeyDown(KEY_RIGHT) || pacman->direction.x > 0) {
+        if (IsKeyPressed(KEY_RIGHT) || pacman->direction.x > 0) {
             pacman->goRight();
         }
-        if (IsKeyDown(KEY_LEFT) || pacman->direction.x < 0) {
+        if (IsKeyPressed(KEY_LEFT) || pacman->direction.x < 0) {
             pacman->goLeft();
         }
         EndDrawing();
