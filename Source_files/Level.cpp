@@ -3,6 +3,8 @@
 #include "../Header_files/mapmaker.h"
 #include "../Header_files/pacman.h"
 #include "raylib.h"
+#include<iostream>
+using namespace std;
 
 Level::Level(int WindowWidth, int WindowHeight) : WindowWidth(WindowWidth), WindowHeight(WindowHeight) {
     map = new Map();
