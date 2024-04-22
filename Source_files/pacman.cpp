@@ -8,7 +8,7 @@ Pacman::Pacman(Map *map) : map(map) {
     ImageSize = {2 * map->CellWidth, 4 * map->CellHeight};
     setSize();
 
-    InitialPosition = map->getClPos(map->GetCell(0, 0)->arrPos);
+    InitialPosition = map->getClPos({1, 1});
     direction = {0, 0};
 }
 

@@ -28,7 +28,7 @@ class Map {
     bool posInGameCanvas(Vector2 Pos);
     bool posInInfoBar(Vector2 Pos);
     bool posInBoundaries(Vector2 Pos);
-    Cell *GetCell(int row, int col);
+    Cell *GetCell(int col, int row);
     Vector2i getClArrPos(Vector2 Position);
     Vector2 getClPos(Vector2i ArrPos);
     Map();
