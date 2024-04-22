@@ -7,7 +7,6 @@ Pacman::Pacman(Map *map) : map(map) {
     a = 0;
     ImageSize = {2 * map->CellWidth, 4 * map->CellHeight};
     setSize();
-    //{ 150,150};
     InitialPosition =  map->getClPos(map->GetCell(0, 0)->arrPos);
     direction = {0, 0};
 }
@@ -30,40 +29,42 @@ void Pacman::move() {
 }
 
 void Pacman::goRight() {
-    Vector2 pointer = { InitialPosition.x + map->CellWidth -5,InitialPosition.y + map->CellHeight -5};
-    direction = {speed, 0};
+    Vector2 pointerTL = { InitialPosition.x + 3,InitialPosition.y + 6 };
+    Vector2 pointerBR = { InitialPosition.x + map->CellWidth - 3,InitialPosition.y + map->CellHeight - 6 };
+    direction = { speed, 0 };
     AnimationBox.y = 0 * AnimationBox.height;
-   //if ((map->GetCell(InitialPosition.y / map->CellWidth, (InitialPosition.x / map->CellHeight) +1)->TileType == ROAD) && (map->GetCell(pointer.y / map->CellWidth, (pointer.x / map->CellHeight)+0.1)->TileType == ROAD)) {
-   if((map->GetCell(InitialPosition.y / map->CellWidth, (InitialPosition.x / map->CellHeight) +1)->TileType == WALL) && CheckCollisionRecs(AnimationBox, map->GetCell(InitialPosition.y / map->CellWidth, (InitialPosition.x / map->CellHeight) + 1)->rec)){
-       printf("road");
-   }
-    else 
+    if ((map->GetCell(pointerTL.y / map->CellWidth, (pointerTL.x / map->CellHeight) + 1)->TileType == ROAD) && (map->GetCell(pointerBR.y / map->CellWidth, (pointerBR.x / map->CellHeight) + 0.01)->TileType == ROAD)) {
         move();
     }
+}
+ 
 
 void Pacman::goLeft() {
-    Vector2 pointer = { InitialPosition.x + map->CellWidth -5,InitialPosition.y + map->CellHeight -5};
+    Vector2 pointerTL = { InitialPosition.x + 3,InitialPosition.y + 6 };
+    Vector2 pointerBR = { InitialPosition.x + map->CellWidth - 3,InitialPosition.y + map->CellHeight - 6 };
     direction = {-1 * speed, 0};
     AnimationBox.y = 1 * AnimationBox.height;
-    if ((map->GetCell(InitialPosition.y / map->CellWidth, (InitialPosition.x / map->CellHeight)-0.1)->TileType == ROAD) && (map->GetCell(pointer.y / map->CellWidth, (pointer.x / map->CellHeight)-1)->TileType == ROAD)) {
+    if ((map->GetCell(pointerTL.y / map->CellWidth, (pointerTL.x / map->CellHeight)-0.01)->TileType == ROAD) && (map->GetCell(pointerBR.y / map->CellWidth, (pointerBR.x / map->CellHeight)-1)->TileType == ROAD)) {
         move();
     }
 }
 
 void Pacman::goUp() {
-    Vector2 pointer = { InitialPosition.x + map->CellWidth -5,InitialPosition.y + map->CellHeight -5};
+    Vector2 pointerTL = { InitialPosition.x + 3,InitialPosition.y + 6 };
+    Vector2 pointerBR = { InitialPosition.x + map->CellWidth - 3,InitialPosition.y + map->CellHeight - 6 };
     direction = {0, -1 * speed};
     AnimationBox.y = 2 * AnimationBox.height;
-    if ((map->GetCell((InitialPosition.y / map->CellWidth)-0.1,InitialPosition.x / map->CellHeight)->TileType == ROAD) && (map->GetCell((pointer.y / map->CellWidth) - 1, pointer.x / map->CellHeight)->TileType == ROAD)) {
+    if ((map->GetCell((pointerTL.y / map->CellWidth)-0.01, pointerTL.x / map->CellHeight)->TileType == ROAD) && (map->GetCell((pointerBR.y / map->CellWidth) - 1, pointerBR.x / map->CellHeight)->TileType == ROAD)) {
         move();
     }
 }
 
 void Pacman::goDown() {
-    Vector2 pointer = { InitialPosition.x + map->CellWidth -5,InitialPosition.y + map->CellHeight -5};
+    Vector2 pointerTL = { InitialPosition.x + 3,InitialPosition.y + 6 };
+    Vector2 pointerBR = { InitialPosition.x + map->CellWidth - 3,InitialPosition.y + map->CellHeight - 6 };
     direction = {0, speed};
     AnimationBox.y = 3 * AnimationBox.height;
-    if ((map->GetCell((InitialPosition.y / map->CellWidth) + 1,InitialPosition.x / map->CellHeight)->TileType == ROAD) && (map->GetCell((pointer.y / map->CellWidth) + 0.1, pointer.x / map->CellHeight)->TileType == ROAD)) {
+    if ((map->GetCell((pointerTL.y / map->CellWidth) + 1, pointerTL.x / map->CellHeight)->TileType == ROAD) && (map->GetCell((pointerBR.y / map->CellWidth) + 0.01, pointerBR.x / map->CellHeight)->TileType == ROAD)) {
         move();
     }
 };
