@@ -18,12 +18,16 @@ class Map {
     Color pathColor = GREEN;
     Cell **list;
     float CellWidth, CellHeight;
+    int infoBarHeight = 50;
     void ColorClList();
     void ColorClSubList(std::vector<Vector2i> list);
     void SetPathColor(Color color);
     void Update();
     void Draw();
     void FindPath(Vector2i from, Vector2i to);
+    bool posInGameCanvas(Vector2 Pos);
+    bool posInInfoBar(Vector2 Pos);
+    bool posInBoundaries(Vector2 Pos);
     Cell *GetCell(int row, int col);
     Vector2i getClArrPos(Vector2 Position);
     Vector2 getClPos(Vector2i ArrPos);

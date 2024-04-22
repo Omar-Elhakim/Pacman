@@ -262,11 +262,13 @@ void mapMaker(Map *map) {
                 }
             }
         }
-        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && MouseInBoundries(GetMousePosition())) {
-            makeWall((int)(GetMouseX() / gmap->CellWidth), (int)(GetMouseY() / gmap->CellHeight));
+        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && map->posInGameCanvas(GetMousePosition())) {
+            Vector2i ClArrPos = map->getClArrPos(GetMousePosition());
+            makeWall(ClArrPos.x, ClArrPos.y);
         }
-        if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT) && MouseInBoundries(GetMousePosition())) {
-            makePath((int)(GetMouseX() / gmap->CellWidth), (int)(GetMouseY() / gmap->CellHeight));
+        if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT) && map->posInGameCanvas(GetMousePosition())) {
+            Vector2i ClArrPos = map->getClArrPos(GetMousePosition());
+            makeWall(ClArrPos.x, ClArrPos.y);
         }
         EndDrawing();
     }

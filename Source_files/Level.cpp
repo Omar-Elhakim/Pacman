@@ -20,9 +20,10 @@ Level::~Level() {
 void Level::start() {
     while (!WindowShouldClose()) {
         BeginDrawing();
-        ClearBackground(WHITE);
+        ClearBackground(BLACK);
         map->Draw();
         pacman->draw();
+        DrawText("Score : ", 10, map->infoBarHeight / 2 - 10, 30, WHITE);
         if (IsWindowResized()) {
             WindowWidth = GetScreenWidth();
             WindowHeight = GetScreenHeight();
