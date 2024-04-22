@@ -67,7 +67,7 @@ void Map::BFS(Vector2i prev[][vc], Vector2i from) {
 
 void Map::SetCellsSize() {
     CellWidth = static_cast<float>(GetScreenWidth()) / vc;
-    CellHeight = static_cast<float>(GetScreenHeight()) / hc;
+    CellHeight = static_cast<float>(GetScreenHeight() - infoBarHeight) / (hc);
     for (int i = 0; i < hc; i++) {
         for (int j = 0; j < vc; j++) {
             list[i][j].rec.width = CellWidth;
@@ -77,12 +77,10 @@ void Map::SetCellsSize() {
 }
 
 void Map::SetCellsPos() {
-    CellWidth = static_cast<float>(GetScreenWidth()) / vc;
-    CellHeight = static_cast<float>(GetScreenHeight()) / hc;
     for (int i = 0; i < hc; i++) {
         for (int j = 0; j < vc; j++) {
             list[i][j].rec.x = j * CellWidth;
-            list[i][j].rec.y = i * CellHeight;
+            list[i][j].rec.y = i * CellHeight + infoBarHeight;
         }
     }
 }
@@ -159,10 +157,26 @@ Cell *Map::GetCell(int row, int col) {
         return nullptr;
 }
 
+bool Map::posInGameCanvas(Vector2 Position) {
+    return posInBoundaries(Position) && !posInInfoBar(Position);
+}
+
+bool Map::posInInfoBar(Vector2 Position) {
+    return posInBoundaries(Position) && Position.y < infoBarHeight;
+}
+
+bool Map::posInBoundaries(Vector2 Position) {
+    return Position.x < GetScreenWidth() && Position.y < GetScreenHeight() && Position.x > 0 && Position.y > 0;
+}
+
 Vector2i Map::getClArrPos(Vector2 Position) {
-    return {(int)(Position.x / CellWidth), (int)(Position.y / CellHeight)};
+    if (posInGameCanvas(Position))
+        return {(int)(Position.x / CellWidth), (int)((Position.y - infoBarHeight) / CellHeight)};
+    return {-1, -1};
 }
 
 Vector2 Map::getClPos(Vector2i ArrPos) {
-    return {ArrPos.x * CellWidth, ArrPos.y / CellHeight};
+    if (ArrPos.x < vc && ArrPos.y < hc && ArrPos.x >= 0 && ArrPos.y >= 0)
+        return {ArrPos.x * CellWidth, ArrPos.y * CellHeight + infoBarHeight};
+    return {-1, -1};
 }
