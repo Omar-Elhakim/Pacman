@@ -1,14 +1,14 @@
-#include "Level.h"
-#include "Cell.h"
-#include "mapmaker.h"
-#include "pacman.h"
+#include "../Header files/Level.h"
+#include "../Header files/Cell.h"
+#include "../Header files/mapmaker.h"
+#include "../Header files/pacman.h"
 #include "raylib.h"
 #include<iostream>
 using namespace std;
 
 Level::Level(int WindowWidth, int WindowHeight) : WindowWidth(WindowWidth), WindowHeight(WindowHeight) {
     map = new Map();
-    pacman = new Pacman();
+    pacman = new Pacman(map);
     source = {0, 0}, dest = {vc - 1, hc - 1};
 }
 
@@ -29,6 +29,7 @@ void Level::start() {
             WindowWidth = GetScreenWidth();
             WindowHeight = GetScreenHeight();
             map->Update();
+            pacman->update();
         }
         if (IsKeyPressed(KEY_C)) {
             mapMaker(map);
@@ -38,18 +39,18 @@ void Level::start() {
             break;
         }
         if (IsKeyPressed(KEY_F))
-            findPath(source, dest);
+            map->FindPath(source, dest);
         if (IsKeyDown(KEY_UP) || pacman->direction.y < 0) {
             pacman->goUp();
-        }  if (IsKeyDown(KEY_DOWN) || pacman->direction.y > 0) {
+        }
+        if (IsKeyDown(KEY_DOWN) || pacman->direction.y > 0) {
             pacman->goDown();
-        }  if (IsKeyDown(KEY_RIGHT)|| pacman->direction.x > 0) {
+        }
+        if (IsKeyDown(KEY_RIGHT) || pacman->direction.x > 0) {
             pacman->goRight();
-        }  if (IsKeyDown(KEY_LEFT) || pacman->direction.x < 0) {
+        }
+        if (IsKeyDown(KEY_LEFT) || pacman->direction.x < 0) {
             pacman->goLeft();
-        } 
-        if (!map->GetCell(pacman->InitialPosition.x, pacman->InitialPosition.x)->TileType == WALL) {
-           cout << "collideed";
         }
         EndDrawing();
     }

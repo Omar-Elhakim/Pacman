@@ -140,20 +140,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Level.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Map.cpp" />
-    <ClCompile Include="mapmaker.cpp" />
-    <ClCompile Include="pacman.cpp" />
-    <ClCompile Include="Window.cpp" />
+    <ClInclude Include="Header files\Cell.h" />
+    <ClInclude Include="Header files\Level.h" />
+    <ClInclude Include="Header files\Map.h" />
+    <ClInclude Include="Header files\mapmaker.h" />
+    <ClInclude Include="Header files\pacman.h" />
+    <ClInclude Include="Header files\Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Cell.h" />
-    <ClInclude Include="Level.h" />
-    <ClInclude Include="Map.h" />
-    <ClInclude Include="mapmaker.h" />
-    <ClInclude Include="pacman.h" />
-    <ClInclude Include="Window.h" />
+    <ClCompile Include="Source files\Level.cpp" />
+    <ClCompile Include="Source files\main.cpp" />
+    <ClCompile Include="Source files\Map.cpp" />
+    <ClCompile Include="Source files\mapmaker.cpp" />
+    <ClCompile Include="Source files\pacman.cpp" />
+    <ClCompile Include="Source files\Window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
