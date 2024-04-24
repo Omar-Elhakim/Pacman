@@ -2,6 +2,11 @@
 #include <queue>
 #include <raylib.h>
 #include <vector>
+#include <iostream>
+#include <string>
+#include <sstream>
+
+using namespace std;
 
 Map::Map() {
     MakeList();
@@ -157,4 +162,31 @@ Cell *Map::GetCell(int row, int col) {
         return &list[row][col];
     } else
         return nullptr;
+}
+
+
+
+string Map::toString(){
+   int height = 15;
+   int width = 20;
+   Cell** list{};
+   stringstream ss;
+   ss << height << " " << width;
+   MakeList();
+   SetCellsSize();
+   SetCellsPos();
+   for (int i = 0; i < hc; i++) {
+       for (int j = 0; j < vc; j++) {
+           list[i][j].TileType = ROAD;
+           list[i][j].pos.x = j;
+           list[i][j].pos.y = i;
+           if (isEven(i + j)) {
+               list[i][j].BackgroundColor = BROWN;
+           }
+           else
+               list[i][j].BackgroundColor = WHITE;
+       }
+   }
+    return ss.str();
+
 }
