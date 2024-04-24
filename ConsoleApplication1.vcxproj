@@ -140,8 +140,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="food.h" />
     <ClInclude Include="Header_files\Cell.h" />
+    <ClInclude Include="Header_files\Food.h" />
     <ClInclude Include="Header_files\Level.h" />
     <ClInclude Include="Header_files\Map.h" />
     <ClInclude Include="Header_files\mapmaker.h" />
@@ -149,7 +149,7 @@
     <ClInclude Include="Header_files\Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="food.cpp" />
+    <ClCompile Include="Source_files\Food.cpp" />
     <ClCompile Include="Source_files\Level.cpp" />
     <ClCompile Include="Source_files\main.cpp" />
     <ClCompile Include="Source_files\Map.cpp" />

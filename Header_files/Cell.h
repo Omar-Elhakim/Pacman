@@ -13,6 +13,7 @@ struct Cell {
     TileType_t TileType;
     Color BackgroundColor;
     Vector2i arrPos;
+    bool hasFood;
     void Draw() {
         DrawRectangleRec(rec, BackgroundColor);
     }

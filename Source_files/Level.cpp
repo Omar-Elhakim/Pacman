@@ -2,7 +2,6 @@
 #include "../Header_files/Cell.h"
 #include "../Header_files/mapmaker.h"
 #include "../Header_files/pacman.h"
-#include "../Header_files/food.h"
 #include "raylib.h"
 #include<iostream>
 using namespace std;
@@ -12,7 +11,9 @@ using namespace std;
 Level::Level(int WindowWidth, int WindowHeight) : WindowWidth(WindowWidth), WindowHeight(WindowHeight) {
     map = new Map();
     pacman = new Pacman(map);
+    food = new Food(map);
     source = {0, 0}, dest = {vc - 1, hc - 1};
+
 }
 
 Level::~Level() {
@@ -27,12 +28,9 @@ void Level::start() {
         BeginDrawing();
         ClearBackground(BLACK);
         map->Draw();
+        food->draw(map);
         pacman->draw();
         DrawText("Score : ", 10, map->infoBarHeight / 2 - 10, 30, WHITE);
-        //====================
-        food Food;
-        Food.drawf();
-        //=====================
         if (IsWindowResized()) {
             WindowWidth = GetScreenWidth();
             WindowHeight = GetScreenHeight();
@@ -41,6 +39,8 @@ void Level::start() {
         }
         if (IsKeyPressed(KEY_C)) {
             mapMaker(map);
+            food->update(map);
+
         }
         if (IsKeyPressed(KEY_Q)) {
             EndDrawing();
