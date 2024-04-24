@@ -29,48 +29,52 @@ void Pacman::move() {
 }
 
 void Pacman::goRight() {
-    Vector2 pointerTL = { InitialPosition.x + 3,InitialPosition.y + 6 };
-    Vector2 pointerBR = { InitialPosition.x + map->CellWidth - 3,InitialPosition.y + map->CellHeight - 6 };
+    Vector2 pointerTL = { InitialPosition.x + 1,InitialPosition.y + 2 };
+    Vector2 pointerBR = { InitialPosition.x + map->CellWidth - 1,InitialPosition.y + map->CellHeight - 2 };
     direction = { speed, 0 };
     AnimationBox.y = 0 * AnimationBox.height;
-    if ((map->GetCell((pointerTL.x / map->CellHeight) + 1, pointerTL.y / map->CellWidth)->TileType == ROAD) && (map->GetCell((pointerBR.x / map->CellHeight) + 0.01, pointerBR.y / map->CellWidth)->TileType == ROAD)) {
+    if ((map->GetCell((pointerTL.x / map->CellWidth) + 1, (pointerTL.y-map->infoBarHeight) / map->CellHeight)->TileType == ROAD) &&
+        (map->GetCell((pointerBR.x / map->CellWidth) + 0.01, (pointerBR.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD)) {
         move();
     }
 }
  
 
 void Pacman::goLeft() {
-    Vector2 pointerTL = { InitialPosition.x + 3,InitialPosition.y + 6 };
-    Vector2 pointerBR = { InitialPosition.x + map->CellWidth - 3,InitialPosition.y + map->CellHeight - 6 };
+    Vector2 pointerTL = { InitialPosition.x + 1,InitialPosition.y + 2 };
+    Vector2 pointerBR = { InitialPosition.x + map->CellWidth - 1,InitialPosition.y + map->CellHeight - 2 };
     direction = {-1 * speed, 0};
     AnimationBox.y = 1 * AnimationBox.height;
-    if ((map->GetCell((pointerTL.x / map->CellHeight)-0.01, pointerTL.y / map->CellWidth)->TileType == ROAD) && (map->GetCell((pointerBR.x / map->CellHeight)-1, pointerBR.y / map->CellWidth)->TileType == ROAD)) {
+    if ((map->GetCell((pointerTL.x / map->CellWidth)-0.01, (pointerTL.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD) &&
+        (map->GetCell((pointerBR.x / map->CellWidth)-1, (pointerBR.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD)) {
         move();
     }
 }
 
 void Pacman::goUp() {
-    Vector2 pointerTL = { InitialPosition.x + 3,InitialPosition.y + 6 };
-    Vector2 pointerBR = { InitialPosition.x + map->CellWidth - 3,InitialPosition.y + map->CellHeight - 6 };
+    Vector2 pointerTL = { InitialPosition.x + 1,InitialPosition.y + 2 };
+    Vector2 pointerBR = { InitialPosition.x + map->CellWidth - 1,InitialPosition.y + map->CellHeight - 2 };
     direction = {0, -1 * speed};
     AnimationBox.y = 2 * AnimationBox.height;
-    if ((map->GetCell(pointerTL.x / map->CellHeight,(pointerTL.y / map->CellWidth)-0.01)->TileType == ROAD) && (map->GetCell(pointerBR.x / map->CellHeight,(pointerBR.y / map->CellWidth) - 1)->TileType == ROAD)) {
+    if ((map->GetCell(pointerTL.x / map->CellWidth,((pointerTL.y - map->infoBarHeight) / map->CellHeight)-0.01)->TileType == ROAD) &&
+        (map->GetCell(pointerBR.x / map->CellWidth,((pointerBR.y - map->infoBarHeight) / map->CellHeight) - 1)->TileType == ROAD)) {
         move();
     }
 }
 
 void Pacman::goDown() {
-    Vector2 pointerTL = { InitialPosition.x + 3,InitialPosition.y + 6 };
-    Vector2 pointerBR = { InitialPosition.x + map->CellWidth - 3,InitialPosition.y + map->CellHeight - 6 };
+    Vector2 pointerTL = { InitialPosition.x + 1,InitialPosition.y + 2 };
+    Vector2 pointerBR = { InitialPosition.x + map->CellWidth - 1,InitialPosition.y + map->CellHeight - 2 };
     direction = {0, speed};
     AnimationBox.y = 3 * AnimationBox.height;
-    if ((map->GetCell( pointerTL.x / map->CellHeight, (pointerTL.y / map->CellWidth) + 1)->TileType == ROAD) && (map->GetCell( pointerBR.x / map->CellHeight, (pointerBR.y / map->CellWidth) + 0.01)->TileType == ROAD)) {
+    if ((map->GetCell( pointerTL.x / map->CellWidth, ((pointerTL.y - map->infoBarHeight) / map->CellHeight) + 1)->TileType == ROAD) &&
+        (map->GetCell( pointerBR.x / map->CellWidth, ((pointerBR.y - map->infoBarHeight) / map->CellHeight) + 0.01)->TileType == ROAD)) {
         move();
     }
 };
 
 void Pacman::setSize() {
-    PacmanImage = LoadImage("assets/pac.png");
+    PacmanImage = LoadImage("assets/pac2.png");
     Vector2 OldImageSize = ImageSize;
     ImageSize = {2 * map->CellWidth, 4 * map->CellHeight};
     speed *= (ImageSize.x * ImageSize.y) / (OldImageSize.x * OldImageSize.y);
