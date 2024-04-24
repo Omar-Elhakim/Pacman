@@ -4,6 +4,8 @@
 #include "../Header_files/pacman.h"
 #include "../Header_files/food.h"
 #include "raylib.h"
+#include<iostream>
+using namespace std;
 
 
 

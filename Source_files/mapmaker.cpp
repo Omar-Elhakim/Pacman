@@ -268,7 +268,7 @@ void mapMaker(Map *map) {
         }
         if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT) && map->posInGameCanvas(GetMousePosition())) {
             Vector2i ClArrPos = map->getClArrPos(GetMousePosition());
-            makeWall(ClArrPos.x, ClArrPos.y);
+            makePath(ClArrPos.x, ClArrPos.y);
         }
         EndDrawing();
     }
