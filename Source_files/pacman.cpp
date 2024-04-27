@@ -1,15 +1,28 @@
 #include "../Header_files/pacman.h"
 #include "raylib.h"
 
-Pacman::Pacman(Map *map) : map(map) {
+#include "../Header_files/Level.h"
+
+Pacman::Pacman(Map *map, Food* food) : map(map),food(food) {
     speed = 1.8f;
     x = 0;
     a = 0;
     ImageSize = {2 * map->CellWidth, 4 * map->CellHeight};
     setSize();
-    InitialPosition =  map->getClPos(map->GetCell(0, 0)->arrPos);
+    InitialPosition =  map->getClPos(map->GetCell(1, 1)->arrPos);
     direction = {0, 0};
 }
+
+Pacman::Pacman(Map* map) : map(map){
+    speed = 1.8f;
+    x = 0;
+    a = 0;
+    ImageSize = { 2 * map->CellWidth, 4 * map->CellHeight };
+    setSize();
+    InitialPosition = map->getClPos(map->GetCell(0, 0)->arrPos);
+    direction = { 0, 0 };
+}
+
 
 Pacman::~Pacman() {
     UnloadTexture(pacmanText);
@@ -26,8 +39,17 @@ void Pacman::move() {
     AnimationBox.x = x * AnimationBox.width;
     InitialPosition.x += direction.x;
     InitialPosition.y += direction.y;
+    
 }
+void Pacman::eat() {
+    Vector2 midpoint = { (InitialPosition.x + (map->CellWidth/2)),(InitialPosition.y + (map->CellHeight/2)) };
+    if (map->GetCell(midpoint.x / map->CellWidth, (midpoint.y - map->infoBarHeight) / map->CellHeight)->hasFood == true) {
 
+        map->GetCell(midpoint.x / map->CellWidth, (midpoint.y - map->infoBarHeight) / map->CellHeight)->hasFood = false;
+        score1 += 100000000;
+    }
+
+}
 void Pacman::goRight() {
     Vector2 pointerTL = { InitialPosition.x + 1,InitialPosition.y + 2 };
     Vector2 pointerBR = { InitialPosition.x + map->CellWidth - 1,InitialPosition.y + map->CellHeight - 2 };

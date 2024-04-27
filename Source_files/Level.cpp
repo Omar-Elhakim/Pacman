@@ -10,8 +10,8 @@ using namespace std;
 
 Level::Level(int WindowWidth, int WindowHeight) : WindowWidth(WindowWidth), WindowHeight(WindowHeight) {
     map = new Map();
-    pacman = new Pacman(map);
     food = new Food(map);
+    pacman = new Pacman(map,food);
     source = {0, 0}, dest = {vc - 1, hc - 1};
 
 }
@@ -30,7 +30,7 @@ void Level::start() {
         map->Draw();
         food->draw(map);
         pacman->draw();
-        DrawText("Score : ", 10, map->infoBarHeight / 2 - 10, 30, WHITE);
+        DrawText(TextFormat("Counter: %d", pacman->score1), 10, map->infoBarHeight / 2 - 10, 30, WHITE);
         if (IsWindowResized()) {
             WindowWidth = GetScreenWidth();
             WindowHeight = GetScreenHeight();
@@ -50,16 +50,21 @@ void Level::start() {
             map->FindPath(source, dest);
         if (IsKeyPressed(KEY_UP) || pacman->direction.y < 0) {
             pacman->goUp();
+            pacman->eat();
         }
         if (IsKeyPressed(KEY_DOWN) || pacman->direction.y > 0) {
             pacman->goDown();
+            pacman->eat();
         }
         if (IsKeyPressed(KEY_RIGHT) || pacman->direction.x > 0) {
             pacman->goRight();
+            pacman->eat();
         }
         if (IsKeyPressed(KEY_LEFT) || pacman->direction.x < 0) {
             pacman->goLeft();
+            pacman->eat();
         }
+        
         EndDrawing();
     }
 }
