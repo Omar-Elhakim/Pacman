@@ -23,7 +23,7 @@ void Food::draw(Map* map) {
             centerx = map->getClPos(map->GetCell(j, i)->arrPos).x + map->CellWidth / 2;
             centery = map->getClPos(map->GetCell(j, i)->arrPos).y + map->CellHeight / 2;
             if (map->GetCell(j, i)->hasFood) {
-                DrawCircle(centerx, centery, 5.0f, YELLOW);
+                DrawCircle(centerx, centery, FRadius, YELLOW);
             }
             else {
                 continue;
