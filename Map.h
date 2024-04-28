@@ -2,6 +2,7 @@
 #define CELLLIST_H
 #include "Cell.h"
 #include <vector>
+#include "../Ghost.h"
 
 #define isEven(x) ((x) % 2 == 0 ? true : false)
 
@@ -16,6 +17,8 @@ class Map {
     bool isPath(int x, int y);
 
   public:
+  //  Ghost** ghosts; 
+  //  int numGhosts; 
     Color pathColor = GREEN;
     Cell **list;
     float CellWidth, CellHeight;

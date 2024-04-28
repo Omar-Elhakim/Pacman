@@ -140,20 +140,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Level.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Map.cpp" />
-    <ClCompile Include="mapmaker.cpp" />
-    <ClCompile Include="pacman.cpp" />
-    <ClCompile Include="Window.cpp" />
+    <ClInclude Include="DifficultyLevels.h" />
+    <ClInclude Include="Ghost.h" />
+    <ClInclude Include="Header_files\Cell.h" />
+    <ClInclude Include="Header_files\Level.h" />
+    <ClInclude Include="Header_files\Map.h" />
+    <ClInclude Include="Header_files\mapmaker.h" />
+    <ClInclude Include="Header_files\pacman.h" />
+    <ClInclude Include="Header_files\Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Cell.h" />
-    <ClInclude Include="Level.h" />
-    <ClInclude Include="Map.h" />
-    <ClInclude Include="mapmaker.h" />
-    <ClInclude Include="pacman.h" />
-    <ClInclude Include="Window.h" />
+    <ClCompile Include="Source_files\Level.cpp" />
+    <ClCompile Include="Source_files\main.cpp" />
+    <ClCompile Include="Source_files\Map.cpp" />
+    <ClCompile Include="Source_files\mapmaker.cpp" />
+    <ClCompile Include="Source_files\pacman.cpp" />
+    <ClCompile Include="Source_files\Window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,6 +2,7 @@
 #include <queue>
 #include <raylib.h>
 #include <vector>
+#include "../Ghost.h"
 
 Map::Map() {
     MakeList();

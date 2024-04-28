@@ -8,13 +8,14 @@ class Pacman {
     Texture2D pacmanText;
     Rectangle AnimationBox;
     Vector2 ImageSize;
-    Vector2 InitialPosition;
-    float x;
+    int x;
     float speed;
     int a;
     Map *map;
 
   public:
+      Vector2 InitialPosition;
+
     Vector2 direction;
     Pacman(Map *map);
     ~Pacman();

@@ -3,10 +3,19 @@
 #include "mapmaker.h"
 #include "pacman.h"
 #include "raylib.h"
+#include<iostream>
+#include "../Ghost.h"
+using namespace std;
 
 Level::Level(int WindowWidth, int WindowHeight) : WindowWidth(WindowWidth), WindowHeight(WindowHeight) {
     map = new Map();
     pacman = new Pacman(map);
+    for (int i = 0; i < 3; ++i) {
+        ghosts[i] = new Ghost(map);
+        ghosts[i]->position = map->getClPos({ i,i+5 });
+    }
+
+
     source = {0, 0}, dest = {vc - 1, hc - 1};
 }
 
@@ -23,6 +32,10 @@ void Level::start() {
         ClearBackground(WHITE);
         map->Draw();
         pacman->draw();
+        for (int i = 0; i < 3; ++i) {
+            ghosts[i]->Draw();
+        }
+        DrawText("Score : ", 10, map->infoBarHeight / 2 - 10, 30, WHITE);
         if (IsWindowResized()) {
             WindowWidth = GetScreenWidth();
             WindowHeight = GetScreenHeight();
@@ -53,3 +66,6 @@ void Level::start() {
         EndDrawing();
     }
 }
+
+
+
