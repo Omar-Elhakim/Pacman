@@ -15,43 +15,61 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header_files\Cell.h">
-      <Filter>Header_Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Header_files\Level.h">
-      <Filter>Header_Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Header_files\Map.h">
-      <Filter>Header_Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Header_files\mapmaker.h">
-      <Filter>Header_Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Header_files\pacman.h">
-      <Filter>Header_Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Header_files\Window.h">
-      <Filter>Header_Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="Source_files\Level.cpp">
-      <Filter>Source_Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source_files\main.cpp">
-      <Filter>Source_Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source_files\Map.cpp">
-      <Filter>Source_Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source_files\mapmaker.cpp">
-      <Filter>Source_Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source_files\pacman.cpp">
-      <Filter>Source_Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source_files\Window.cpp">
-      <Filter>Source_Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source_files\DifficultyLevels.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source_files\Ghost.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source_files\Food.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Header_files\Cell.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header_files\Level.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header_files\Map.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header_files\mapmaker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header_files\pacman.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header_files\Window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header_files\DifficultyLevels.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header_files\Ghost.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header_files\Food.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

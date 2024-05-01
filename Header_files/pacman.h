@@ -9,7 +9,6 @@ class Pacman {
     Texture2D pacmanText;
     Rectangle AnimationBox;
     Vector2 ImageSize;
-    Vector2 InitialPosition;
     int x;
     float speed;
     int a;
@@ -17,6 +16,8 @@ class Pacman {
     Food *food;
 
   public:
+      Vector2 InitialPosition;
+
       int score1 = 0;
     Vector2 direction;
     Pacman(Map *map, Food* food);

@@ -141,7 +141,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Header_files\Cell.h" />
+    <ClInclude Include="Header_files\DifficultyLevels.h" />
     <ClInclude Include="Header_files\Food.h" />
+    <ClInclude Include="Header_files\Ghost.h" />
     <ClInclude Include="Header_files\Level.h" />
     <ClInclude Include="Header_files\Map.h" />
     <ClInclude Include="Header_files\mapmaker.h" />
@@ -149,7 +151,9 @@
     <ClInclude Include="Header_files\Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source_files\DifficultyLevels.cpp" />
     <ClCompile Include="Source_files\Food.cpp" />
+    <ClCompile Include="Source_files\Ghost.cpp" />
     <ClCompile Include="Source_files\Level.cpp" />
     <ClCompile Include="Source_files\main.cpp" />
     <ClCompile Include="Source_files\Map.cpp" />

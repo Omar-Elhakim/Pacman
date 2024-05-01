@@ -46,7 +46,7 @@ void Pacman::eat() {
     if (map->GetCell(midpoint.x / map->CellWidth, (midpoint.y - map->infoBarHeight) / map->CellHeight)->hasFood == true) {
 
         map->GetCell(midpoint.x / map->CellWidth, (midpoint.y - map->infoBarHeight) / map->CellHeight)->hasFood = false;
-        score1 += 100000000;
+        score1 += 10;
     }
 
 }
