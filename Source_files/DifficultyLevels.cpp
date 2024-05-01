@@ -107,7 +107,7 @@ void DifficultyLevels::moveTowardsPlayer(Map *map) {
         }
     }
 }*/
-
+/* llllllllllllllllllll
 void DifficultyLevels::moveRandomSlowly(Ghost* ghosts[], int numGhosts, Map* map) {
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -188,3 +188,4 @@ void DifficultyLevels::moveTowardspacman(Ghost* ghosts[], int numGhosts, Map* ma
 
     map->FindPath(nearestGhostPos, playerPos);
 }
+*/

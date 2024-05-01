@@ -1,23 +1,34 @@
-#ifndef GHOSTH
-#define GHOSTH
+#ifndef GHOSTH 
+#define GHOSTH 
+#include "../Header_files/Map.h"
+#include "../Header_files/pacman.h"
 
-#include <raylib.h>
-#include "mapmaker.h"
-#include "Map.h"
-#include "pacman.h"
-#include "Ghost.h"
-#include <random>
 class Ghost {
+private:
+    Image GhostImage;
+    Vector2 imageSize;
+    Texture2D  ghostText;
+    Vector2 InitialPosition;
+    Rectangle ghostbox ;
+    int n;
+    float speed;
+    int m;
+Map* map; 
 public:
-    Vector2 position;
+    Vector2i position;
+    Vector2 direction;
     Color color;
-    Map* map;
-   void move(float speed);
-   void move(Pacman* pacman);
-
+   // Map* map;
     Ghost(Map* map);
-
-    void Draw();
+    ~Ghost();
+    void draw();
+    void setSize();
+    void goRight();
+    void goLeft();
+    void goUp();
+    void goDown();
+    void move();
+    void move(float speed);
+    void move(Pacman* pacman);
 };
-
 #endif // GHOST_H

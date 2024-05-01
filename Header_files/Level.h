@@ -3,12 +3,14 @@
 #include "Map.h"
 #include "pacman.h"
 #include "Food.h"
+#include "../Header_files/Ghost.h"
 
 class Level {
   private:
     Vector2i source, dest;
     int WindowWidth, WindowHeight;
     Pacman *pacman;
+    Ghost *ghosts;
 
   public:
     Map *map = nullptr;

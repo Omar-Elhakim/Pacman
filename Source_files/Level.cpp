@@ -2,6 +2,7 @@
 #include "../Header_files/Cell.h"
 #include "../Header_files/mapmaker.h"
 #include "../Header_files/pacman.h"
+#include "../Header_files/Ghost.h"
 #include "raylib.h"
 #include<iostream>
 using namespace std;
@@ -12,6 +13,7 @@ Level::Level(int WindowWidth, int WindowHeight) : WindowWidth(WindowWidth), Wind
     map = new Map();
     food = new Food(map);
     pacman = new Pacman(map,food);
+    ghosts = new Ghost(map);
     source = {0, 0}, dest = {vc - 1, hc - 1};
 
 }
@@ -19,8 +21,10 @@ Level::Level(int WindowWidth, int WindowHeight) : WindowWidth(WindowWidth), Wind
 Level::~Level() {
     delete map;
     delete pacman;
+    delete ghosts;
     map = nullptr;
     pacman = nullptr;
+    ghosts = nullptr;
 }
 
 void Level::start() {
@@ -30,6 +34,7 @@ void Level::start() {
         map->Draw();
         food->draw(map);
         pacman->draw();
+        ghosts->draw();
         DrawText(TextFormat("Counter: %d", pacman->score1), 10, map->infoBarHeight / 2 - 10, 30, WHITE);
         if (IsWindowResized()) {
             WindowWidth = GetScreenWidth();
