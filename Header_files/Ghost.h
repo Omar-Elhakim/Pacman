@@ -2,9 +2,9 @@
 #define GHOSTH
 
 #include <raylib.h>
-#include "../Pacman/Header_files/mapmaker.h"
-#include "../Pacman/Header_files/Map.h"
-#include "../Pacman/Header_files/pacman.h"
+#include "mapmaker.h"
+#include "Map.h"
+#include "pacman.h"
 #include "Ghost.h"
 #include <random>
 class Ghost {

@@ -1,9 +1,9 @@
-#include "DifficultyLevels.h"
+#include "../Header_files/DifficultyLevels.h"
 #include <raylib.h>
 #include "raymath.h"
-#include "../Pacman/Header_files/Map.h"
-#include "../Pacman/Header_files/mapmaker.h"
-#include "../Pacman/Header_files/pacman.h"
+#include "../Header_files/Map.h"
+#include "../Header_files/mapmaker.h"
+#include "../Header_files/pacman.h"
 #include <random>
 #include <queue>
 

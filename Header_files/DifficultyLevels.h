@@ -1,11 +1,11 @@
-#ifndef DifficultyLevelsSH
-#define DifficultyLevelsH
+#ifndef DifficultyLevels_H
+#define DifficultyLevels_H
 
 #include "Ghost.h"
 #include <random>
-#include "../Pacman/Header_files/mapmaker.h"
-#include "../Pacman/Header_files/Map.h"
-#include "../Pacman/Header_files/pacman.h"
+#include "mapmaker.h"
+#include "Map.h"
+#include "pacman.h"
 
 
 class DifficultyLevels {

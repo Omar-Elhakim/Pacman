@@ -1,10 +1,10 @@
-#include "Ghost.h"
+#include "../Header_files/Ghost.h"
 #include <raylib.h>
-#include "../Pacman/Header_files/mapmaker.h"
-#include "../Pacman/Header_files/Map.h"
-#include "../Pacman/Header_files/pacman.h"
+#include "../Header_files/mapmaker.h"
+#include "../Header_files/Map.h"
+#include "../Header_files/pacman.h"
 #include <random>
-#include "Header_files/Cell.h"
+#include "../Header_files/Cell.h"
 using namespace std;
 Ghost::Ghost(Map* map) {
  

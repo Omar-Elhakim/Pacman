@@ -2,20 +2,18 @@
 
 #include "Map.h"
 #include "pacman.h"
-#include "../Ghost.h"
+#include "Food.h"
 
 class Level {
-private:
+  private:
     Vector2i source, dest;
     int WindowWidth, WindowHeight;
-    Pacman* pacman;
+    Pacman *pacman;
 
-public:
-    Map* map = nullptr;
+  public:
+    Map *map = nullptr;
+    Food *food = nullptr;
     Level(int WindowWidth, int WindowHeight);
     ~Level();
     void start();
-    
-    Ghost* ghosts[3]; 
-
 };
