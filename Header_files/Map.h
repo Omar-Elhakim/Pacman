@@ -12,9 +12,16 @@ class Map {
     void SetCellsPos();
     void SetCellsSize();
     void MakeList();
-    bool isPath(int x, int y);
+   // bool isPath(int x, int y);
+    
 
+    std::vector<Vector2i> calculatedPath;
   public:
+      std::vector<Vector2i> GetCalculatedPath();
+      bool isPath(int x, int y);
+
+
+
     Color pathColor = GREEN;
     Cell **list;
     float CellWidth, CellHeight;

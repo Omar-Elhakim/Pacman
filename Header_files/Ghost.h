@@ -10,13 +10,13 @@ private:
     Texture2D  ghostText;
     Vector2 InitialPosition;
     Rectangle ghostbox ;
-    int n;
+    int frameIndex;
     float speed;
-    int m;
-Map* map; 
+    int animationDirection;
+    Map* map; 
 public:
     Vector2i position;
-    Vector2 direction;
+    Vector2 Direction;
     Color color;
    // Map* map;
     Ghost(Map* map);
