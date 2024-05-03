@@ -147,6 +147,7 @@
     <ClInclude Include="Header_files\Level.h" />
     <ClInclude Include="Header_files\Map.h" />
     <ClInclude Include="Header_files\mapmaker.h" />
+    <ClInclude Include="Header_files\Menu.h" />
     <ClInclude Include="Header_files\pacman.h" />
     <ClInclude Include="Header_files\Window.h" />
   </ItemGroup>
@@ -158,6 +159,7 @@
     <ClCompile Include="Source_files\main.cpp" />
     <ClCompile Include="Source_files\Map.cpp" />
     <ClCompile Include="Source_files\mapmaker.cpp" />
+    <ClCompile Include="Source_files\Menu.cpp" />
     <ClCompile Include="Source_files\pacman.cpp" />
     <ClCompile Include="Source_files\Window.cpp" />
   </ItemGroup>
