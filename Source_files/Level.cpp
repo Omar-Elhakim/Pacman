@@ -32,8 +32,8 @@ void Level::start() {
         pacman->draw();
         DrawText(TextFormat("Counter: %d", pacman->score1), 10, map->infoBarHeight / 2 - 10, 30, WHITE);
         if (IsWindowResized()) {
-            WindowWidth = GetScreenWidth();
-            WindowHeight = GetScreenHeight();
+            //WindowWidth = GetScreenWidth();
+            //WindowHeight = GetScreenHeight();
             map->Update();
             pacman->setSize();
         }
