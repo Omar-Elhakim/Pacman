@@ -1,7 +1,4 @@
 #include "../Header_files/Menu.h"
-#include <string.h>
-
-using namespace std;
 
 void mainMenu() {
     // Load background music
@@ -169,48 +166,69 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                 for (int j = 0; j < 3; ++j) {
                     if (CheckCollisionPointRec(GetMousePosition(), levelButtons[i][j])) {
                         // Handle button clicks for each level
-                        Level l1 = Level(GetScreenWidth(), GetScreenHeight());
-
+                        Level* level;
                         switch (i * 3 + j) {
                         case 0:
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 1); //easy
+                            level->start();
                             // Handle Level 1 button click
-                            l1.start();
                             // toLevelMenu("Level 1", 1);
                             break;
                         case 1:
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 2); //easy
+                            level->start();
                             // Handle Level 2 button click
                             // toLevelMenu("Level 1", 2);
                             break;
                             // Repeat for the rest of the cases
                         case 2:
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 3); //easy
+                            level->start();
                             // Handle Level 3 button click
                             // toLevelMenu("Level 1", 3);
                             break;
                         case 3:
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 1); //medium
+                            level->start();
                             // Handle Level 4 button click
                             // toLevelMenu("Level 2", 1);
                             break;
                         case 4:
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 2); //medium
+                            level->start();
                             // Handle Level 5 button click
                             // toLevelMenu("Level 2", 2);
                             break;
                         case 5:
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 3); //medium
+                            level->start();
                             // Handle Level 6 button click
                             // toLevelMenu("Level 2", 3);
                             break;
                         case 6:
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 1); //hard
+                            level->start();
                             // Handle Level 7 button click
                             // toLevelMenu("Level 3", 1);
                             break;
                         case 7:
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 2); //hard
+                            level->start();
                             // Handle Level 8 button click
                             // toLevelMenu("Level 3", 2);
                             break;
                         case 8:
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 3); //hard
+                            level->start();
                             // Handle Level 9 button click
                             // toLevelMenu("Level 3", 3);
                             break;
+                        default:
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 1); //so i can delete the pionter down there
+                            break;
                         }
+                        delete level;
+                        level = nullptr;
                     }
                 }
             }
@@ -316,7 +334,7 @@ void toCredits(Texture2D background, Texture2D logo, Font customFont, Texture2D 
     // Credits text
     string creditsText = "MADE BY :\n\n"
         "AHMED MOSTAFA \n\n"
-        "OMAR HAKIM \n\n"
+        "OMAR ELHAKIM \n\n"
         "AHMED ESSAM \n\n"
         "OMAR TEBRY \n\n"
         "OSAMA MAHMOUD \n\n"

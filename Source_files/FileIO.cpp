@@ -1,72 +1,51 @@
 #include "../Header_files/FileIO.h"
-#include "../Header_files/Map.h"
-#include "../Header_files/Cell.h"
 
-void FileIO::writeScoreToFile(int score)
+using namespace std;
+vector<int> readScore()
 {
-    
-    ofstream outFile("score.txt");
-    if (outFile.is_open()) {
-        outFile << "Score: " << score << endl;
-        outFile.close();
-        cout << "Score saved to score.txt" << endl;
+    vector<int> scores;
+    ifstream scoresFile("./assets/scores.txt");
+    string score;
+    for(int i=0;i<3;i++)
+    {
+        getline(scoresFile, score);
+        scores.push_back(stoi(score));
     }
-    else {
-        cout << "Error: Unable to open file for writing!" << endl;
-        
+    return scores;
+}
+void writeScore(int score)
+{
+    vector<int> scores = readScore();
+    scores.push_back(score);
+    sort(scores.begin(), scores.end(), greater<int>());
+    ofstream scoresFile("./assets/scores.txt");
+    for (int i = 0; i < 3; i++)
+    {
+        scoresFile << scores[i] << endl;
     }
 }
-void FileIO::writeMapToFile(Map& myMap)
+void writeMap(Map *map,int n)
 {
 
-    ofstream outFile("map.txt");
-    if (outFile.is_open()) {
-        //outFile << "Map: " << myMap.toString() << endl;
-        outFile.close();
-        cout << "Map saved to map.txt" << endl;
-    }
-    else {
-        cout << "Error: Unable to open file for writing!" << endl;
-
-    }
-}
-
-void FileIO::readFromFile()
-{
-    ifstream inFile("score.txt");
-    string line;
-    if (inFile.is_open()) {
-        while (getline(inFile, line)) {
-            cout << "Score read from file: " << line << endl;
-        }
-        inFile.close();
-    }
-    else {
-        cerr << "Error: Unable to open file for reading!" << endl;
-        
-    }
-}
-/*
-Map FileIO::readMapFromFile() {
-    ifstream inFile("map.txt");
-    Map myMap;
-    int height = hc;
-    int width = vc;
-    inFile >> height >> width;
-    Cell** list{};
+    fstream mapFile;
+    mapFile.open(TextFormat("./assets/Maps/map%d.csv", n), ios::out );
     for (int i = 0; i < hc; i++) {
         for (int j = 0; j < vc; j++) {
-            list[i][j].TileType = ROAD;
-            list[i][j].pos.x = j;
-            list[i][j].pos.y = i;
-            if (isEven(i + j)) {
-                list[i][j].BackgroundColor = BROWN;
-            }
-            else
-                list[i][j].BackgroundColor = WHITE;
+            mapFile<< (map->GetCell(j, i)->TileType == WALL) << ",";
+        }
+        mapFile << "\n";
+    }
+}
+void readMap(Map* map, int n) {
+    ifstream mapFile;
+    mapFile.open(TextFormat("./assets/Maps/map%d.csv", n));
+    string row;
+    for (int i = 0; i < hc; i++)
+    {
+        getline(mapFile, row);
+        for (int j = 0; j < vc; j++)
+        {
+            map->GetCell(j, i)->TileType = ((row[2 * j]-'0') ? WALL : ROAD);
         }
     }
-    inFile.close();
-    return myMap;
 }
-*/

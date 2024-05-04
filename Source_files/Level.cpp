@@ -1,15 +1,9 @@
 #include "../Header_files/Level.h"
-#include "../Header_files/Cell.h"
-#include "../Header_files/mapmaker.h"
-#include "../Header_files/pacman.h"
-#include "raylib.h"
-#include<iostream>
-using namespace std;
 
-
-
-Level::Level(int WindowWidth, int WindowHeight) : WindowWidth(WindowWidth), WindowHeight(WindowHeight) {
+Level::Level(int WindowWidth, int WindowHeight ,int n) : WindowWidth(WindowWidth), WindowHeight(WindowHeight) {
     map = new Map();
+    readMap(map, n);
+    map->ColorMap();
     food = new Food(map);
     pacman = new Pacman(map,food);
     source = {0, 0}, dest = {vc - 1, hc - 1};
@@ -30,15 +24,15 @@ void Level::start() {
         map->Draw();
         food->draw(map);
         pacman->draw();
-        DrawText(TextFormat("Counter: %d", pacman->score1), 10, map->infoBarHeight / 2 - 10, 30, WHITE);
+        DrawText(TextFormat("Score: %d", pacman->score), 10, map->infoBarHeight / 2 - 10, 30, WHITE);
         if (IsWindowResized()) {
-            //WindowWidth = GetScreenWidth();
-            //WindowHeight = GetScreenHeight();
             map->Update();
             pacman->setSize();
         }
         if (IsKeyPressed(KEY_C)) {
             mapMaker(map);
+            writeMap(map,1);
+
             food->update(map);
 
         }
@@ -64,7 +58,13 @@ void Level::start() {
             pacman->goLeft();
             pacman->eat();
         }
-        
+        if (pacman->score==food->count*10)
+        {
+            EndDrawing();
+            cout << "YOU WON!";
+            break;
+        }
         EndDrawing();
     }
+    writeScore(pacman->score);
 }

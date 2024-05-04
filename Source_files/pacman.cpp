@@ -4,9 +4,10 @@
 #include "../Header_files/Level.h"
 
 Pacman::Pacman(Map *map, Food* food) : map(map),food(food) {
+    score = x = a = 0;
     speed = 1.8f;
-    x = 0;
-    a = 0;
+    //x = 0;
+    //a = 0;
     ImageSize = {2 * map->CellWidth, 4 * map->CellHeight};
     setSize();
     InitialPosition =  map->getClPos(map->GetCell(1, 1)->arrPos);
@@ -46,7 +47,7 @@ void Pacman::eat() {
     if (map->GetCell(midpoint.x / map->CellWidth, (midpoint.y - map->infoBarHeight) / map->CellHeight)->hasFood == true) {
 
         map->GetCell(midpoint.x / map->CellWidth, (midpoint.y - map->infoBarHeight) / map->CellHeight)->hasFood = false;
-        score1 += 10;
+        score += 10;
     }
 
 }

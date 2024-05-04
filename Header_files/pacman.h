@@ -16,9 +16,9 @@ class Pacman {
     Food *food;
 
   public:
-      Vector2 InitialPosition;
+    Vector2 InitialPosition;
 
-      int score1 = 0;
+    int score;
     Vector2 direction;
     Pacman(Map *map, Food* food);
     Pacman(Map* map);

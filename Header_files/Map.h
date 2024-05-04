@@ -2,6 +2,8 @@
 #include "Cell.h"
 #include <vector>
 #include <string>
+#include <queue>
+#include <raylib.h>
 using namespace std;
 
 #define isEven(x) ((x) % 2 == 0 ? true : false)
@@ -22,7 +24,8 @@ public:
     float CellWidth, CellHeight;
     int infoBarHeight = 50;
     void ColorClList();
-    void ColorClSubList(std::vector<Vector2i> list);
+    void ColorMap();
+    void ColorClSubList(vector<Vector2i> list);
     void SetPathColor(Color color);
     void Update();
     void Draw();
