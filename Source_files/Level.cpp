@@ -21,10 +21,10 @@ Level::Level(int WindowWidth, int WindowHeight) : WindowWidth(WindowWidth), Wind
 Level::~Level() {
     delete map;
     delete pacman;
-    delete ghosts;
+    //delete ghosts;
     map = nullptr;
     pacman = nullptr;
-    ghosts = nullptr;
+    //ghosts = nullptr;
 }
 
 void Level::start() {

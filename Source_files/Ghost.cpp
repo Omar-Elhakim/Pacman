@@ -11,7 +11,7 @@ Ghost::Ghost(Map* map) :map(map) {
     GhostImage = LoadImage("assets/ghost.jpg");
     imageSize = { 0, 0 };
     speed = 0.0f;
-    map = nullptr;
+    //map = nullptr;
     imageSize = { 2 * map->CellWidth, 2 * map->CellHeight };
     setSize();
     InitialPosition = map->getClPos(map->GetCell(10, 10)->arrPos);
@@ -35,7 +35,7 @@ void Ghost::setSize() {
 
 
 void Ghost::draw() {
-    DrawTexture(ghostText, position.x, position.y, WHITE);
+    DrawTexture(ghostText, InitialPosition.x, InitialPosition.y, WHITE);
 }
 
 
@@ -187,7 +187,7 @@ void Ghost::move(float speed) {
     }
     else if (level == 3) {
         Pacman* pacman;
-        if (pacman) {
+        /*if (pacman) {
             Vector2i pacmanPos = map->getClArrPos(pacman->InitialPosition);
 
             map->FindPath(position, pacmanPos); 
@@ -199,7 +199,7 @@ void Ghost::move(float speed) {
                 position.x = nextStep.x * map->CellWidth; 
                 position.y = nextStep.y * map->CellHeight;
             }
-        }
+        }*/
     }
     position.x += Direction.x * speed;
     position.y += Direction.y * speed;
