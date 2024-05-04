@@ -1,7 +1,4 @@
 #include "../Header_files/Map.h"
-#include <queue>
-#include <raylib.h>
-#include <vector>
 
 Map::Map() {
     MakeList();
@@ -98,6 +95,13 @@ void Map::ColorClList() {
     }
 }
 
+void Map::ColorMap() {
+    for (int i = 0; i < hc; i++) {
+        for (int j = 0; j < vc; j++) {
+            list[i][j].BackgroundColor = (list[i][j].TileType == WALL) ? BLUE : BLACK;
+        }
+    }
+}
 void Map::MakeList() {
     list = new Cell *[hc];
     for (int i = 0; i < hc; i++)

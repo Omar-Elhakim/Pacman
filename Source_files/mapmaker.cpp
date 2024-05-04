@@ -274,14 +274,7 @@ void mapMaker(Map *map) {
     }
     for (int i = 0; i < hc; i++) {
         for (int j = 0; j < vc; j++) {
-            switch (map->GetCell(j, i)->TileType) {
-            case (ROAD):
-                map->GetCell(j, i)->BackgroundColor = BLACK;
-                break;
-            case (WALL):
-                map->GetCell(j, i)->BackgroundColor = BLUE;
-                break;
-            }
+            map->GetCell(j, i)->BackgroundColor = (map->GetCell(j, i)->TileType == WALL) ? BLUE : BLACK;
         }
     }
 }

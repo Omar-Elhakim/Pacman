@@ -3,6 +3,10 @@
 #include "Map.h"
 #include "pacman.h"
 #include "Food.h"
+#include "mapmaker.h"
+#include "pacman.h"
+#include "FileIO.h"
+#include "raylib.h"
 
 class Level {
   private:
@@ -13,7 +17,7 @@ class Level {
   public:
     Map *map = nullptr;
     Food *food = nullptr;
-    Level(int WindowWidth, int WindowHeight);
+    Level(int WindowWidth, int WindowHeight,int n);
     ~Level();
     void start();
 };

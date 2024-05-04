@@ -1,5 +1,4 @@
 #include "../Header_files/Food.h"
-#include "raylib.h"
 
 Food::Food(Map* map) {
     count = 0;

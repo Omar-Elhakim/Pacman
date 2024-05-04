@@ -142,6 +142,7 @@
   <ItemGroup>
     <ClInclude Include="Header_files\Cell.h" />
     <ClInclude Include="Header_files\DifficultyLevels.h" />
+    <ClInclude Include="Header_files\FileIO.h" />
     <ClInclude Include="Header_files\Food.h" />
     <ClInclude Include="Header_files\Ghost.h" />
     <ClInclude Include="Header_files\Level.h" />
@@ -153,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source_files\DifficultyLevels.cpp" />
+    <ClCompile Include="Source_files\FileIO.cpp" />
     <ClCompile Include="Source_files\Food.cpp" />
     <ClCompile Include="Source_files\Ghost.cpp" />
     <ClCompile Include="Source_files\Level.cpp" />
