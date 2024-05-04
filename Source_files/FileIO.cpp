@@ -1,6 +1,6 @@
-#include "FileIO.h"
-#include "Map.h"
-#include "Cell.h"
+#include "../Header_files/FileIO.h"
+#include "../Header_files/Map.h"
+#include "../Header_files/Cell.h"
 
 void FileIO::writeScoreToFile(int score)
 {
@@ -21,7 +21,7 @@ void FileIO::writeMapToFile(Map& myMap)
 
     ofstream outFile("map.txt");
     if (outFile.is_open()) {
-        outFile << "Map: " << myMap.toString() << endl;
+        //outFile << "Map: " << myMap.toString() << endl;
         outFile.close();
         cout << "Map saved to map.txt" << endl;
     }
@@ -46,6 +46,7 @@ void FileIO::readFromFile()
         
     }
 }
+/*
 Map FileIO::readMapFromFile() {
     ifstream inFile("map.txt");
     Map myMap;
@@ -68,3 +69,4 @@ Map FileIO::readMapFromFile() {
     inFile.close();
     return myMap;
 }
+*/

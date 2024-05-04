@@ -2,6 +2,7 @@
 
 #include "Map.h"
 #include "pacman.h"
+#include "Food.h"
 
 class Level {
   private:
@@ -11,6 +12,7 @@ class Level {
 
   public:
     Map *map = nullptr;
+    Food *food = nullptr;
     Level(int WindowWidth, int WindowHeight);
     ~Level();
     void start();

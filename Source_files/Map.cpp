@@ -1,12 +1,7 @@
-#include "Map.h"
+#include "../Header_files/Map.h"
 #include <queue>
 #include <raylib.h>
 #include <vector>
-#include <iostream>
-#include <string>
-#include <sstream>
-
-using namespace std;
 
 Map::Map() {
     MakeList();
@@ -15,8 +10,8 @@ Map::Map() {
     for (int i = 0; i < hc; i++) {
         for (int j = 0; j < vc; j++) {
             list[i][j].TileType = ROAD;
-            list[i][j].pos.x = j;
-            list[i][j].pos.y = i;
+            list[i][j].arrPos.x = j;
+            list[i][j].arrPos.y = i;
             if (isEven(i + j)) {
                 list[i][j].BackgroundColor = BROWN;
             } else
@@ -36,7 +31,7 @@ Map::~Map() {
 bool Map::isPath(int x, int y) {
     if (y >= hc || x >= vc || y < 0 || x < 0)
         return false;
-    if (GetCell(y, x)->TileType == WALL)
+    if (GetCell(x, y)->TileType == WALL)
         return false;
     return true;
 }
@@ -59,7 +54,7 @@ void Map::BFS(Vector2i prev[][vc], Vector2i from) {
         for (int i = 0; i < 4; i++) {
             col = s.x + dc[i];
             row = s.y + dr[i];
-            GetCell(s.y, s.x)->BackgroundColor = GREEN;
+            GetCell(s.x, s.y)->BackgroundColor = GREEN;
             if (isPath(col, row) && !visited[row][col]) {
                 visited[row][col] = true;
                 prev[row][col] = s;
@@ -72,7 +67,7 @@ void Map::BFS(Vector2i prev[][vc], Vector2i from) {
 
 void Map::SetCellsSize() {
     CellWidth = static_cast<float>(GetScreenWidth()) / vc;
-    CellHeight = static_cast<float>(GetScreenHeight()) / hc;
+    CellHeight = static_cast<float>(GetScreenHeight() - infoBarHeight) / (hc);
     for (int i = 0; i < hc; i++) {
         for (int j = 0; j < vc; j++) {
             list[i][j].rec.width = CellWidth;
@@ -82,12 +77,10 @@ void Map::SetCellsSize() {
 }
 
 void Map::SetCellsPos() {
-    CellWidth = static_cast<float>(GetScreenWidth()) / vc;
-    CellHeight = static_cast<float>(GetScreenHeight()) / hc;
     for (int i = 0; i < hc; i++) {
         for (int j = 0; j < vc; j++) {
             list[i][j].rec.x = j * CellWidth;
-            list[i][j].rec.y = i * CellHeight;
+            list[i][j].rec.y = i * CellHeight + infoBarHeight;
         }
     }
 }
@@ -128,7 +121,7 @@ void Map::Update() {
 void Map::Draw() {
     for (int i = 0; i < hc; i++) {
         for (int j = 0; j < vc; j++) {
-            GetCell(i, j)->Draw();
+            GetCell(j, i)->Draw();
         }
     }
 }
@@ -153,40 +146,37 @@ void Map::FindPath(Vector2i from, Vector2i to) {
 
     SetPathColor(RED);
     ColorClSubList(Path);
-    GetCell(to.y, to.x)->BackgroundColor = GOLD;
+    GetCell(to.x, to.y)->BackgroundColor = GOLD;
     SetPathColor(GREEN);
 }
 
-Cell *Map::GetCell(int row, int col) {
+Cell *Map::GetCell(int col, int row) {
     if (col < vc && row < hc && col >= 0 && row >= 0) {
         return &list[row][col];
     } else
         return nullptr;
 }
 
+bool Map::posInGameCanvas(Vector2 Position) {
+    return posInBoundaries(Position) && !posInInfoBar(Position);
+}
 
+bool Map::posInInfoBar(Vector2 Position) {
+    return posInBoundaries(Position) && Position.y < infoBarHeight;
+}
 
-string Map::toString(){
-   int height = 15;
-   int width = 20;
-   Cell** list{};
-   stringstream ss;
-   ss << height << " " << width;
-   MakeList();
-   SetCellsSize();
-   SetCellsPos();
-   for (int i = 0; i < hc; i++) {
-       for (int j = 0; j < vc; j++) {
-           list[i][j].TileType = ROAD;
-           list[i][j].pos.x = j;
-           list[i][j].pos.y = i;
-           if (isEven(i + j)) {
-               list[i][j].BackgroundColor = BROWN;
-           }
-           else
-               list[i][j].BackgroundColor = WHITE;
-       }
-   }
-    return ss.str();
+bool Map::posInBoundaries(Vector2 Position) {
+    return Position.x < GetScreenWidth() && Position.y < GetScreenHeight() && Position.x > 0 && Position.y > 0;
+}
 
+Vector2i Map::getClArrPos(Vector2 Position) {
+    if (posInGameCanvas(Position))
+        return {(int)(Position.x / CellWidth), (int)((Position.y - infoBarHeight) / CellHeight)};
+    return {-1, -1};
+}
+
+Vector2 Map::getClPos(Vector2i ArrPos) {
+    if (ArrPos.x < vc && ArrPos.y < hc && ArrPos.x >= 0 && ArrPos.y >= 0)
+        return {ArrPos.x * CellWidth, ArrPos.y * CellHeight + infoBarHeight};
+    return {-1, -1};
 }

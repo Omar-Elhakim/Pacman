@@ -7,7 +7,7 @@
 
 extern int WindowWidth, WindowHeight;
 
-void BFS(Vector2i **prev, Vector2i from);
+void BFS(Vector2i prev[hc][vc], Vector2i from);
 void findPath(Vector2i from, Vector2i to);
 void makeWall(int x, int y);
 void makePath(int x, int y);

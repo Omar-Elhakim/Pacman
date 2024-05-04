@@ -1,6 +1,7 @@
 #pragma once
 #include "Map.h"
 #include "raylib.h"
+#include "Food.h"
 
 class Pacman {
   private:
@@ -8,15 +9,19 @@ class Pacman {
     Texture2D pacmanText;
     Rectangle AnimationBox;
     Vector2 ImageSize;
-    Vector2 InitialPosition;
-    float x;
+    int x;
     float speed;
     int a;
     Map *map;
+    Food *food;
 
   public:
+      Vector2 InitialPosition;
+
+      int score1 = 0;
     Vector2 direction;
-    Pacman(Map *map);
+    Pacman(Map *map, Food* food);
+    Pacman(Map* map);
     ~Pacman();
     void draw();
     void move();
@@ -24,5 +29,7 @@ class Pacman {
     void goLeft();
     void goUp();
     void goDown();
-    void update();
+    void setSize();
+    void eat();
+    void die();
 };
