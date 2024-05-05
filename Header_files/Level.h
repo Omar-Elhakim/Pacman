@@ -7,13 +7,14 @@
 #include "pacman.h"
 #include "FileIO.h"
 #include "raylib.h"
+#include "Ghost.h"
 
 class Level {
   private:
     Vector2i source, dest;
     int WindowWidth, WindowHeight;
     Pacman *pacman;
-
+    Ghost* ghost;
   public:
     Map *map = nullptr;
     Food *food = nullptr;

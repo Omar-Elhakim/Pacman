@@ -103,6 +103,10 @@ void Pacman::setSize() {
     speed *= (ImageSize.x * ImageSize.y) / (OldImageSize.x * OldImageSize.y);
     ImageResize(&PacmanImage, ImageSize.x, ImageSize.y);
     pacmanText = LoadTextureFromImage(PacmanImage);
-    AnimationBox = {0, 0, PacmanImage.width / 2.f, pacmanText.height / 4.f};
+    for (size_t i = 0; i < 1; i++)
+    {
+        AnimationBox = { 0, 0, PacmanImage.width / 2.f, pacmanText.height / 4.f };
+        std::cout << "Pacman rendered" << std::endl;
+    }
     UnloadImage(PacmanImage);
 }

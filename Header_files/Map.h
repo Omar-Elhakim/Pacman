@@ -16,7 +16,7 @@ class Map {
     void SetCellsPos();
     void SetCellsSize();
     void MakeList();
-    bool isPath(int x, int y);
+    
 
 public:
     Color pathColor = GREEN;
@@ -33,6 +33,7 @@ public:
     bool posInGameCanvas(Vector2 Pos);
     bool posInInfoBar(Vector2 Pos);
     bool posInBoundaries(Vector2 Pos);
+    bool isPath(int x, int y);
     Cell *GetCell(int col, int row);
     Vector2i getClArrPos(Vector2 Position);
     Vector2 getClPos(Vector2i ArrPos);
