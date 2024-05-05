@@ -6,6 +6,7 @@ Level::Level(int WindowWidth, int WindowHeight ,int n) : WindowWidth(WindowWidth
     map->ColorMap();
     food = new Food(map);
     pacman = new Pacman(map,food);
+    ghost = new Ghost(map);
     source = {0, 0}, dest = {vc - 1, hc - 1};
 
 }
@@ -24,6 +25,7 @@ void Level::start() {
         map->Draw();
         food->draw(map);
         pacman->draw();
+        ghost->draw();
         DrawText(TextFormat("Score: %d", pacman->score), 10, map->infoBarHeight / 2 - 10, 30, WHITE);
         if (IsWindowResized()) {
             map->Update();
