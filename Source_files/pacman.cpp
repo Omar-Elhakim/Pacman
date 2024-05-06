@@ -40,10 +40,15 @@ void Pacman::move() {
     AnimationBox.x = x * AnimationBox.width;
     InitialPosition.x += direction.x;
     InitialPosition.y += direction.y;
-    
+    //teleportaion:
+     if (InitialPosition.x < -15)
+        InitialPosition.x = WindowWidth;
+    else if (InitialPosition.x >= WindowWidth)
+        InitialPosition.x = 0;
 }
 void Pacman::eat() {
     Vector2 midpoint = { (InitialPosition.x + (map->CellWidth/2)),(InitialPosition.y + (map->CellHeight/2)) };
+    if ((midpoint.x < WindowWidth) && (midpoint.x > 0))
     if (map->GetCell(midpoint.x / map->CellWidth, (midpoint.y - map->infoBarHeight) / map->CellHeight)->hasFood == true) {
 
         map->GetCell(midpoint.x / map->CellWidth, (midpoint.y - map->infoBarHeight) / map->CellHeight)->hasFood = false;
@@ -52,24 +57,34 @@ void Pacman::eat() {
 
 }
 void Pacman::goRight() {
-    Vector2 pointerTL = { InitialPosition.x + 1,InitialPosition.y + 2 };
-    Vector2 pointerBR = { InitialPosition.x + map->CellWidth - 1,InitialPosition.y + map->CellHeight - 2 };
+    Vector2 pointerTL = { ((InitialPosition.x + 1)/(map->CellWidth)) + 1,InitialPosition.y + 2};
+    Vector2 pointerBR = { ((InitialPosition.x + (map->CellWidth - 1))/(map->CellWidth)) + 0.01,InitialPosition.y + map->CellHeight - 2};
     direction = { speed, 0 };
     AnimationBox.y = 0 * AnimationBox.height;
-    if ((map->GetCell((pointerTL.x / map->CellWidth) + 1, (pointerTL.y-map->infoBarHeight) / map->CellHeight)->TileType == ROAD) &&
-        (map->GetCell((pointerBR.x / map->CellWidth) + 0.01, (pointerBR.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD)) {
+    if ((pointerTL.x < (WindowWidth / map->CellWidth)) && (pointerTL.x > 0) && (pointerBR.x < (WindowWidth / map->CellWidth)) && (pointerBR.x > 0)) {
+        if ((map->GetCell(pointerTL.x, (pointerTL.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD) &&
+            (map->GetCell(pointerBR.x, (pointerBR.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD)) {
+            move();
+        }
+    }
+    else {
         move();
     }
 }
  
 
 void Pacman::goLeft() {
-    Vector2 pointerTL = { InitialPosition.x + 1,InitialPosition.y + 2 };
-    Vector2 pointerBR = { InitialPosition.x + map->CellWidth - 1,InitialPosition.y + map->CellHeight - 2 };
+    Vector2 pointerTL = { ((InitialPosition.x + 1)/(map->CellWidth)) - 0.01,InitialPosition.y + 2};
+    Vector2 pointerBR = { ((InitialPosition.x + (map->CellWidth - 1))/(map->CellWidth)) - 1,InitialPosition.y + map->CellHeight - 2};
     direction = {-1 * speed, 0};
     AnimationBox.y = 1 * AnimationBox.height;
-    if ((map->GetCell((pointerTL.x / map->CellWidth)-0.01, (pointerTL.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD) &&
-        (map->GetCell((pointerBR.x / map->CellWidth)-1, (pointerBR.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD)) {
+    if ((pointerTL.x < (WindowWidth / map->CellWidth)) && (pointerTL.x > 0) && (pointerBR.x < (WindowWidth / map->CellWidth)) && (pointerBR.x > 0)) {
+        if ((map->GetCell(pointerTL.x, (pointerTL.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD) &&
+            (map->GetCell(pointerBR.x, (pointerBR.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD)) {
+            move();
+        }
+    }
+    else {
         move();
     }
 }
