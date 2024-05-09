@@ -1,7 +1,7 @@
 #include "../Header_files/Window.h"
 #include "../Header_files/Menu.h"
 
-int WindowWidth = GetScreenWidth(), WindowHeight = GetScreenHeight();
+int WindowWidth = 800, WindowHeight = 600;
 
 int main() {
     Window window = Window(WindowWidth, WindowHeight, "Pac-Man");

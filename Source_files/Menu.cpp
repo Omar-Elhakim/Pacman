@@ -1,58 +1,63 @@
 #include "../Header_files/Menu.h"
-#include "raylib.h"
-
-
-#include "raylib.h"
 
 void mainMenu() {
     // Load background music
     Music backgroundMusic = LoadMusicStream("assets/background_music.mp3");
+
+    // Start playing the background music
     PlayMusicStream(backgroundMusic);
+
+    // Set the volume of the background music to 30% (0.3)
     SetMusicVolume(backgroundMusic, 0.3);
 
     // Load common resources
     Texture2D background = LoadTexture("assets/background.png");
     Texture2D logo = LoadTexture("assets/logo.png");
     Font customFont = LoadFont("assets/Itim-Regular.ttf");
+
+    // Arrow button texture
     Texture2D arrowTexture = LoadTexture("assets/arrow.png");
 
-    // Custom button color
+    // Custom button color (F9C328)
     Color buttonColor = { 249, 195, 40, 255 };
+    // Custom button color (ee2327)
     Color buttonColor2 = { 238, 35, 39, 255 };
-    Color textColor = BLACK;
+    Color textColor = BLACK; // Black color for text
 
     // Main menu variables
     const int NUM_OPTIONS = 4;
     const char* menuOptions[NUM_OPTIONS] = { "START GAME", "HOW TO PLAY", "CREDITS", "QUIT GAME" };
     Rectangle buttons[NUM_OPTIONS];
 
-    // Calculate button positions and sizes based on screen dimensions
-    const float screenWidth = GetScreenWidth();
-    const float screenHeight = GetScreenHeight();
-    const float buttonWidth = screenWidth * 0.4f;
-    const float buttonHeight = 60;
-    const float buttonSpacing = 20;
-    const float startX = (screenWidth - buttonWidth) / 2;
-    const float startY = (screenHeight - (NUM_OPTIONS * buttonHeight + (NUM_OPTIONS - 1) * buttonSpacing)) / 2;
+    // Buttons positions and sizes
+    const float buttonWidth = 246; // Width of each button rectangle
+    const float buttonHeight = 60; // Height of each button rectangle
+    const float buttonSpacing = 20; // Spacing between buttons
+    const float startX = 277; // X-position for all buttons
+    const float startY = 213; // Y-position for the first button
 
-    for (int i = 0; i < NUM_OPTIONS; ++i) {
-        buttons[i] = { startX, startY + i * (buttonHeight + buttonSpacing), buttonWidth, buttonHeight };
-    }
+    buttons[0] = { startX, startY, buttonWidth, buttonHeight };
+    buttons[1] = { startX, startY + buttonHeight + buttonSpacing + 10, buttonWidth, buttonHeight };
+    buttons[2] = { startX, startY + (buttonHeight + buttonSpacing) * 2, buttonWidth, buttonHeight };
+    buttons[3] = { startX, startY + (buttonHeight + buttonSpacing) * 2 + buttonHeight + 32, buttonWidth, buttonHeight };
 
     while (!WindowShouldClose()) {
-        // Check for mouse input
-        Vector2 mousePos = GetMousePosition();
-
-        for (int i = 0; i < NUM_OPTIONS; ++i) {
-            // Check if mouse is hovering over the button
-            if (CheckCollisionPointRec(mousePos, buttons[i])) {
-                // Check if mouse button is pressed
-                if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        // Main menu logic
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            for (int i = 0; i < NUM_OPTIONS; ++i) {
+                if (CheckCollisionPointRec(GetMousePosition(), buttons[i])) {
                     switch (i) {
-                    case 0: toStartMenu(background, logo, customFont, arrowTexture); break;
-                    case 1: toHowToPlay(background, logo, customFont, arrowTexture); break;
-                    case 2: toCredits(background, logo, customFont, arrowTexture); break;
-                    case 3: return;
+                    case 0: // Start Game button
+                        toStartMenu(background, logo, customFont, arrowTexture);
+                        break;
+                    case 1: // How to play button
+                        toHowToPlay(background, logo, customFont, arrowTexture);
+                        break;
+                    case 2: // Credits button
+                        toCredits(background, logo, customFont, arrowTexture);
+                        break;
+                    case 3: // Quit Game button
+                        return;
                     }
                 }
             }
@@ -60,35 +65,41 @@ void mainMenu() {
 
         BeginDrawing();
 
-        ClearBackground(RAYWHITE);
-
         // Draw background image
-        DrawTexturePro(background, { 0.0f, 0.0f, (float)background.width, (float)background.height },
-            { 0.0f, 0.0f, (float)GetScreenWidth(), (float)GetScreenHeight() }, { 0.0f, 0.0f }, 0.0f, WHITE);
+        DrawTexture(background, 0, 0, WHITE);
 
-        // Draw logo centered horizontally and vertically
-        DrawTexture(logo, (GetScreenWidth() - logo.width) / 2, 70, WHITE);
+        // Draw logo
+        DrawTextureRec(logo, { 0, 0, 499, 213 }, { 151, 9 }, WHITE);
 
         // Draw main menu buttons
         for (int i = 0; i < NUM_OPTIONS; ++i) {
-            DrawRectangleRec(buttons[i], (i == 0) ? buttonColor2 : buttonColor);
+            if (i == 0) {
+                DrawRectangleRec(buttons[i], buttonColor2); // using red color for the first button
+            }
+            else {
+                DrawRectangleRec(buttons[i], buttonColor); // Use default color for other buttons
+            }
 
-            // Draw text centered within the button
-            DrawTextEx(customFont, menuOptions[i],
-                { buttons[i].x + (buttons[i].width - MeasureText(menuOptions[i], 36)) / 2,
-                buttons[i].y + (buttons[i].height - 36) / 2 }, 36, 0, textColor);
+            // passing each button name from the array
+            string optionText = menuOptions[i];
+
+            // Calculate text position to center it within the button
+            float textX = buttons[i].x + (buttons[i].width - MeasureTextEx(customFont, optionText.c_str(), 36, 0).x) / 2;
+            float textY = buttons[i].y + (buttons[i].height - 36) / 2;
+
+            // Draw text with custom font and font size 36
+            DrawTextEx(customFont, optionText.c_str(), { textX, textY }, 36, 0, textColor);
         }
-
         EndDrawing();
     }
 
-    // Unload resources
+    // Unload common resources
     UnloadFont(customFont);
     UnloadTexture(logo);
     UnloadTexture(background);
     UnloadTexture(arrowTexture);
 
-    // Stop and unload background music
+    // Stop and unload the background music
     StopMusicStream(backgroundMusic);
     UnloadMusicStream(backgroundMusic);
 }
@@ -105,20 +116,17 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
     Rectangle levelButtons[NUM_LEVELS][3];
     Vector2 difficultyTextPos[NUM_LEVELS];
 
-    // Calculate button positions and sizes based on screen dimensions
-    const float screenWidth = GetScreenWidth();
-    const float screenHeight = GetScreenHeight();
-    const float buttonWidth = screenWidth * 0.15f;
-    const float buttonHeight = screenHeight * 0.05f;
-    const float buttonSpacingX = screenWidth * 0.02f;
-    const float buttonSpacingY = screenHeight * 0.05f;
-    const float startY = (screenHeight - (NUM_LEVELS * (buttonHeight + buttonSpacingY))) / 2.0f + 50; // Adjust startY to center buttons vertically
-
+    // Buttons positions and sizes
+    const float buttonWidth = 100;
+    const float buttonHeight = 20;
+    const float buttonSpacingX = 27;
+    const float buttonSpacingY = 30;
+    const float startX = 265;
+    const float startY = 272;
     // Text positions
-    const float textOffsetY = buttonHeight * 0.25f; // Adjust the offset to center the text vertically within the button
-    const Vector2 easyTextPos = { screenWidth * 0.15f + 50, startY + textOffsetY }; // Shifting down by 50 pixels and aligning with button
-    const Vector2 mediumTextPos = { screenWidth * 0.15f + 50, startY + buttonHeight + buttonSpacingY + textOffsetY }; // Shifting down by 50 pixels and aligning with button
-    const Vector2 hardTextPos = { screenWidth * 0.15f + 50, startY + 2 * (buttonHeight + buttonSpacingY) + textOffsetY }; // Shifting down by 50 pixels and aligning with button
+    const Vector2 easyTextPos = { 116, 261 };
+    const Vector2 mediumTextPos = { 91, 311 };
+    const Vector2 hardTextPos = { 111, 361 };
 
     difficultyTextPos[0] = easyTextPos;
     difficultyTextPos[1] = mediumTextPos;
@@ -127,17 +135,17 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
     // Calculate positions for Easy, Medium, and Hard buttons
     for (int i = 0; i < NUM_LEVELS; ++i) {
         for (int j = 0; j < 3; ++j) {
-            levelButtons[i][j] = { (screenWidth - (3 * (buttonWidth + buttonSpacingX))) / 2 + j * (buttonWidth + buttonSpacingX),
+            levelButtons[i][j] = { startX + j * (buttonWidth + buttonSpacingX),
                                    startY + i * (buttonHeight + buttonSpacingY),
                                    buttonWidth, buttonHeight };
         }
     }
 
     // Arrow button position and size
-    const float arrowButtonWidth = screenWidth * 0.1f;
-    const float arrowButtonHeight = screenHeight * 0.1f;
-    const float arrowButtonX = screenWidth * 0.05f + 50; // Shifted right by 50 pixels
-    const float arrowButtonY = screenHeight * 0.8f + 50; // Shifting down by 50 pixels
+    const float arrowButtonWidth = 64;
+    const float arrowButtonHeight = 64;
+    const float arrowButtonX = 55;
+    const float arrowButtonY = 504;
 
     while (!WindowShouldClose()) {
         if (IsKeyPressed(KEY_ESCAPE)) {
@@ -151,6 +159,7 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                 // Go back to main menu
                 return;
             }
+
 
             // Check for clicks on level buttons
             for (int i = 0; i < NUM_LEVELS; ++i) {
@@ -224,16 +233,16 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                 }
             }
         }
+
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
 
         // Draw background image
-        DrawTexturePro(background, { 0.0f, 0.0f, (float)background.width, (float)background.height },
-            { 0.0f, 0.0f, (float)GetScreenWidth(), (float)GetScreenHeight() }, { 0.0f, 0.0f }, 0.0f, WHITE);
+        DrawTexture(background, 0, 0, WHITE);
 
-        // Draw logo centered horizontally and vertically
-        DrawTexture(logo, (GetScreenWidth() - logo.width) / 2, 70, WHITE);
+        // Draw logo
+        DrawTextureRec(logo, { 0, 0, 499, 213 }, { 151, 9 }, WHITE);
 
         // Draw difficulty text
         for (int i = 0; i < NUM_LEVELS; ++i) {
@@ -258,8 +267,6 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
     }
 }
 
-
-
 void toHowToPlay(Texture2D background, Texture2D logo, Font customFont, Texture2D arrowTexture) {
     // Custom button color (F9C328)
     Color buttonColor = { 249, 195, 40, 255 };
@@ -277,18 +284,17 @@ void toHowToPlay(Texture2D background, Texture2D logo, Font customFont, Texture2
         "9.STRATEGY: PLAN MOVES TO AVOID TRAPS.\n\n"
         "10.SCORING: AIM FOR HIGH SCORES!";
 
-    // Calculate text position to align to the center of the screen
+    // Calculate text position to match Figma design
     Vector2 textPosition;
-    textPosition.x = (GetScreenWidth() - MeasureTextEx(customFont, howToPlayText.c_str(), 24, 0).x) / 2;
-    textPosition.y = 300;
+    textPosition.x = 39;
+    textPosition.y = 150;
 
-    // Calculate arrow button position and size based on screen dimensions
-    const float screenWidth = GetScreenWidth();
-    const float screenHeight = GetScreenHeight();
-    const float arrowButtonWidth = screenWidth * 0.1f;
-    const float arrowButtonHeight = screenHeight * 0.1f;
-    const float arrowButtonX = screenWidth * 0.05f;
-    const float arrowButtonY = screenHeight * 0.8f;
+    // Arrow button position and size
+    const float arrowButtonWidth = 64;
+    const float arrowButtonHeight = 64;
+    const float arrowButtonX = 55;
+    const float arrowButtonY = 504;
+
 
     while (!WindowShouldClose()) {
         if (IsKeyPressed(KEY_ESCAPE)) {
@@ -311,7 +317,7 @@ void toHowToPlay(Texture2D background, Texture2D logo, Font customFont, Texture2
         // Draw background image
         DrawTexture(background, 0, 0, WHITE);
 
-        // Draw How to Play text aligned to the center
+        // Draw How to Play text
         DrawTextEx(customFont, howToPlayText.c_str(), textPosition, 24, 0, buttonColor);
 
         // Draw arrow button
@@ -320,7 +326,6 @@ void toHowToPlay(Texture2D background, Texture2D logo, Font customFont, Texture2
         EndDrawing();
     }
 }
-
 
 void toCredits(Texture2D background, Texture2D logo, Font customFont, Texture2D arrowTexture) {
     // Custom button color (F9C328)
@@ -338,16 +343,14 @@ void toCredits(Texture2D background, Texture2D logo, Font customFont, Texture2D 
 
     // Calculate text position to center it on the screen
     Vector2 textPosition;
-    textPosition.x = (GetScreenWidth() - MeasureTextEx(customFont, creditsText.c_str(), 32, 0).x) / 2;
-    textPosition.y = (GetScreenHeight() - MeasureTextEx(customFont, creditsText.c_str(), 32, 0).y) / 2;
+    textPosition.x = (GetScreenWidth() - MeasureTextEx(customFont, creditsText.c_str(), 24, 0).x) / 2;
+    textPosition.y = (GetScreenHeight() - MeasureTextEx(customFont, creditsText.c_str(), 24, 0).y) / 2;
 
-    // Calculate arrow button position and size based on screen dimensions
-    const float screenWidth = GetScreenWidth();
-    const float screenHeight = GetScreenHeight();
-    const float arrowButtonWidth = screenWidth * 0.1f;
-    const float arrowButtonHeight = screenHeight * 0.1f;
-    const float arrowButtonX = screenWidth * 0.05f;
-    const float arrowButtonY = screenHeight * 0.8f;
+    // Arrow button position and size
+    const float arrowButtonWidth = 64;
+    const float arrowButtonHeight = 64;
+    const float arrowButtonX = 55;
+    const float arrowButtonY = 504;
 
     while (!WindowShouldClose()) {
         if (IsKeyPressed(KEY_ESCAPE)) {
@@ -370,7 +373,7 @@ void toCredits(Texture2D background, Texture2D logo, Font customFont, Texture2D 
         // Draw background image
         DrawTexture(background, 0, 0, WHITE);
 
-        // Draw credits text aligned to the center
+        // Draw credits text
         DrawTextEx(customFont, creditsText.c_str(), textPosition, 32, 0, buttonColor);
 
         // Draw arrow button
