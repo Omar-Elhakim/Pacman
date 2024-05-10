@@ -26,6 +26,10 @@ void Level::start() {
         food->draw(map);
         pacman->draw();
         ghost->draw();
+        startsound = LoadSound("assets/start-game.wav");
+        if (startc == 0)
+            PlaySound(startsound);
+        startc++;
         DrawText(TextFormat("Score: %d", pacman->score), 10, map->infoBarHeight / 2 - 10, 30, WHITE);
         if (IsWindowResized()) {
             map->Update();
