@@ -40,7 +40,6 @@ void Ghost::setSize() {
     for (size_t i = 0; i < 3; i++)
     {
         ghostbox[i] = { 0,0,GhostImage.at(i).width / 8.f,ghostText[i].height / 1.f };
-        std::cout << "Rectangle Rendered" << std::endl;
     }
     //UnloadImage(GhostImage);
 }
@@ -50,7 +49,6 @@ void Ghost::draw() {
     for (size_t i = 0; i < 3; i++)
     {
         DrawTextureRec(ghostText[i], ghostbox[i], InitialPosition, WHITE);
-        std::cout << "ghost drawn" << std::endl;
     }
 }
 
