@@ -17,7 +17,9 @@ class Pacman {
 
   public:
     Vector2 InitialPosition;
-
+    Sound eat1;
+    Sound eat2;
+    int eatc = 0;
     int score;
     Vector2 direction;
     Pacman(Map *map, Food* food);
