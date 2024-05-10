@@ -30,6 +30,7 @@ void Level::start() {
         if (IsWindowResized()) {
             map->Update();
             pacman->setSize();
+            food->resize();
         }
         if (IsKeyPressed(KEY_C)) {
             mapMaker(map);
@@ -63,9 +64,17 @@ void Level::start() {
         if (pacman->score==food->count*10)
         {
             EndDrawing();
-            cout << "YOU WON!";
+            cout << "YOU WON!\n";
+            cout << "Your score: " << pacman->score;
+            cout << "\nHighest scores: \n";
+            writeScore(pacman->score);
+            vector<int> scores = readScore();
+            for (int score : scores) {
+                cout << score << endl;
+            }
             break;
         }
+       
         EndDrawing();
     }
     writeScore(pacman->score);

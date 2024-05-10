@@ -121,12 +121,9 @@ void Pacman::setSize() {
     // it needs to change in movment functions
     ImageSize = {2 * map->CellWidth * 0.95f, 4 * map->CellHeight * 0.95f};
     // if window got resized change speed by the change ration of window size
-    speed *= (ImageSize.x * ImageSize.y) / (OldImageSize.x * OldImageSize.y);
+    speed = 1.8f*(GetScreenHeight() + GetScreenWidth()) / (800 + 600);
     ImageResize(&PacmanImage, ImageSize.x, ImageSize.y);
     pacmanText = LoadTextureFromImage(PacmanImage);
-    for (size_t i = 0; i < 1; i++) {
-        AnimationBox = {0, 0, PacmanImage.width / 2.f, PacmanImage.height / 4.f};
-        std::cout << "Pacman rendered" << std::endl;
-    }
+    AnimationBox = {0, 0, PacmanImage.width / 2.f, PacmanImage.height / 4.f};
     UnloadImage(PacmanImage);
 }
