@@ -2,13 +2,9 @@
 
 void mainMenu() {
     // Load background music
-    Music backgroundMusic = LoadMusicStream("assets/background_music.mp3");
-
+    Sound backgroundSound= LoadSound("assets/background_music.mp3");
+    int s = 0;
     // Start playing the background music
-    PlayMusicStream(backgroundMusic);
-
-    // Set the volume of the background music to 30% (0.3)
-    SetMusicVolume(backgroundMusic, 0.3);
 
     // Load common resources
     Texture2D background = LoadTexture("assets/background.png");
@@ -42,13 +38,15 @@ void mainMenu() {
     buttons[3] = { startX, startY + (buttonHeight + buttonSpacing) * 2 + buttonHeight + 32, buttonWidth, buttonHeight };
 
     while (!WindowShouldClose()) {
+        if (s % 2000 == 0) PlaySound(backgroundSound);
+        s++;
         // Main menu logic
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             for (int i = 0; i < NUM_OPTIONS; ++i) {
                 if (CheckCollisionPointRec(GetMousePosition(), buttons[i])) {
                     switch (i) {
                     case 0: // Start Game button
-                        toStartMenu(background, logo, customFont, arrowTexture);
+                        toStartMenu(background, logo, customFont, arrowTexture,backgroundSound);
                         break;
                     case 1: // How to play button
                         toHowToPlay(background, logo, customFont, arrowTexture);
@@ -92,7 +90,6 @@ void mainMenu() {
         }
         EndDrawing();
     }
-
     // Unload common resources
     UnloadFont(customFont);
     UnloadTexture(logo);
@@ -100,11 +97,11 @@ void mainMenu() {
     UnloadTexture(arrowTexture);
 
     // Stop and unload the background music
-    StopMusicStream(backgroundMusic);
-    UnloadMusicStream(backgroundMusic);
+    StopSound(backgroundSound);
+    UnloadSound(backgroundSound);
 }
 
-void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2D arrowTexture) {
+void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2D arrowTexture,Sound backgroundSound) {
     // Custom button color (F9C328)
     Color buttonColor = { 249, 195, 40, 255 };
     Color textColor = WHITE; // White color for text
@@ -165,6 +162,7 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
             for (int i = 0; i < NUM_LEVELS; ++i) {
                 for (int j = 0; j < 3; ++j) {
                     if (CheckCollisionPointRec(GetMousePosition(), levelButtons[i][j])) {
+                        StopSound(backgroundSound);
                         // Handle button clicks for each level
                         Level* level;
                         switch (i * 3 + j) {
@@ -229,6 +227,9 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                         }
                         delete level;
                         level = nullptr;
+
+                        if (1) PlaySound(backgroundSound);
+
                     }
                 }
             }

@@ -2,11 +2,12 @@
 
 Level::Level(int WindowWidth, int WindowHeight ,int n) : WindowWidth(WindowWidth), WindowHeight(WindowHeight) {
     map = new Map();
-    //readMap(map, n);
-   // map->ColorMap();
+    readMap(map, n);
+    map->ColorMap();
     food = new Food(map);
     pacman = new Pacman(map,food);
     ghost = new Ghost(map);
+    startsound = LoadSound("assets/start-game.wav");
     source = {0, 0}, dest = {vc - 1, hc - 1};
 
 }
@@ -16,6 +17,7 @@ Level::~Level() {
     delete pacman;
     map = nullptr;
     pacman = nullptr;
+    UnloadSound(startsound);
 }
 
 void Level::start() {
@@ -26,7 +28,6 @@ void Level::start() {
         food->draw(map);
         pacman->draw();
         ghost->draw();
-        startsound = LoadSound("assets/start-game.wav");
         if (startc == 0)
             PlaySound(startsound);
         startc++;
@@ -45,6 +46,7 @@ void Level::start() {
         }
         if (IsKeyPressed(KEY_Q)) {
             EndDrawing();
+            StopSound(startsound);
             break;
         }
         if (IsKeyPressed(KEY_F))
