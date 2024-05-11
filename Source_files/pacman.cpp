@@ -3,9 +3,10 @@
 #include "raylib.h"
 
 Pacman::Pacman(Map *map, Food *food) : map(map), food(food) {
+    this->scalFactor = 0.80f;
     score = x = a = 0;
     speed = 1.8f;
-    ImageSize = {2 * map->CellWidth * 0.95f, 4 * map->CellHeight * 0.95f};
+    ImageSize = {2 * map->CellWidth * scalFactor, 4 * map->CellHeight * scalFactor};
     setSize();
     InitialPosition = map->getClPos(map->GetCell(1, 1)->arrPos);
     direction = {0, 0};
@@ -125,9 +126,9 @@ void Pacman::setSize() {
     eat2 = LoadSound("assets/chomp2.wav");
     // image size equalles 95% of cell size
     // it needs to change in movment functions
-    ImageSize = {2 * map->CellWidth * 0.95f, 4 * map->CellHeight * 0.95f};
+    ImageSize = {2 * map->CellWidth * scalFactor, 4 * map->CellHeight * scalFactor};
     // if window got resized change speed by the change ration of window size
-    speed = 2.2f*(GetScreenHeight() + GetScreenWidth()) / (800 + 600);
+    speed = 2.2f * (GetScreenHeight() + GetScreenWidth()) / (800 + 600);
     ImageResize(&PacmanImage, ImageSize.x, ImageSize.y);
     pacmanText = LoadTextureFromImage(PacmanImage);
     AnimationBox = {0, 0, PacmanImage.width / 2.f, PacmanImage.height / 4.f};

@@ -1,5 +1,5 @@
-#include "../Header_files/Window.h"
 #include "../Header_files/Menu.h"
+#include "../Header_files/Window.h"
 
 int WindowWidth = 800, WindowHeight = 600;
 
