@@ -54,10 +54,7 @@ bool Level::start() {
             StopSound(startsound);
             writeScore(pacman->score);
             return 0;
-        }
-        map->FindPath(map->getClArrPos({ ghost->InitialPosition[0].x + map->CellWidth / 2,ghost->InitialPosition[0].y + map->CellHeight / 2 })
-            , map->getClArrPos({ pacman->InitialPosition.x + map->CellWidth / 2,pacman->InitialPosition.y + map->CellHeight / 2 }));
-        if (IsKeyPressed(KEY_F)) {
+        }if (IsKeyPressed(KEY_F)) {
             map->FindPath(map->getClArrPos({ ghost->InitialPosition[0].x + map->CellWidth / 2,ghost->InitialPosition[0].y + map->CellHeight / 2 })
                 , map->getClArrPos({pacman->InitialPosition.x + map->CellWidth / 2,pacman->InitialPosition.y + map->CellHeight / 2}));
         }
