@@ -14,6 +14,7 @@ Ghost::Ghost(Map* map) :map(map) {
     ghostImages[0] = LoadImage("assets/cyanGhost.png");
     ghostImages[1] = LoadImage("assets/redGhost.png");
     ghostImages[2] = LoadImage("assets/orangeGhost.png");
+    ghostImages[3] = LoadImage("assets/pinkGhost.png");
     imageSize = { 0, 0 };
     speed = 2.0f;
     a = 0;
@@ -24,6 +25,8 @@ Ghost::Ghost(Map* map) :map(map) {
     InitialPosition[0] = map->getClPos(map->GetCell(17, 9)->arrPos);
     InitialPosition[1] = map->getClPos(map->GetCell(17, 10)->arrPos);
     InitialPosition[2] = map->getClPos(map->GetCell(17, 11)->arrPos);
+    InitialPosition[3] = map->getClPos(map->GetCell(17, 12)->arrPos);
+
     Direction = { 0, 0 };
 
     // UnloadImage(GhostImage);
@@ -36,7 +39,7 @@ void Ghost::setSize() {
     imageSize = { 2 * map->CellWidth, 4 * map->CellHeight };
     speed *= (imageSize.x * imageSize.y) / (OldImageSize.x * OldImageSize.y);
        
-    for (size_t i = 0; i < 3; i++)
+    for (size_t i = 0; i < 4; i++)
     {
         ImageResize(&ghostImages[i], imageSize.x, imageSize.y);
         ghostText[i] = LoadTextureFromImage(ghostImages[i]);
@@ -48,7 +51,7 @@ void Ghost::setSize() {
 
 void Ghost::draw() {
 
-    for (size_t i = 0; i < 3; i++)
+    for (size_t i = 0; i < 4; i++)
     {
         DrawTextureRec(ghostText[i], ghostbox[i], InitialPosition[i], WHITE);
       
@@ -59,7 +62,7 @@ void Ghost::draw() {
 
 
 void Ghost::move() {
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 4; i++)
     {
         a++;
         if (a % 9 == 0)
@@ -72,7 +75,7 @@ void Ghost::move() {
 }
 
 void Ghost::goRight() {
-    for (size_t i = 0; i < 3; i++)
+    for (size_t i = 0; i < 4; i++)
     {
         Vector2 pointerTL = { InitialPosition[i].x + 1,InitialPosition[i].y + 2};
         Vector2 pointerBR = { InitialPosition[i].x + map->CellWidth - 1,InitialPosition[i].y + map->CellHeight - 2};
@@ -86,7 +89,7 @@ void Ghost::goRight() {
     
 }
 void Ghost::goLeft() {
-    for (size_t i = 0; i < 3; i++) {
+    for (size_t i = 0; i < 4; i++) {
         Vector2 pointerTL = { InitialPosition[i].x + 1,InitialPosition[i].y + 2};
         Vector2 pointerBR = { InitialPosition[i].x + map->CellWidth - 1,InitialPosition[i].y + map->CellHeight - 2};
         Direction = { -1 * speed, 0 };
@@ -99,7 +102,7 @@ void Ghost::goLeft() {
     
 }
 void Ghost::goUp() {
-    for (size_t i = 0; i < 3; i++)
+    for (size_t i = 0; i < 4; i++)
     {
         Vector2 pointerTL = { InitialPosition[i].x + 1,InitialPosition[i].y + 2};
         Vector2 pointerBR = { InitialPosition[i].x + map->CellWidth - 1,InitialPosition[i].y + map->CellHeight - 2};
@@ -114,7 +117,7 @@ void Ghost::goUp() {
     
 }
 void Ghost::goDown() {
-    for (size_t i = 0; i < 3; i++)
+    for (size_t i = 0; i < 4; i++)
     {
         Vector2 pointerTL = { InitialPosition[i].x + 1,InitialPosition[i].y + 2};
         Vector2 pointerBR = { InitialPosition[i].x + map->CellWidth - 1,InitialPosition[i].y + map->CellHeight - 2};
