@@ -16,6 +16,8 @@ class Level {
     Pacman *pacman;
     Ghost* ghost;
   public:
+      Sound startsound;
+      int startc = 0;
     Map *map = nullptr;
     Food *food = nullptr;
     Level(int WindowWidth, int WindowHeight,int n);

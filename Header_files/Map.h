@@ -8,8 +8,8 @@ using namespace std;
 
 #define isEven(x) ((x) % 2 == 0 ? true : false)
 
-const int vc = 40 / 2;
-const int hc = 30 / 2;
+const int vc = 20; // number of columns
+const int hc = 15; //number of rows
 
 class Map {
     void BFS(Vector2 prev[][vc], Vector2 from);

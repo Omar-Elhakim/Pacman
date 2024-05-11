@@ -9,5 +9,6 @@ public:
 	Food(Map* map);
 	void draw(Map* map);
 	void update(Map* map);
+	void resize();
 	int count;
 };
