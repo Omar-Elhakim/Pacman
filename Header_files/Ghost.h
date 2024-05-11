@@ -8,7 +8,6 @@ private:
     Image ghostImages[4];
     Vector2 imageSize;
     Texture2D  ghostText[4];
-    Vector2 InitialPosition[4];
     Rectangle ghostbox[4];
     int frameIndex;
     float speed;
@@ -18,6 +17,8 @@ private:
     Map* map;
 public:
     Vector2 ghostPosition;
+    Vector2 InitialPosition[4];
+
     Vector2 Direction;
     Color color;
     // Map* map;

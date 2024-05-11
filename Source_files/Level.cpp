@@ -50,8 +50,14 @@ void Level::start() {
             StopSound(startsound);
             break;
         }
-        if (IsKeyPressed(KEY_F))
-            map->FindPath(source, dest);
+        if (IsKeyPressed(KEY_F)) {
+            pacmanCenter = { pacman->InitialPosition.x + map->CellWidth / 2,
+                        pacman->InitialPosition.y + map->CellHeight / 2 };
+            if (map->posInGameCanvas(pacmanCenter))
+                map->FindPath(map->getClArrPos({ ghost->InitialPosition[0].x + map->CellWidth / 2,
+                                                ghost->InitialPosition[0].y + map->CellHeight / 2 }),
+                    map->getClArrPos(pacmanCenter));
+        }
         if (IsKeyPressed(KEY_UP) || pacman->direction.y < 0) {
             pacman->goUp();
             pacman->eat();
