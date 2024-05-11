@@ -35,6 +35,7 @@ void Level::start() {
         if (IsWindowResized()) {
             map->Update();
             pacman->setSize();
+            ghost->setSize();
             food->resize();
         }
         if (IsKeyPressed(KEY_C)) {
@@ -66,6 +67,23 @@ void Level::start() {
         if (IsKeyPressed(KEY_LEFT) || pacman->direction.x < 0) {
             pacman->goLeft();
             pacman->eat();
+        }
+        if (IsKeyPressed(KEY_W))
+        {
+            ghost->goUp();
+        }
+        if (IsKeyPressed(KEY_A))
+        {
+            ghost->goLeft();
+
+        }
+        if (IsKeyPressed(KEY_S))
+        {
+            ghost->goDown();
+        }
+        if (IsKeyPressed(KEY_D))
+        {
+            ghost->goRight();
         }
         if (pacman->score==food->count*10)
         {

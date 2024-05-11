@@ -11,7 +11,7 @@
 
 class Level {
   private:
-    Vector2i source, dest;
+    Vector2 source, dest;
     int WindowWidth, WindowHeight;
     Pacman *pacman;
     Ghost* ghost;
