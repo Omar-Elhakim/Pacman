@@ -60,9 +60,9 @@ void Pacman::eat() {
 }
 
 void Pacman::goRight() {
-    Vector2 pointerTL = {((InitialPosition.x + 1) / (map->CellWidth)) + 1, InitialPosition.y + 2};
-    Vector2 pointerBR = {((InitialPosition.x + (map->CellWidth - 1)) / (map->CellWidth)) + 0.01,
-                         InitialPosition.y + map->CellHeight - 2};
+    Vector2 pointerTL = {((InitialPosition.x + 3) / (map->CellWidth)) + 1, InitialPosition.y + 6};
+    Vector2 pointerBR = {((InitialPosition.x + (map->CellWidth - 3)) / (map->CellWidth)) + 0.01,
+                         InitialPosition.y + map->CellHeight - 6};
     direction = {speed, 0};
     AnimationBox.y = 0 * AnimationBox.height;
     if ((pointerTL.x < (WindowWidth / map->CellWidth)) && (pointerTL.x > 0) &&
@@ -77,9 +77,9 @@ void Pacman::goRight() {
 }
 
 void Pacman::goLeft() {
-    Vector2 pointerTL = {((InitialPosition.x + 1) / (map->CellWidth)) - 0.01, InitialPosition.y + 2};
-    Vector2 pointerBR = {((InitialPosition.x + (map->CellWidth - 1)) / (map->CellWidth)) - 1,
-                         InitialPosition.y + map->CellHeight - 2};
+    Vector2 pointerTL = {((InitialPosition.x + 3) / (map->CellWidth)) - 0.01, InitialPosition.y + 6};
+    Vector2 pointerBR = {((InitialPosition.x + (map->CellWidth - 3)) / (map->CellWidth)) - 1,
+                         InitialPosition.y + map->CellHeight - 6};
     direction = {-1 * speed, 0};
     AnimationBox.y = 1 * AnimationBox.height;
     if ((pointerTL.x < (WindowWidth / map->CellWidth)) && (pointerTL.x > 0) &&
@@ -94,8 +94,8 @@ void Pacman::goLeft() {
 }
 
 void Pacman::goUp() {
-    Vector2 pointerTL = {InitialPosition.x + 1, InitialPosition.y + 2};
-    Vector2 pointerBR = {InitialPosition.x + map->CellWidth - 1, InitialPosition.y + map->CellHeight - 2};
+    Vector2 pointerTL = {InitialPosition.x + 3, InitialPosition.y + 6};
+    Vector2 pointerBR = {InitialPosition.x + map->CellWidth - 3, InitialPosition.y + map->CellHeight - 6};
     direction = {0, -1 * speed};
     AnimationBox.y = 2 * AnimationBox.height;
     if ((map->GetCell(pointerTL.x / map->CellWidth, ((pointerTL.y - map->infoBarHeight) / map->CellHeight) - 0.01)
@@ -107,8 +107,8 @@ void Pacman::goUp() {
 }
 
 void Pacman::goDown() {
-    Vector2 pointerTL = {InitialPosition.x + 1, InitialPosition.y + 2};
-    Vector2 pointerBR = {InitialPosition.x + map->CellWidth - 1, InitialPosition.y + map->CellHeight - 2};
+    Vector2 pointerTL = {InitialPosition.x + 3, InitialPosition.y + 6};
+    Vector2 pointerBR = {InitialPosition.x + map->CellWidth - 3, InitialPosition.y + map->CellHeight - 6};
     direction = {0, speed};
     AnimationBox.y = 3 * AnimationBox.height;
     if ((map->GetCell(pointerTL.x / map->CellWidth, ((pointerTL.y - map->infoBarHeight) / map->CellHeight) + 1)
