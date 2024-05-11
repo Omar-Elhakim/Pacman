@@ -33,9 +33,6 @@
     <ClCompile Include="Source_files\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source_files\DifficultyLevels.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source_files\Ghost.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -66,9 +63,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Header_files\Window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Header_files\DifficultyLevels.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Header_files\Ghost.h">

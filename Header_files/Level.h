@@ -11,11 +11,13 @@
 
 class Level {
   private:
-    Vector2i source, dest;
+    Vector2 source, dest;
     int WindowWidth, WindowHeight;
     Pacman *pacman;
     Ghost* ghost;
   public:
+      Sound startsound;
+      int startc = 0;
     Map *map = nullptr;
     Food *food = nullptr;
     Level(int WindowWidth, int WindowHeight,int n);

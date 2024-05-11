@@ -46,3 +46,7 @@ void Food::update(Map* map) {
         }
     }
 }
+
+void Food::resize() {
+    FRadius = 5.0f* (GetScreenHeight() + GetScreenWidth()) / (800 + 600);
+}

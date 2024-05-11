@@ -4,15 +4,13 @@
 
 typedef enum { ROAD, WALL } TileType_t;
 
-struct Vector2i {
-    int x, y;
-};
+
 
 struct Cell {
     Rectangle rec;
     TileType_t TileType;
     Color BackgroundColor;
-    Vector2i arrPos;
+    Vector2 arrPos;
     bool hasFood;
     void Draw() {
         DrawRectangleRec(rec, BackgroundColor);

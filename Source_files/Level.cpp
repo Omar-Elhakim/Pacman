@@ -7,6 +7,7 @@ Level::Level(int WindowWidth, int WindowHeight ,int n) : WindowWidth(WindowWidth
     food = new Food(map);
     pacman = new Pacman(map,food);
     ghost = new Ghost(map);
+    startsound = LoadSound("assets/start-game.wav");
     source = {0, 0}, dest = {vc - 1, hc - 1};
 
 }
@@ -16,6 +17,7 @@ Level::~Level() {
     delete pacman;
     map = nullptr;
     pacman = nullptr;
+    UnloadSound(startsound);
 }
 
 void Level::start() {
@@ -26,20 +28,26 @@ void Level::start() {
         food->draw(map);
         pacman->draw();
         ghost->draw();
+        if (startc == 0)
+            PlaySound(startsound);
+        startc++;
         DrawText(TextFormat("Score: %d", pacman->score), 10, map->infoBarHeight / 2 - 10, 30, WHITE);
         if (IsWindowResized()) {
             map->Update();
             pacman->setSize();
+            ghost->setSize();
+            food->resize();
         }
         if (IsKeyPressed(KEY_C)) {
-            mapMaker(map);
-            writeMap(map,1);
+            //mapMaker(map);
+            //writeMap(map,3);
 
             food->update(map);
 
         }
         if (IsKeyPressed(KEY_Q)) {
             EndDrawing();
+            StopSound(startsound);
             break;
         }
         if (IsKeyPressed(KEY_F))
@@ -60,12 +68,37 @@ void Level::start() {
             pacman->goLeft();
             pacman->eat();
         }
+        if (IsKeyPressed(KEY_W))
+        {
+            ghost->goUp();
+        }
+        if (IsKeyPressed(KEY_A))
+        {
+            ghost->goLeft();
+
+        }
+        if (IsKeyPressed(KEY_S))
+        {
+            ghost->goDown();
+        }
+        if (IsKeyPressed(KEY_D))
+        {
+            ghost->goRight();
+        }
         if (pacman->score==food->count*10)
         {
             EndDrawing();
-            cout << "YOU WON!";
+            cout << "YOU WON!\n";
+            cout << "Your score: " << pacman->score;
+            cout << "\nHighest scores: \n";
+            writeScore(pacman->score);
+            vector<int> scores = readScore();
+            for (int score : scores) {
+                cout << score << endl;
+            }
             break;
         }
+       
         EndDrawing();
     }
     writeScore(pacman->score);

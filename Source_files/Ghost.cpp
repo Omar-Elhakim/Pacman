@@ -1,6 +1,8 @@
 #include <raylib.h>
 #include <random>
 #include <map>
+#include <chrono>
+#include <thread>
 #include "../Header_files/Map.h"
 #include "../Header_files/Ghost.h"
 #include "../Header_files/Level.h"
@@ -8,18 +10,20 @@
 using namespace std;
 
 Ghost::Ghost(Map* map) :map(map) {
-    GhostImage1 = LoadImage("assets/cyanGhost.png");
-    GhostImage2 = LoadImage("assets/redGhost.png");
-    GhostImage3 = LoadImage("assets/orangeGhost.png");
-    GhostImage.push_back(GhostImage1);
-    GhostImage.push_back(GhostImage2);
-    GhostImage.push_back(GhostImage3);
+    
+    ghostImages[0] = LoadImage("assets/cyanGhost.png");
+    ghostImages[1] = LoadImage("assets/redGhost.png");
+    ghostImages[2] = LoadImage("assets/orangeGhost.png");
     imageSize = { 0, 0 };
-    speed = 0.0f;
+    speed = 2.0f;
+    a = 0;
+    x = 0;
     //map = nullptr;
     imageSize = { 2 * map->CellWidth, 2 * map->CellHeight };
     setSize();
-    InitialPosition = map->getClPos(map->GetCell(0, 0)->arrPos);
+    InitialPosition[0] = map->getClPos(map->GetCell(17, 9)->arrPos);
+    InitialPosition[1] = map->getClPos(map->GetCell(17, 10)->arrPos);
+    InitialPosition[2] = map->getClPos(map->GetCell(17, 11)->arrPos);
     Direction = { 0, 0 };
 
     // UnloadImage(GhostImage);
@@ -31,140 +35,134 @@ void Ghost::setSize() {
     Vector2 OldImageSize = imageSize;
     imageSize = { 2 * map->CellWidth, 4 * map->CellHeight };
     speed *= (imageSize.x * imageSize.y) / (OldImageSize.x * OldImageSize.y);
+       
     for (size_t i = 0; i < 3; i++)
     {
-        ImageResize(&GhostImage.at(i), imageSize.x, imageSize.y);
-        ghostText[i] = LoadTextureFromImage(GhostImage.at(i));
+        ImageResize(&ghostImages[i], imageSize.x, imageSize.y);
+        ghostText[i] = LoadTextureFromImage(ghostImages[i]);
+        ghostbox[i] = { 0,0,ghostImages[i].width / 2.f,ghostText[i].height / 4.f };
+        std::cout << "Ghost Rendered" << std::endl;
+    }
 
-    }
-    for (size_t i = 0; i < 3; i++)
-    {
-        ghostbox[i] = { 0,0,GhostImage.at(i).width / 8.f,ghostText[i].height / 1.f };
-        std::cout << "Rectangle Rendered" << std::endl;
-    }
     //UnloadImage(GhostImage);
 }
 
-
 void Ghost::draw() {
+
     for (size_t i = 0; i < 3; i++)
     {
-        DrawTextureRec(ghostText[i], ghostbox[i], InitialPosition, WHITE);
-        std::cout << "ghost drawn" << std::endl;
+        DrawTextureRec(ghostText[i], ghostbox[i], InitialPosition[i], WHITE);
+      
     }
 }
+
 
 
 
 void Ghost::move() {
-    frameIndex += animationDirection;
-    if (frameIndex >= 8 || frameIndex <= 0) {
-        animationDirection *= -1;
-        frameIndex += animationDirection * 2;
-    }
-    for (size_t i = 0; i <3; i++)
+    for (int i = 0; i < 3; i++)
     {
-        ghostbox[i].x = frameIndex * ghostbox[i].width;
-
+        a++;
+        if (a % 9 == 0)
+            x = (x + 1) % 3;
+        ghostbox[i].x = x * ghostbox[i].width;
+        InitialPosition[i].x += Direction.x;
+        InitialPosition[i].y += Direction.y;
     }
-    position.x += Direction.x * speed;
-    position.y += Direction.y * speed;
+   
 }
 
 void Ghost::goRight() {
     for (size_t i = 0; i < 3; i++)
     {
-        ghostbox[i].y = 0;
-        Direction = { 1, 0 };
-        move();
+        Vector2 pointerTL = { InitialPosition[i].x + 1,InitialPosition[i].y + 2};
+        Vector2 pointerBR = { InitialPosition[i].x + map->CellWidth - 1,InitialPosition[i].y + map->CellHeight - 2};
+        Direction = { speed, 0 };
+        ghostbox[i].y = 0 * ghostbox[i].height;
+        if ((map->GetCell((pointerTL.x / map->CellWidth) + 1, (pointerTL.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD) &&
+            (map->GetCell((pointerBR.x / map->CellWidth) + 0.01, (pointerBR.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD)) {
+            move();
+        }
     }
     
 }
 void Ghost::goLeft() {
     for (size_t i = 0; i < 3; i++) {
-        ghostbox[i].y = ghostbox[i].height;
-        Direction = { -1, 0 };
-        move();
+        Vector2 pointerTL = { InitialPosition[i].x + 1,InitialPosition[i].y + 2};
+        Vector2 pointerBR = { InitialPosition[i].x + map->CellWidth - 1,InitialPosition[i].y + map->CellHeight - 2};
+        Direction = { -1 * speed, 0 };
+        ghostbox[i].y = 1 * ghostbox[i].height;
+        if ((map->GetCell((pointerTL.x / map->CellWidth) - 0.01, (pointerTL.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD) &&
+            (map->GetCell((pointerBR.x / map->CellWidth) - 1, (pointerBR.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD)) {
+            move();
+        }
     }
     
 }
 void Ghost::goUp() {
-    for (size_t i = 0; i < 3; i++) {
+    for (size_t i = 0; i < 3; i++)
+    {
+        Vector2 pointerTL = { InitialPosition[i].x + 1,InitialPosition[i].y + 2};
+        Vector2 pointerBR = { InitialPosition[i].x + map->CellWidth - 1,InitialPosition[i].y + map->CellHeight - 2};
+        Direction = { 0, -1 * speed };
         ghostbox[i].y = 2 * ghostbox[i].height;
-        Direction = { 0, -1 };
-        move();
+        if ((map->GetCell(pointerTL.x / map->CellWidth, ((pointerTL.y - map->infoBarHeight) / map->CellHeight) - 0.01)->TileType == ROAD) &&
+            (map->GetCell(pointerBR.x / map->CellWidth, ((pointerBR.y - map->infoBarHeight) / map->CellHeight) - 1)->TileType == ROAD)) {
+            move();
+        }
     }
+    
     
 }
 void Ghost::goDown() {
-    for (size_t i = 0; i < 3; i++) {
+    for (size_t i = 0; i < 3; i++)
+    {
+        Vector2 pointerTL = { InitialPosition[i].x + 1,InitialPosition[i].y + 2};
+        Vector2 pointerBR = { InitialPosition[i].x + map->CellWidth - 1,InitialPosition[i].y + map->CellHeight - 2};
+        Direction = { 0, speed };
         ghostbox[i].y = 3 * ghostbox[i].height;
-        Direction = { 0, 1 };
-        move();
+        if ((map->GetCell(pointerTL.x / map->CellWidth, ((pointerTL.y - map->infoBarHeight) / map->CellHeight) + 1)->TileType == ROAD) &&
+            (map->GetCell(pointerBR.x / map->CellWidth, ((pointerBR.y - map->infoBarHeight) / map->CellHeight) + 0.01)->TileType == ROAD)) {
+            move();
+        }
     }
+    
     
 }
 
 
 
-/*void move(float speed) {
-    switch (level) {
-    case 1:
-        moveRandomly(speed / 2);
-        break;
-    case 2:
-        moveRandomly(speed);
-        break;
-    case 3:
-        moveTowardsPacman();
-        break;
+
+
+Vector2 Ghost::GenerateRandomDirection() {
+    Vector2 dir;
+    dir.x = GetRandomValue(-1, 1); 
+    dir.y = GetRandomValue(-1, 1); 
+    float length = sqrtf(dir.x * dir.x + dir.y * dir.y);
+    // Avoid division by zero
+    if (length > 0) {
+        dir.x /= length;
+        dir.y /= length;
     }
-}*/
-/*
-void moveRandomly(float speed) {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, 3);
+    return dir;
+}
+void Ghost::moveRandomly(float speed) {
 
-    Direction dir = static_cast<Direction>(dis(gen));
-
-    Vector2i change = getDirectionChange(dir);
-
-    if (Map->ispath(position.x + change.x, position.y + change.y)) {
-        position.x += change.x * speed;
-        position.y += change.y * speed;
-        currentDirection = dir;
+    
+    Vector2 randomDir = GenerateRandomDirection();
+    if (GetRandomValue(0, 100) < 5) { 
+        Vector2 direction = GenerateRandomDirection();
+        Vector2 velocity = { direction.x * speed, direction.y * speed };
+        InitialPosition[0].x += velocity.x;
+        InitialPosition[0].y += velocity.y;
     }
+
 }
 
-void moveTowardsPacman() {
-    Vector2i pacmanPosition = pacman->getPosition();
 
-    std::vector<Vector2i> path = gameMap->FindPath(position, pacmanPosition);
 
-    if (!path.empty()) {
-        Vector2i nextStep = path[1];
-        position = nextStep;
-    }
-}
 
-Vector2i getDirectionChange(Direction dir) {
-    switch (dir) {
-    case goUp:
-        return { 0, -1 };
-    case goDown:
-        return { 0, 1 };
-    case goLeft:
-        return { -1, 0 };
-    case goRight:
-        return { 1, 0 };
-    default:
-        return { 0, 0 };
-    }
-}
-};*/
 
-/*
 void Ghost::move(float speed) {
     if (!map) return;
 
@@ -175,64 +173,12 @@ void Ghost::move(float speed) {
     static int level = 1;
 
     if (level == 1) {
-        speed /= 2;
-        Vector2  randomDirection;
-        switch (dis(gen)) {
-        case 0:
-            randomDirection = { 1, 0 };
-            break;
-        case 1:
-            randomDirection = { -1, 0 };
-            break;
-        case 2:
-            randomDirection = { 0, -1 };
-            break;
-        case 3:
-            randomDirection = { 0, 1 };
-            break;
-        }
-
-        if (map->isPath(position.x + randomDirection.x * speed, position.y + randomDirection.y * speed)) {
-            Direction = randomDirection;
-        }
+        moveRandomly(speed);
     }
     else if (level == 2) {
-        Vector2  randomDirection;
-        switch (dis(gen)) {
-        case 0:
-            randomDirection = { 1, 0 };
-            break;
-        case 1:
-            randomDirection = { -1, 0 };
-            break;
-        case 2:
-            randomDirection = { 0, -1 };
-            break;
-        case 3:
-            randomDirection = { 0, 1 };
-            break;
-        }
-
-        if (map->isPath(position.x + randomDirection.x * speed, position.y + randomDirection.y * speed)) {
-            Direction = randomDirection;
-        }
+        moveRandomly(speed*1.5);
     }
-    else if (level == 3) {
-        Pacman* pacman;
-        if (pacman) {
-            Vector2i pacmanPos = map->getClArrPos(pacman->InitialPosition);
-
-            map->FindPath(position, pacmanPos);
-
-            std::vector<Vector2i> path = map->GetCalculatedPath();
-
-            if (!path.empty() && path.size() > 1) {
-                Vector2i nextStep = path[1];
-                position.x = nextStep.x * map->CellWidth;
-                position.y = nextStep.y * map->CellHeight;
-            }
-        }
-    }
-    position.x += Direction.x * speed;
-    position.y += Direction.y * speed;
-}*/
+    
+    ghostPosition.x += Direction.x * speed;
+    ghostPosition.y += Direction.y * speed;
+}

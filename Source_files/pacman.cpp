@@ -47,10 +47,14 @@ void Pacman::eat() {
     if ((midpoint.x < WindowWidth) && (midpoint.x > 0))
         if (map->GetCell(midpoint.x / map->CellWidth, (midpoint.y - map->infoBarHeight) / map->CellHeight)->hasFood ==
             true) {
-
+            if (eatc % 2 == 0)
+                PlaySound(eat1);
+            else
+                PlaySound(eat2);
             map->GetCell(midpoint.x / map->CellWidth, (midpoint.y - map->infoBarHeight) / map->CellHeight)->hasFood =
                 false;
             score += 10;
+            eatc++;
         }
 }
 
@@ -117,16 +121,15 @@ void Pacman::goDown() {
 void Pacman::setSize() {
     PacmanImage = LoadImage("assets/pac2.png");
     Vector2 OldImageSize = ImageSize;
+    eat1 = LoadSound("assets/chomp1.wav");
+    eat2 = LoadSound("assets/chomp2.wav");
     // image size equalles 95% of cell size
     // it needs to change in movment functions
     ImageSize = {2 * map->CellWidth * 0.95f, 4 * map->CellHeight * 0.95f};
     // if window got resized change speed by the change ration of window size
-    speed *= (ImageSize.x * ImageSize.y) / (OldImageSize.x * OldImageSize.y);
+    speed = 2.2f*(GetScreenHeight() + GetScreenWidth()) / (800 + 600);
     ImageResize(&PacmanImage, ImageSize.x, ImageSize.y);
     pacmanText = LoadTextureFromImage(PacmanImage);
-    for (size_t i = 0; i < 1; i++) {
-        AnimationBox = {0, 0, PacmanImage.width / 2.f, PacmanImage.height / 4.f};
-        std::cout << "Pacman rendered" << std::endl;
-    }
+    AnimationBox = {0, 0, PacmanImage.width / 2.f, PacmanImage.height / 4.f};
     UnloadImage(PacmanImage);
 }
