@@ -1,7 +1,7 @@
 #pragma once
+#include "Food.h"
 #include "Map.h"
 #include "raylib.h"
-#include "Food.h"
 
 class Pacman {
   private:
@@ -14,6 +14,7 @@ class Pacman {
     int a;
     Map *map;
     Food *food;
+    float scalFactor;
 
   public:
     Vector2 InitialPosition;
@@ -22,8 +23,8 @@ class Pacman {
     int eatc = 0;
     int score;
     Vector2 direction;
-    Pacman(Map *map, Food* food);
-    Pacman(Map* map);
+    Pacman(Map *map, Food *food);
+    Pacman(Map *map);
     ~Pacman();
     void draw();
     void move();
