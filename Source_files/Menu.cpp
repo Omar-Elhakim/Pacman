@@ -38,7 +38,7 @@ void mainMenu() {
     buttons[3] = { startX, startY + (buttonHeight + buttonSpacing) * 2 + buttonHeight + 32, buttonWidth, buttonHeight };
 
     while (!WindowShouldClose()) {
-        if (s % 2000 == 0) PlaySound(backgroundSound);
+        if (s % 8000 == 0) PlaySound(backgroundSound);
         s++;
         // Main menu logic
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {

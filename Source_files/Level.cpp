@@ -38,8 +38,8 @@ void Level::start() {
             food->resize();
         }
         if (IsKeyPressed(KEY_C)) {
-            mapMaker(map);
-           // writeMap(map,1);
+            //mapMaker(map);
+            //writeMap(map,3);
 
             food->update(map);
 
