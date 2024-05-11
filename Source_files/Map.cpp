@@ -55,7 +55,8 @@ void Map::BFS(Vector2 prev[][vc], Vector2 from) {
             if (isPath(col, row) && !visited[row][col]) {
                 visited[row][col] = true;
                 prev[row][col] = s;
-                TN.push(s);
+                Vector2 k = { col,row };
+                TN.push(k);
             }
         }
         TN.pop();

@@ -41,7 +41,6 @@ void Ghost::setSize() {
         ImageResize(&ghostImages[i], imageSize.x, imageSize.y);
         ghostText[i] = LoadTextureFromImage(ghostImages[i]);
         ghostbox[i] = { 0,0,ghostImages[i].width / 2.f,ghostText[i].height / 4.f };
-        std::cout << "Ghost Rendered" << std::endl;
     }
 
     //UnloadImage(GhostImage);
@@ -161,24 +160,3 @@ void Ghost::moveRandomly(float speed) {
 
 
 
-
-
-void Ghost::move(float speed) {
-    if (!map) return;
-
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, 3);
-
-    static int level = 1;
-
-    if (level == 1) {
-        moveRandomly(speed);
-    }
-    else if (level == 2) {
-        moveRandomly(speed*1.5);
-    }
-    
-    ghostPosition.x += Direction.x * speed;
-    ghostPosition.y += Direction.y * speed;
-}
