@@ -1,9 +1,12 @@
 #include "../Header_files/Level.h"
 
-Level::Level(int WindowWidth, int WindowHeight ,int n) : WindowWidth(WindowWidth), WindowHeight(WindowHeight) {
+Level::Level(int WindowWidth, int WindowHeight ,int n) : WindowWidth(WindowWidth), WindowHeight(WindowHeight),n(n) {
     map = new Map();
-    readMap(map, n);
-    map->ColorMap();
+    if (n!=4)
+    {
+        readMap(map, n);
+        map->ColorMap();
+    }
     food = new Food(map);
     pacman = new Pacman(map,food);
     ghost = new Ghost(map);
@@ -20,7 +23,8 @@ Level::~Level() {
     UnloadSound(startsound);
 }
 
-void Level::start() {
+bool Level::start() {
+    bool mapdrawn = false;
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(BLACK);
@@ -38,20 +42,22 @@ void Level::start() {
             ghost->setSize();
             food->resize();
         }
-        if (IsKeyPressed(KEY_C)) {
-            //mapMaker(map);
+        if (mapdrawn==false && n==4) {
+            mapMaker(map);
+            mapdrawn = true;
             //writeMap(map,3);
 
             food->update(map);
 
         }
         if (IsKeyPressed(KEY_Q)) {
-            EndDrawing();
             StopSound(startsound);
-            break;
+            writeScore(pacman->score);
+            return 0;
+        }if (IsKeyPressed(KEY_F)) {
+            map->FindPath(map->getClArrPos({ ghost->InitialPosition[0].x + map->CellWidth / 2,ghost->InitialPosition[0].y + map->CellHeight / 2 })
+                , map->getClArrPos({pacman->InitialPosition.x + map->CellWidth / 2,pacman->InitialPosition.y + map->CellHeight / 2}));
         }
-        if (IsKeyPressed(KEY_F))
-            map->FindPath(source, dest);
         if (IsKeyPressed(KEY_UP) || pacman->direction.y < 0) {
             pacman->goUp();
             pacman->eat();
@@ -85,21 +91,12 @@ void Level::start() {
         {
             ghost->goRight();
         }
-        if (pacman->score==food->count*10)
+        if (pacman->score==food->count*10 || IsKeyPressed(KEY_Y))
         {
-            EndDrawing();
-            cout << "YOU WON!\n";
-            cout << "Your score: " << pacman->score;
-            cout << "\nHighest scores: \n";
-            writeScore(pacman->score);
-            vector<int> scores = readScore();
-            for (int score : scores) {
-                cout << score << endl;
-            }
-            break;
+            StopSound(startsound);
+            writeScore(pacman->score);   
+            return 1;
         }
-       
         EndDrawing();
     }
-    writeScore(pacman->score);
 }

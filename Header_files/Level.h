@@ -8,11 +8,12 @@
 #include "FileIO.h"
 #include "raylib.h"
 #include "Ghost.h"
+#include "Menu.h"
 
 class Level {
   private:
     Vector2 source, dest;
-    int WindowWidth, WindowHeight;
+    int WindowWidth, WindowHeight,n;
     Pacman *pacman;
     Ghost* ghost;
   public:
@@ -22,5 +23,5 @@ class Level {
     Food *food = nullptr;
     Level(int WindowWidth, int WindowHeight,int n);
     ~Level();
-    void start();
+    bool start();
 };
