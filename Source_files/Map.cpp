@@ -132,6 +132,7 @@ void Map::Draw() {
 }
 
 void Map::FindPath(Vector2 from, Vector2 to) {
+    //if (!posInGameCanvas(to)) return;
     std::vector<Vector2> Path;
     Vector2 prev[hc][vc];
     for (int i = 0; i < hc; i++)
