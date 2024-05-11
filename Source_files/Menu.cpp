@@ -1,4 +1,5 @@
 #include "../Header_files/Menu.h"
+#include "../Header_files/mapmaker.h"
 #include "raygui.h"
 
 // Custom button structure
@@ -75,7 +76,7 @@ void mainMenu() {
                     case 3: // Quit Game button
                         return;
                     case 4: // Create Your Own Map button
-                        createMap(background,logo, customFont, arrowTexture);
+                        createMap(background,logo, customFont, arrowTexture,backgroundSound);
                         break;
                     }
                 }
@@ -126,7 +127,7 @@ void mainMenu() {
     UnloadSound(backgroundSound);
 }
 
-    void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2D arrowTexture,Sound backgroundSound) {
+void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2D arrowTexture,Sound backgroundSound) {
     GuiSetStyle(DEFAULT, TEXT_SIZE, 16);
     // Custom button color (F9C328)
     Color Yellow = { 249, 195, 40, 255 };
@@ -182,82 +183,6 @@ void mainMenu() {
                 // Go back to main menu
                 return;
             }
-
-            // Check for clicks on level buttons
-            for (int i = 0; i < NUM_LEVELS; ++i) {
-                for (int j = 0; j < 3; ++j) {
-                    if (CheckCollisionPointRec(GetMousePosition(), levelButtons[i][j])) {
-                        StopSound(backgroundSound);
-                        // Handle button clicks for each level
-                        Level* level;
-                        switch (i * 3 + j) {
-                        case 0:
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 1); //easy
-                            level->start();
-                            // Handle Level 1 button click
-                            // toLevelMenu("Level 1", 1);
-                            break;
-                        case 1:
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 2); //easy
-                            level->start();
-                            // Handle Level 2 button click
-                            // toLevelMenu("Level 1", 2);
-                            break;
-                            // Repeat for the rest of the cases
-                        case 2:
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 3); //easy
-                            level->start();
-                            // Handle Level 3 button click
-                            // toLevelMenu("Level 1", 3);
-                            break;
-                        case 3:
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 1); //medium
-                            level->start();
-                            // Handle Level 4 button click
-                            // toLevelMenu("Level 2", 1);
-                            break;
-                        case 4:
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 2); //medium
-                            level->start();
-                            // Handle Level 5 button click
-                            // toLevelMenu("Level 2", 2);
-                            break;
-                        case 5:
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 3); //medium
-                            level->start();
-                            // Handle Level 6 button click
-                            // toLevelMenu("Level 2", 3);
-                            break;
-                        case 6:
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 1); //hard
-                            level->start();
-                            // Handle Level 7 button click
-                            // toLevelMenu("Level 3", 1);
-                            break;
-                        case 7:
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 2); //hard
-                            level->start();
-                            // Handle Level 8 button click
-                            // toLevelMenu("Level 3", 2);
-                            break;
-                        case 8:
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 3); //hard
-                            level->start();
-                            // Handle Level 9 button click
-                            // toLevelMenu("Level 3", 3);
-                            break;
-                        default:
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 1); //so i can delete the pionter down there
-                            break;
-                        }
-                        delete level;
-                        level = nullptr;
-
-                        if (1) PlaySound(backgroundSound);
-
-                    }
-                }
-            }
         }
 
         BeginDrawing();
@@ -280,61 +205,63 @@ void mainMenu() {
             for (int j = 0; j < 3; ++j) {
                 Rectangle buttonRect = levelButtons[i][j];
                 if (GuiButton(buttonRect, levelNames[j])) {
+                    StopSound(backgroundSound);
                     // Handle button clicks for each level
                     Level* level;
+                    bool f;
                     switch (i * 3 + j) {
                     case 0:
                         level = new Level(GetScreenWidth(), GetScreenHeight(), 1); //easy
-                        level->start();
+                        f=level->start();
                         // Handle Level 1 button click
                         // toLevelMenu("Level 1", 1);
                         break;
                     case 1:
                         level = new Level(GetScreenWidth(), GetScreenHeight(), 2); //easy
-                        level->start();
+                        f=level->start();
                         // Handle Level 2 button click
                         // toLevelMenu("Level 1", 2);
                         break;
                         // Repeat for the rest of the cases
                     case 2:
                         level = new Level(GetScreenWidth(), GetScreenHeight(), 3); //easy
-                        level->start();
+                        f=level->start();
                         // Handle Level 3 button click
                         // toLevelMenu("Level 1", 3);
                         break;
                     case 3:
                         level = new Level(GetScreenWidth(), GetScreenHeight(), 1); //medium
-                        level->start();
+                        f=level->start();
                         // Handle Level 4 button click
                         // toLevelMenu("Level 2", 1);
                         break;
                     case 4:
                         level = new Level(GetScreenWidth(), GetScreenHeight(), 2); //medium
-                        level->start();
+                        f=level->start();
                         // Handle Level 5 button click
                         // toLevelMenu("Level 2", 2);
                         break;
                     case 5:
                         level = new Level(GetScreenWidth(), GetScreenHeight(), 3); //medium
-                        level->start();
+                        f=level->start();
                         // Handle Level 6 button click
                         // toLevelMenu("Level 2", 3);
                         break;
                     case 6:
                         level = new Level(GetScreenWidth(), GetScreenHeight(), 1); //hard
-                        level->start();
+                        f=level->start();
                         // Handle Level 7 button click
                         // toLevelMenu("Level 3", 1);
                         break;
                     case 7:
                         level = new Level(GetScreenWidth(), GetScreenHeight(), 2); //hard
-                        level->start();
+                        f=level->start();
                         // Handle Level 8 button click
                         // toLevelMenu("Level 3", 2);
                         break;
                     case 8:
                         level = new Level(GetScreenWidth(), GetScreenHeight(), 3); //hard
-                        level->start();
+                        f=level->start();
                         // Handle Level 9 button click
                         // toLevelMenu("Level 3", 3);
                         break;
@@ -342,8 +269,15 @@ void mainMenu() {
                         level = new Level(GetScreenWidth(), GetScreenHeight(), 1); //so i can delete the pionter down there
                         break;
                     }
+                    if (f) WinScreen(background, customFont);
+                    else {
+                        if (LoseScreen(background, customFont)) continue;
+                        else return;
+                    }
                     delete level;
                     level = nullptr;
+                    PlaySound(backgroundSound);
+
                 }
             }
         }
@@ -471,7 +405,7 @@ void toCredits(Texture2D background, Texture2D logo, Font customFont, Texture2D 
     }
 }
 
-void createMap(Texture2D background, Texture2D logo, Font customFont, Texture2D arrowTexture)
+void createMap(Texture2D background, Texture2D logo, Font customFont, Texture2D arrowTexture, Sound backgroundSound)
 {
     // Custom button colors
     Color Yellow = { 249, 195, 40, 255 };
@@ -501,9 +435,11 @@ void createMap(Texture2D background, Texture2D logo, Font customFont, Texture2D 
     const float arrowButtonHeight = 64;
     const float arrowButtonX = 55;
     const float arrowButtonY = 504;
+    bool f;
 
     while (!WindowShouldClose())
     {
+
         if (IsKeyPressed(KEY_ESCAPE))
         {
             // Go back to main menu
@@ -517,27 +453,51 @@ void createMap(Texture2D background, Texture2D logo, Font customFont, Texture2D 
                 return;
             }
         }
-
-        // Check for clicks on Menu buttons
-        for (int i = 0; i < NUM_OPTIONS; ++i)
-        {
-            if (CheckCollisionPointRec(GetMousePosition(), buttons[i]))
+        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+            // Check for clicks on Menu buttons
+            for (int i = 0; i < NUM_OPTIONS; ++i)
             {
-                switch (i)
+                if (CheckCollisionPointRec(GetMousePosition(), buttons[i]))
                 {
-                case 0: // Start Game button
-                    break;
-                case 1: // How to play button
-                    break;
-                case 2: // Credits button
-                    break;
-                default:
-                    break;
-                }
+                    Level* level;
+                    StopSound(backgroundSound);
 
+                    switch (i)
+                    {
+                    case 0:
+                        level = new Level(GetScreenWidth(), GetScreenHeight(), 4); //easy
+                        f = level->start();
+
+                        break;
+                    case 1: 
+                        level = new Level(GetScreenWidth(), GetScreenHeight(), 4); //easy
+                        f = level->start();
+                        // How to play button
+                        break;
+                    case 2: // Credits button
+                        level = new Level(GetScreenWidth(), GetScreenHeight(), 4); //easy
+                        f = level->start();
+
+                        break;
+                    default:
+                        level = new Level(GetScreenWidth(), GetScreenHeight(), 1); //so i can delete the pionter down there
+                        break;
+                    }
+                    if (f) WinScreen(background, customFont);
+                    else {
+                        if (LoseScreen(background, customFont)) { 
+                            break;
+                        }
+                        else return;
+                    }
+                    PlaySound(backgroundSound);
+
+//                    delete level;
+  //                  level = nullptr;
+
+                }
             }
         }
-
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
@@ -665,7 +625,7 @@ void WinScreen(Texture2D background, Font customFont)
         EndDrawing();
     }
 }
-void LoseScreen(Texture2D background, Font customFont)
+bool LoseScreen(Texture2D background, Font customFont)
 {
     // Custom button colors
     Color Yellow = { 249, 195, 40, 255 };
@@ -693,7 +653,7 @@ void LoseScreen(Texture2D background, Font customFont)
         if (IsKeyPressed(KEY_ESCAPE))
         {
             // Go back to main menu
-            return;
+            return 0;
         }
 
         // Check for clicks on Menu buttons
@@ -707,10 +667,11 @@ void LoseScreen(Texture2D background, Font customFont)
                     {
                     case 0: // Try Again button
                         // Handle "Try Again" action
+                        return 1;
                         break;
                     case 1: // Main Menu button
                         // Handle "Main Menu" action
-                        return;
+                        return 0;
                     default:
                         break;
                     }
