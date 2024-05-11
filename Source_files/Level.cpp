@@ -21,6 +21,7 @@ Level::~Level() {
 }
 
 void Level::start() {
+    Vector2 pacmanCenter = { 0 };
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(BLACK);
