@@ -2,8 +2,8 @@
 
 Level::Level(int WindowWidth, int WindowHeight ,int n) : WindowWidth(WindowWidth), WindowHeight(WindowHeight) {
     map = new Map();
-    readMap(map, n);
-    map->ColorMap();
+    //readMap(map, n);
+   // map->ColorMap();
     food = new Food(map);
     pacman = new Pacman(map,food);
     ghost = new Ghost(map);
@@ -34,7 +34,7 @@ void Level::start() {
         }
         if (IsKeyPressed(KEY_C)) {
             mapMaker(map);
-            writeMap(map,1);
+           // writeMap(map,1);
 
             food->update(map);
 
