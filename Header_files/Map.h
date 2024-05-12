@@ -19,6 +19,7 @@ class Map {
     
 
 public:
+    bool colorPath = false;
     Color pathColor = GREEN;
     Cell **list;
     float CellWidth, CellHeight;
@@ -29,7 +30,7 @@ public:
     void SetPathColor(Color color);
     void Update();
     void Draw();
-    void FindPath(Vector2 from, Vector2 to);
+    vector<Vector2> FindPath(Vector2 from, Vector2 to);
     bool posInGameCanvas(Vector2 Pos);
     bool posInInfoBar(Vector2 Pos);
     bool posInBoundaries(Vector2 Pos);

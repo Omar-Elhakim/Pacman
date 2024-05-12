@@ -53,6 +53,13 @@ bool Level::start() {
             writeScore(pacman->score);
             return 0;
         }
+        if (IsKeyPressed(KEY_T)) 
+        {
+            map->colorPath = !map->colorPath;
+            map->ColorMap();
+
+        }
+
         // if (IsKeyPressed(KEY_F)) {
         pacmanCenter = {pacman->InitialPosition.x + map->CellWidth / 2,
                         pacman->InitialPosition.y + map->CellHeight / 2};
