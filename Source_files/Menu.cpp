@@ -127,7 +127,7 @@ void mainMenu() {
 }
 
 void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2D arrowTexture,Sound backgroundSound) {
-    GuiSetStyle(DEFAULT, TEXT_SIZE, 16);
+    GuiSetStyle(DEFAULT, TEXT_SIZE, 17);
     // Custom button color (F9C328)
     Color Yellow = { 249, 195, 40, 255 };
     Color textColor = WHITE; // White color for text
@@ -141,7 +141,7 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
 
     // Buttons positions and sizes
     const float buttonWidth = 100;
-    const float buttonHeight = 19.91;
+    const float buttonHeight = 20;
     const float buttonSpacingX = 27;
     const float buttonSpacingY = 30;
     const float startX = 265;
@@ -746,35 +746,6 @@ int WinScreen(Texture2D background, Font customFont)
             return 0;
         }
 
-        // Check for clicks on Menu buttons
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-        {
-            for (int i = 0; i < NUM_OPTIONS; ++i)
-            {
-                if (CheckCollisionPointRec(GetMousePosition(), buttons[i]))
-                {
-                    switch (i)
-                    {
-                    case 0:
-                        return 1;
-                        // Next Level button
-                        // Handle "Next Level" action
-                        break;
-                    case 1: 
-                        return 2;
-                        // Try Again button
-                        // Handle "Try Again" action
-                        break;
-                    case 2: // Main Menu button
-                        // Handle "Main Menu" action
-                        return 0;
-                    default:
-                        break;
-                    }
-                }
-            }
-        }
-
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
@@ -799,12 +770,30 @@ int WinScreen(Texture2D background, Font customFont)
         for (int i = 0; i < NUM_OPTIONS; ++i)
         {
             // Draw buttons
-            GuiButton(buttons[i], menuOptions[i]);
+            if (GuiButton(buttons[i], menuOptions[i]))
+            {
+                // If button clicked, return appropriate value
+                switch (i)
+                {
+                case 0: // Next Level button
+                    return 1;
+                case 1: // Try Again button
+                    return 2;
+                case 2: // Main Menu button
+                    return 0;
+                default:
+                    break;
+                }
+            }
         }
 
         EndDrawing();
     }
+
+    // Return 0 by default (if window closes without button click)
+    return 0;
 }
+
 bool LoseScreen(Texture2D background, Font customFont)
 {
     // Custom button colors
@@ -833,32 +822,8 @@ bool LoseScreen(Texture2D background, Font customFont)
         if (IsKeyPressed(KEY_ESCAPE))
         {
             // Go back to main menu
-            return 0;
+            return false;
         }
-
-        // Check for clicks on Menu buttons
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-        {
-            for (int i = 0; i < NUM_OPTIONS; ++i)
-            {
-                if (CheckCollisionPointRec(GetMousePosition(), buttons[i]))
-                {
-                    switch (i)
-                    {
-                    case 0: // Try Again button
-                        // Handle "Try Again" action
-                        return 1;
-                        break;
-                    case 1: // Main Menu button
-                        // Handle "Main Menu" action
-                        return 0;
-                    default:
-                        break;
-                    }
-                }
-            }
-        }
-
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
@@ -883,12 +848,28 @@ bool LoseScreen(Texture2D background, Font customFont)
         for (int i = 0; i < NUM_OPTIONS; ++i)
         {
             // Draw buttons
-            GuiButton(buttons[i], menuOptions[i]);
+            if (GuiButton(buttons[i], menuOptions[i]))
+            {
+                // If button clicked, return appropriate value
+                switch (i)
+                {
+                case 0: // Try Again button
+                    return true;
+                case 1: // Main Menu button
+                    return false;
+                default:
+                    break;
+                }
+            }
         }
 
         EndDrawing();
     }
+
+    // Return false by default (if window closes without button click)
+    return false;
 }
+
 
 
 // Custom drawing function for the last button with specific font size
