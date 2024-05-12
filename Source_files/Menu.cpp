@@ -8,7 +8,7 @@
 
 void mainMenu() {
     // Load background music
-    Sound backgroundSound= LoadSound("assets/background_music.mp3");
+    Sound backgroundSound = LoadSound("assets/background_music.mp3");
     int s = 0;
     // Start playing the background music
 
@@ -53,34 +53,15 @@ void mainMenu() {
         10
     };
 
+    // Variable to track the time of the last button press
+    double lastButtonClickTime = 0.0;
+    // Minimum time between button presses (in seconds)
+    const double buttonCooldown = 0.5; // Adjust as needed
+
     // Main menu loop
     while (!WindowShouldClose()) {
         if (s % 8000 == 0) PlaySound(backgroundSound);
         s++;
-        // Main menu logic
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-        {
-            for (int i = 0; i < NUM_OPTIONS; ++i) {
-                if (CheckCollisionPointRec(GetMousePosition(), buttons[i])) {
-                    switch (i) {
-                    case 0: // Start Game button
-                        toStartMenu(background, logo, customFont, arrowTexture,backgroundSound);
-                        break;
-                    case 1: // How to play button
-                        toHowToPlay(background, logo, customFont, arrowTexture);
-                        break;
-                    case 2: // Credits button
-                        toCredits(background, logo, customFont, arrowTexture);
-                        break;
-                    case 3: // Quit Game button
-                        return;
-                    case 4: // Create Your Own Map button
-                        createMap(background,logo, customFont, arrowTexture,backgroundSound);
-                        break;
-                    }
-                }
-            }
-        }
 
         BeginDrawing();
 
@@ -103,18 +84,43 @@ void mainMenu() {
 
         for (int i = 0; i < NUM_OPTIONS; ++i) {
             if (i == NUM_OPTIONS - 1) {
+                // Check collision only for the last button
+                if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    if (CheckCollisionPointRec(GetMousePosition(), buttons[NUM_OPTIONS - 1]) &&
+                        (GetTime() - lastButtonClickTime >= buttonCooldown)) {
+                        // Call createMap function when the last button is clicked and debounce button click
+                        createMap(background, logo, customFont, arrowTexture, backgroundSound);
+                        lastButtonClickTime = GetTime(); // Update last button click time
+                    }
+                }
+
                 // Draw the last button with custom font size
                 DrawCustomButton(button);
             }
-            else {
-                // Draw other buttons with default font size
-                GuiButton(buttons[i], menuOptions[i]);
+            else if (GuiButton(buttons[i], menuOptions[i])) {
+                // Debounce button click for other buttons
+                if (GetTime() - lastButtonClickTime >= buttonCooldown) {
+                    switch (i) {
+                    case 0: // Start Game button
+                        toStartMenu(background, logo, customFont, arrowTexture, backgroundSound);
+                        break;
+                    case 1: // How to play button
+                        toHowToPlay(background, logo, customFont, arrowTexture);
+                        break;
+                    case 2: // Credits button
+                        toCredits(background, logo, customFont, arrowTexture);
+                        break;
+                    case 3: // Quit Game button
+                        return;
+                    }
+                    lastButtonClickTime = GetTime(); // Update last button click time
+                }
             }
         }
 
         EndDrawing();
-
     }
+
     // Unload common resources
     UnloadFont(customFont);
     UnloadTexture(logo);
@@ -125,6 +131,7 @@ void mainMenu() {
     StopSound(backgroundSound);
     UnloadSound(backgroundSound);
 }
+
 
 void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2D arrowTexture,Sound backgroundSound) {
     GuiSetStyle(DEFAULT, TEXT_SIZE, 17);
