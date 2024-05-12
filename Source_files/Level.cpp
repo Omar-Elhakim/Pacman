@@ -67,7 +67,7 @@ bool Level::start() {
             map->FindPath(map->getClArrPos({ghost->InitialPosition[0].x + map->CellWidth / 2,
                                             ghost->InitialPosition[0].y + map->CellHeight / 2}),
                           map->getClArrPos(pacmanCenter));
-        pacmanCenter = { pacman->InitialPosition.x + map->CellWidth / 2,
+      /*  pacmanCenter = { pacman->InitialPosition.x + map->CellWidth / 2,
                         pacman->InitialPosition.y + map->CellHeight / 2 };
         if (map->posInGameCanvas(pacmanCenter))
             map->FindPath(map->getClArrPos({ ghost->InitialPosition[1].x + map->CellWidth / 2,
@@ -84,7 +84,7 @@ bool Level::start() {
         if (map->posInGameCanvas(pacmanCenter))
             map->FindPath(map->getClArrPos({ ghost->InitialPosition[3].x + map->CellWidth / 2,
                                             ghost->InitialPosition[3].y + map->CellHeight / 2 }),
-                map->getClArrPos(pacmanCenter));
+                map->getClArrPos(pacmanCenter));*/
 
         
            
@@ -105,16 +105,16 @@ bool Level::start() {
             pacman->goLeft();
             pacman->eat();
         }
-        if (IsKeyPressed(KEY_W)) {
+        if (IsKeyPressed(KEY_W) || ghost->Direction.y < 0) {
             ghost->goUp();
         }
-        if (IsKeyPressed(KEY_A)) {
+        if (IsKeyPressed(KEY_A) || ghost->Direction.x < 0) {
             ghost->goLeft();
         }
-        if (IsKeyPressed(KEY_S)) {
+        if (IsKeyPressed(KEY_S) || ghost->Direction.y > 0) {
             ghost->goDown();
         }
-        if (IsKeyPressed(KEY_D)) {
+        if (IsKeyPressed(KEY_D)|| ghost->Direction.x > 0) {
             ghost->goRight();
         }
         if (pacman->score == food->count * 10 || IsKeyPressed(KEY_Y)) {
