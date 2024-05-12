@@ -9,7 +9,7 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
 void toHowToPlay(Texture2D background, Texture2D logo, Font customFont, Texture2D arrowTexture);
 void toCredits(Texture2D background, Texture2D logo, Font customFont, Texture2D arrowTexture);
 void createMap(Texture2D background, Texture2D logo, Font customFont, Texture2D arrowTexture, Sound backgroundSound);
-void WinScreen(Texture2D background, Font customFont);
+int WinScreen(Texture2D background, Font customFont);
 bool LoseScreen(Texture2D background, Font customFont);
 // Custom drawing function
 struct CustomButton {

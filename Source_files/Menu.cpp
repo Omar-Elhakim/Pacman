@@ -207,76 +207,211 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                     StopSound(backgroundSound);
                     // Handle button clicks for each level
                     Level* level;
-                    bool f;
+                    bool f = 1;
+                    int o;
                     switch (i * 3 + j) {
                     case 0:
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 1); //easy
-                        f=level->start();
+                        while (f) {
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 1); //easy
+                            if (level->start()) {
+                                o=WinScreen(background, customFont);
+                                if (o==1) {
+                                    f = 1; break;
+                                }//implement next level
+                                else if (o==2)
+                                {
+                                    continue; //implement try again
+                                }
+                                else f=0; //to main menu
+                            }
+                            else {
+                                if (LoseScreen(background, customFont)) continue; //implement try again
+                                else f = 0;//to main menu
+                            }
+                            delete level;
+                            level = nullptr;
+                        }
+                        if (!f) break;
                         // Handle Level 1 button click
                         // toLevelMenu("Level 1", 1);
-                        break;
                     case 1:
+                        while (f) {
                         level = new Level(GetScreenWidth(), GetScreenHeight(), 2); //easy
-                        f=level->start();
-                        // Handle Level 2 button click
-                        // toLevelMenu("Level 1", 2);
-                        break;
-                        // Repeat for the rest of the cases
+                        if (level->start()) {
+                            o = WinScreen(background, customFont);
+                            if (o == 1) {
+                                f = 1; break;
+                            }//implement next level
+                            else if (o == 2)
+                            {
+                                continue; //implement try again
+                            }
+                            else f = 0; //to main menu
+                        }
+                        else {
+                            if (LoseScreen(background, customFont)) continue;
+                            else f = 0;
+                        }
+                        delete level;
+                        level = nullptr;
+                        }
+                          if (!f) break;
+                          // Repeat for the rest of the cases
                     case 2:
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 3); //easy
-                        f=level->start();
-                        // Handle Level 3 button click
-                        // toLevelMenu("Level 1", 3);
-                        break;
-                    case 3:
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 1); //medium
-                        f=level->start();
-                        // Handle Level 4 button click
-                        // toLevelMenu("Level 2", 1);
-                        break;
-                    case 4:
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 2); //medium
-                        f=level->start();
-                        // Handle Level 5 button click
-                        // toLevelMenu("Level 2", 2);
-                        break;
-                    case 5:
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 3); //medium
-                        f=level->start();
-                        // Handle Level 6 button click
-                        // toLevelMenu("Level 2", 3);
-                        break;
-                    case 6:
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 1); //hard
-                        f=level->start();
-                        // Handle Level 7 button click
-                        // toLevelMenu("Level 3", 1);
-                        break;
-                    case 7:
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 2); //hard
-                        f=level->start();
-                        // Handle Level 8 button click
-                        // toLevelMenu("Level 3", 2);
-                        break;
-                    case 8:
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 3); //hard
-                        f=level->start();
-                        // Handle Level 9 button click
-                        // toLevelMenu("Level 3", 3);
-                        break;
-                    default:
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 1); //so i can delete the pionter down there
-                        break;
-                    }
-                    if (f) WinScreen(background, customFont);
-                    else {
-                        if (LoseScreen(background, customFont)) continue;
-                        else return;
-                    }
-                    delete level;
-                    level = nullptr;
-                    PlaySound(backgroundSound);
+                        while (f) {
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 3); //easy
+                            if (level->start()) {
+                                o = WinScreen(background, customFont);
+                                if (o == 1) {
+                                    f = 1; break;
+                                }//implement next level
+                                else if (o == 2)
+                                {
+                                    continue; //implement try again
+                                }
+                                else f = 0; //to main menu
+                            }
+                            else {
+                                if (LoseScreen(background, customFont)) continue;
+                                else f = 0;
+                            }
+                        }
+                        if (!f) break;
 
+                    case 3:
+                        while (f) {
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 1); //easy
+                            if (level->start()) {
+                                o = WinScreen(background, customFont);
+                                if (o == 1) {
+                                    f = 1; break;
+                                }//implement next level
+                                else if (o == 2)
+                                {
+                                    continue; //implement try again
+                                }
+                                else f = 0; //to main menu
+                            }
+                            else {
+                                if (LoseScreen(background, customFont)) continue;
+                                else f = 0;
+                            }
+                            delete level;
+                            level = nullptr;
+                        }
+                        if (!f) break;
+                    case 4:
+                        while (f) {
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 2); //easy
+                            if (level->start()) {
+                                o = WinScreen(background, customFont);
+                                if (o == 1) {
+                                    f = 1; break;
+                                }//implement next level
+                                else if (o == 2)
+                                {
+                                    continue; //implement try again
+                                }
+                                else f = 0; //to main menu
+                            }
+                            else {
+                                if (LoseScreen(background, customFont)) continue;
+                                else f = 0;
+                            }
+                            delete level;
+                            level = nullptr;
+                        }
+                        if (!f) break;
+                    case 5:
+                        while (f) {
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 3); //easy
+                            if (level->start()) {
+                                o = WinScreen(background, customFont);
+                                if (o == 1) {
+                                    f = 1; break;
+                                }//implement next level
+                                else if (o == 2)
+                                {
+                                    continue; //implement try again
+                                }
+                                else f = 0; //to main menu
+                            }
+                            else {
+                                if (LoseScreen(background, customFont)) continue;
+                                else f = 0;
+                            }
+                            delete level;
+                            level = nullptr;
+                        }
+                        if (!f) break;
+                    case 6:
+                        while (f) {
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 1); //easy
+                            if (level->start()) {
+                                o = WinScreen(background, customFont);
+                                if (o == 1) {
+                                    f = 1; break;
+                                }//implement next level
+                                else if (o == 2)
+                                {
+                                    continue; //implement try again
+                                }
+                                else f = 0; //to main menu
+                            }
+                            else {
+                                if (LoseScreen(background, customFont)) continue;
+                                else f = 0;
+                            }
+                            delete level;
+                            level = nullptr;
+                        }
+                        if (!f) break;
+                    case 7:
+                        while (f) {
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 2); //easy
+                            if (level->start()) {
+                                o = WinScreen(background, customFont);
+                                if (o == 1) {
+                                    f = 1; break;
+                                }//implement next level
+                                else if (o == 2)
+                                {
+                                    continue; //implement try again
+                                }
+                                else f = 0; //to main menu
+                            }
+                            else {
+                                if (LoseScreen(background, customFont)) continue;
+                                else f = 0;
+                            }
+                            delete level;
+                            level = nullptr;
+                        }
+                        if (!f) break;
+                    case 8:
+                        while (f) {
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 3); //easy
+                            if (level->start()) {
+                                o = WinScreen(background, customFont);
+                                if (o == 1) {
+                                    f = 1; break;
+                                }//implement next level
+                                else if (o == 2)
+                                {
+                                    continue; //implement try again
+                                }
+                                else f = 0; //to main menu
+                            }
+                            else {
+                                if (LoseScreen(background, customFont)) continue;
+                                else f = 0;
+                            }
+                            delete level;
+                            level = nullptr;
+                        }
+                        if (!f) break;
+                    }
+                    PlaySound(backgroundSound);
                 }
             }
         }
@@ -434,8 +569,7 @@ void createMap(Texture2D background, Texture2D logo, Font customFont, Texture2D 
     const float arrowButtonHeight = 64;
     const float arrowButtonX = 55;
     const float arrowButtonY = 504;
-    bool f;
-
+    
     while (!WindowShouldClose())
     {
 
@@ -459,35 +593,79 @@ void createMap(Texture2D background, Texture2D logo, Font customFont, Texture2D 
                 if (CheckCollisionPointRec(GetMousePosition(), buttons[i]))
                 {
                     Level* level;
+                    bool f=1;
+                    int o;
                     StopSound(backgroundSound);
 
                     switch (i)
                     {
                     case 0:
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 4); //easy
-                        f = level->start();
-
-                        break;
-                    case 1: 
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 4); //easy
-                        f = level->start();
-                        // How to play button
-                        break;
-                    case 2: // Credits button
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 4); //easy
-                        f = level->start();
-
-                        break;
-                    default:
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 1); //so i can delete the pionter down there
-                        break;
-                    }
-                    if (f) WinScreen(background, customFont);
-                    else {
-                        if (LoseScreen(background, customFont)) { 
-                            break;
+                        while (f) {
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 4); //easy
+                            if (level->start()) {
+                                o = WinScreen(background, customFont);
+                                if (o == 1) {
+                                    f = 1; break;
+                                }//implement next level
+                                else if (o == 2)
+                                {
+                                    continue; //implement try again
+                                }
+                                else f = 0; //to main menu
+                            }
+                            else {
+                                if (LoseScreen(background, customFont)) continue; //implement try again
+                                else f = 0;//to main menu
+                            }
+                            delete level;
+                            level = nullptr;
                         }
-                        else return;
+                        if (!f) break;
+                        // Handle Level 1 button click
+                        // toLevelMenu("Level 1", 1);
+                    case 1:
+                        while (f) {
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 4); //easy
+                            if (level->start()) {
+                                o = WinScreen(background, customFont);
+                                if (o == 1) {
+                                    f = 1; break;
+                                }//implement next level
+                                else if (o == 2)
+                                {
+                                    continue; //implement try again
+                                }
+                                else f = 0; //to main menu
+                            }
+                            else {
+                                if (LoseScreen(background, customFont)) continue;
+                                else f = 0;
+                            }
+                            delete level;
+                            level = nullptr;
+                        }
+                        if (!f) break;
+                        // Repeat for the rest of the cases
+                    case 2:
+                        while (f) {
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 4); //easy
+                            if (level->start()) {
+                                o = WinScreen(background, customFont);
+                                if (o == 1) {
+                                    f = 1; break;
+                                }//implement next level
+                                else if (o == 2)
+                                {
+                                    continue; //implement try again
+                                }
+                                else f = 0; //to main menu
+                            }
+                            else {
+                                if (LoseScreen(background, customFont)) continue;
+                                else f = 0;
+                            }
+                        }
+                        if (!f) break;
                     }
                     PlaySound(backgroundSound);
 
@@ -535,7 +713,7 @@ void createMap(Texture2D background, Texture2D logo, Font customFont, Texture2D 
 }
     
 // win/lose screens
-void WinScreen(Texture2D background, Font customFont)
+int WinScreen(Texture2D background, Font customFont)
 {
     // Custom button colors
     Color Yellow = { 249, 195, 40, 255 };
@@ -565,7 +743,7 @@ void WinScreen(Texture2D background, Font customFont)
         if (IsKeyPressed(KEY_ESCAPE))
         {
             // Go back to main menu
-            return;
+            return 0;
         }
 
         // Check for clicks on Menu buttons
@@ -577,16 +755,19 @@ void WinScreen(Texture2D background, Font customFont)
                 {
                     switch (i)
                     {
-                    case 0: 
+                    case 0:
+                        return 1;
                         // Next Level button
                         // Handle "Next Level" action
                         break;
-                    case 1: // Try Again button
+                    case 1: 
+                        return 2;
+                        // Try Again button
                         // Handle "Try Again" action
                         break;
                     case 2: // Main Menu button
                         // Handle "Main Menu" action
-                        return;
+                        return 0;
                     default:
                         break;
                     }
