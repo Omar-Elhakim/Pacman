@@ -763,11 +763,11 @@ int WinScreen(Texture2D background, Font customFont)
         // Draw "YOU WON !!" text
         DrawTextEx(customFont, "YOU WON !!", { (GetScreenWidth() - MeasureTextEx(customFont, "YOU WON !!", 60, 2).x) / 2, 109 }, 60, 2, YELLOW);
         // Draw "Your Score" text
-        DrawTextEx(customFont, TextFormat("YOUR SCORE: %d", your_score_integer), { 54, 182 }, 20, 2, Red);
+        DrawTextEx(customFont, TextFormat("YOUR SCORE: %d", 5), { 54, 182 }, 20, 2, Red);
 
         // Draw "Highest Scores" text
         DrawTextEx(customFont, "HIGHEST SCORE:", { 617, 182 }, 20, 2, Red);
-        int highestScores[3] = { 1,2,3 };
+        vector<int>highestScores = readScore();
         // Draw individual highest scores
         for (size_t i = 0; i < 3; ++i) {
             DrawTextEx(customFont, TextFormat("%d - %d", i + 1, highestScores[i]), { 617, 182 + static_cast<float>(i + 1) * 35 }, 20, 2, Red);
@@ -852,7 +852,7 @@ bool LoseScreen(Texture2D background, Font customFont)
         // Draw "YOU LOST !!" text
         DrawTextEx(customFont, "YOU LOST !!", { (GetScreenWidth() - MeasureTextEx(customFont, "YOU LOST !!", 60, 2).x) / 2, 109 }, 60, 2, Yellow);
         // Draw "Your Score" text
-        DrawTextEx(customFont, TextFormat("YOUR SCORE: %d", your_score_integer), { 54, 182 }, 20, 2, Red);
+        DrawTextEx(customFont, TextFormat("YOUR SCORE: %d", 5), { 54, 182 }, 30, 2, Red);
 
         // Set default button colors before the loop
         GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, ColorToInt(textColor));
