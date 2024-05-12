@@ -131,11 +131,6 @@ void Ghost::goDown() {
     
     
 }
-
-
-
-
-
 Vector2 Ghost::GenerateRandomDirection() {
     Vector2 dir;
     dir.x = GetRandomValue(-1, 1); 
@@ -159,6 +154,9 @@ void Ghost::moveRandomly(float speed) {
         InitialPosition[0].y += velocity.y;
     }
 
+}
+void Ghost::moveto(vector<Vector2> path,int ghostindex) {
+    //InitialPosition[ghostindex].x-
 }
 
 
