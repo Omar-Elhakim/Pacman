@@ -5,7 +5,7 @@
 Pacman::Pacman(Map *map, Food *food) : map(map), food(food) {
     this->scalFactor = 0.80f;
     score = x = a = 0;
-    speed = 1.8f;
+    speed = 10.8f;
     ImageSize = {2 * map->CellWidth * scalFactor, 4 * map->CellHeight * scalFactor};
     setSize();
     InitialPosition = map->getClPos(map->GetCell(1, 1)->arrPos);

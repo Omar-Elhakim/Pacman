@@ -1,4 +1,5 @@
 #include "../Header_files/Map.h"
+#include <algorithm>
 
 Map::Map() {
     MakeList();
@@ -31,11 +32,11 @@ bool Map::isPath(int x, int y) {
     return true;
 }
 
-void Map::BFS(Vector2 prev[][vc], Vector2 from) {
+void Map::BFS(Vector2i prev[][vc], Vector2i from) {
     int row = from.y, col = from.x;
     int dr[4] = {-1, 1, 0, 0};
     int dc[4] = {0, 0, -1, 1};
-    std::queue<Vector2> TN;
+    std::queue<Vector2i> TN;
     TN.push(from);
 
     bool visited[hc][vc];
@@ -45,7 +46,7 @@ void Map::BFS(Vector2 prev[][vc], Vector2 from) {
 
     visited[row][col] = true;
     while (!TN.empty()) {
-        Vector2 s = TN.front();
+        Vector2i s = TN.front();
         for (int i = 0; i < 4; i++) {
             col = s.x + dc[i];
             row = s.y + dr[i];
@@ -53,7 +54,7 @@ void Map::BFS(Vector2 prev[][vc], Vector2 from) {
             if (isPath(col, row) && !visited[row][col]) {
                 visited[row][col] = true;
                 prev[row][col] = s;
-                Vector2 k = {col, row};
+                Vector2i k = {col, row};
                 TN.push(k);
             }
         }
@@ -110,9 +111,9 @@ void Map::SetPathColor(Color color) {
     pathColor = color;
 }
 
-void Map::ColorClSubList(std::vector<Vector2> subList) {
+void Map::ColorClSubList(std::vector<Vector2i> subList) {
     for (int i = 0; i < subList.size(); i++)
-        list[int(subList[i].y)][int(subList[i].x)].BackgroundColor = pathColor;
+        list[subList[i].y][subList[i].x].BackgroundColor = pathColor;
 }
 
 void Map::Update() {
@@ -129,16 +130,20 @@ void Map::Draw() {
 }
 
 #include <iostream>
-vector<Vector2> Map::FindPath(Vector2 from, Vector2 to) {
-    std::vector<Vector2> Path;
-    Vector2 prev[hc][vc];
+vector<Vector2i> Map::FindPath(Vector2i from, Vector2i to) {
+    std::vector<Vector2i> Path;
+    Vector2i temp = to;
+    int row = temp.y, col = temp.x;
+    if(to.x < 0 || to.x >= vc || to.y < 0 || to.y >= hc){
+        Path.push_back(from);
+        return Path;
+    }
+    Vector2i prev[hc][vc];
     for (int i = 0; i < hc; i++)
         for (int j = 0; j < vc; j++)
             prev[i][j] = {-1, -1};
 
     BFS(prev, from);
-    Vector2 temp = to;
-    int row = temp.y, col = temp.x;
 
     do {
         row = temp.y;
@@ -152,6 +157,7 @@ vector<Vector2> Map::FindPath(Vector2 from, Vector2 to) {
         GetCell(to.x, to.y)->BackgroundColor = GOLD;
         SetPathColor(GREEN);
     }
+    std::reverse(Path.begin(),Path.end());
     return Path;
 }
 
@@ -174,12 +180,12 @@ bool Map::posInBoundaries(Vector2 Position) {
     return Position.x < GetScreenWidth() && Position.y < GetScreenHeight() && Position.x > 0 && Position.y > 0;
 }
 
-Vector2 Map::getClArrPos(Vector2 Position) {
-    if (posInGameCanvas(Position)) return {(Position.x / CellWidth), ((Position.y - infoBarHeight) / CellHeight)};
+Vector2i Map::getClArrPos(Vector2 Position) {
+    if (posInGameCanvas(Position)) return {(int)(Position.x / CellWidth), ((int)((Position.y - infoBarHeight) / CellHeight))};
     return {-1, -1};
 }
 
-Vector2 Map::getClPos(Vector2 ArrPos) {
+Vector2 Map::getClPos(Vector2i ArrPos) {
     if (ArrPos.x < vc && ArrPos.y < hc && ArrPos.x >= 0 && ArrPos.y >= 0)
         return {ArrPos.x * CellWidth, ArrPos.y * CellHeight + infoBarHeight};
     return {-1, -1};

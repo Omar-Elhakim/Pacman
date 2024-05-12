@@ -25,11 +25,11 @@ public:
     Vector2 GenerateRandomDirection();
     void draw();
     void setSize();
-    void goRight();
-    void goLeft();
-    void goUp();
-    void goDown();
-    void move();
+    void goRight(int i);
+    void goLeft(int i);
+    void goUp(int i);
+    void goDown(int i);
+    void move(int i);
     void moveto(Vector2 to,int ghostindex,Map* map);
     void moveRandomly(float);
 };

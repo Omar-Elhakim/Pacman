@@ -58,79 +58,63 @@ void Ghost::draw() {
     }
 }
 
-
-
-
-void Ghost::move() {
-    for (int i = 0; i < 4; i++)
-    {
+void Ghost::move(int i) {
+    // for (int i = 0; i < 4; i++)
+    // {
         a++;
         if (a % 9 == 0)
             x = (x + 1) % 3;
         ghostbox[i].x = x * ghostbox[i].width;
         InitialPosition[i].x += Direction.x;
         InitialPosition[i].y += Direction.y;
-    }
+    // }
    
 }
 
-void Ghost::goRight() {
-    for (size_t i = 0; i < 4; i++)
-    {
+void Ghost::goRight(int i) {
         Vector2 pointerTL = { InitialPosition[i].x + 1,InitialPosition[i].y + 2};
         Vector2 pointerBR = { InitialPosition[i].x + map->CellWidth - 1,InitialPosition[i].y + map->CellHeight - 2};
         Direction = { speed, 0 };
         ghostbox[i].y = 0 * ghostbox[i].height;
         if ((map->GetCell((pointerTL.x / map->CellWidth) + 1, (pointerTL.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD) &&
             (map->GetCell((pointerBR.x / map->CellWidth) + 0.01, (pointerBR.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD)) {
-            move();
+            move(i);
         }
-    }
-    
 }
-void Ghost::goLeft() {
-    for (size_t i = 0; i < 4; i++) {
+
+void Ghost::goLeft(int i) {
         Vector2 pointerTL = { InitialPosition[i].x + 1,InitialPosition[i].y + 2};
         Vector2 pointerBR = { InitialPosition[i].x + map->CellWidth - 1,InitialPosition[i].y + map->CellHeight - 2};
         Direction = { -1 * speed, 0 };
         ghostbox[i].y = 1 * ghostbox[i].height;
         if ((map->GetCell((pointerTL.x / map->CellWidth) - 0.01, (pointerTL.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD) &&
             (map->GetCell((pointerBR.x / map->CellWidth) - 1, (pointerBR.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD)) {
-            move();
+            move(i);
         }
-    }
-    
 }
-void Ghost::goUp() {
-    for (size_t i = 0; i < 4; i++)
-    {
+
+void Ghost::goUp(int i) {
         Vector2 pointerTL = { InitialPosition[i].x + 1,InitialPosition[i].y + 2};
         Vector2 pointerBR = { InitialPosition[i].x + map->CellWidth - 1,InitialPosition[i].y + map->CellHeight - 2};
         Direction = { 0, -1 * speed };
         ghostbox[i].y = 2 * ghostbox[i].height;
         if ((map->GetCell(pointerTL.x / map->CellWidth, ((pointerTL.y - map->infoBarHeight) / map->CellHeight) - 0.01)->TileType == ROAD) &&
             (map->GetCell(pointerBR.x / map->CellWidth, ((pointerBR.y - map->infoBarHeight) / map->CellHeight) - 1)->TileType == ROAD)) {
-            move();
+            move(i);
         }
-    }
-    
-    
 }
-void Ghost::goDown() {
-    for (size_t i = 0; i < 4; i++)
-    {
+
+void Ghost::goDown(int i) {
         Vector2 pointerTL = { InitialPosition[i].x + 1,InitialPosition[i].y + 2};
         Vector2 pointerBR = { InitialPosition[i].x + map->CellWidth - 1,InitialPosition[i].y + map->CellHeight - 2};
         Direction = { 0, speed };
         ghostbox[i].y = 3 * ghostbox[i].height;
         if ((map->GetCell(pointerTL.x / map->CellWidth, ((pointerTL.y - map->infoBarHeight) / map->CellHeight) + 1)->TileType == ROAD) &&
             (map->GetCell(pointerBR.x / map->CellWidth, ((pointerBR.y - map->infoBarHeight) / map->CellHeight) + 0.01)->TileType == ROAD)) {
-            move();
+            move(i);
         }
-    }
-    
-    
 }
+
 Vector2 Ghost::GenerateRandomDirection() {
     Vector2 dir;
     dir.x = GetRandomValue(-1, 1); 
@@ -143,6 +127,7 @@ Vector2 Ghost::GenerateRandomDirection() {
     }
     return dir;
 }
+
 void Ghost::moveRandomly(float speed) {
 
     
@@ -155,9 +140,22 @@ void Ghost::moveRandomly(float speed) {
     }
 
 }
-void Ghost::moveto(Vector2 to,int ghostindex,Map* map) {
-    vector<Vector2> path = map->FindPath(InitialPosition[ghostindex], to);
 
+void Ghost::moveto(Vector2 to,int ghostindex,Map* map) {
+    vector<Vector2i> path = map->FindPath(map->getClArrPos(InitialPosition[ghostindex]), map->getClArrPos(to));
+    cout << path[0].x;
+    Vector2 relativePos;
+    relativePos.x= InitialPosition[ghostindex].x- path[0].x;
+    relativePos.y = InitialPosition[ghostindex].y - path[0].y;
+    if (relativePos.x == 0) { //it's in the same column, let's see the difference in rows
+        if (relativePos.y == 1) goUp(ghostindex);//it's on top of it
+        else if (relativePos.y == -1) goDown(ghostindex);
+    }
+    else {
+        if (relativePos.x == 1) goLeft(ghostindex);//it's in the same column, let's see the difference in rows
+        else if (relativePos.x == -1) goRight(ghostindex); //it's in the same column, let's see the difference in rows
+    }
+    cout << "function ended";
 }
 
 
