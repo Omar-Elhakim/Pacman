@@ -62,10 +62,27 @@ bool Level::start() {
         }
         if (IsKeyPressed(KEY_G) )
         {
-
             pacmanCenter = { pacman->InitialPosition.x + map->CellWidth / 2,
-                            pacman->InitialPosition.y + map->CellHeight / 2 };
-            ghost->moveto(pacmanCenter, 0, map);
+                           pacman->InitialPosition.y + map->CellHeight / 2 };
+
+            vector<Vector2> path = map->FindPath({ 1,1 },map->getClArrPos(pacmanCenter));
+            for(auto pat :path)
+            cout << pat.x<<"\t"<<pat.y<<"\n";
+            Vector2 relativePos;
+            relativePos.x = pacman->InitialPosition.x - path[1].x;
+            relativePos.y = pacman->InitialPosition.y - path[1].y;
+            if (relativePos.x == 0) { //it's in the same column, let's see the difference in rows
+                if (relativePos.y == 1) pacman->goUp();//it's on top of it
+                else if (relativePos.y == -1) pacman->goDown();
+            }
+            else {
+                if (relativePos.x == 1) pacman->goLeft();//it's in the same column, let's see the difference in rows
+                else if (relativePos.x == -1) pacman->goRight(); //it's in the same column, let's see the difference in rows
+            }
+            cout << "function ended";
+           // pacmanCenter = { pacman->InitialPosition.x + map->CellWidth / 2,
+             //               pacman->InitialPosition.y + map->CellHeight / 2 };
+            //ghost->moveto(pacmanCenter, 0, map);
         }
          if (IsKeyPressed(KEY_F)) {
         pacmanCenter = {pacman->InitialPosition.x + map->CellWidth / 2,

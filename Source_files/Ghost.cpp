@@ -152,6 +152,7 @@ void Ghost::moveto(Vector2 to,int ghostindex,Map* map) {
         if (relativePos.x == 1) goLeft(ghostindex);//it's in the same column, let's see the difference in rows
         else if (relativePos.x == -1) goRight(ghostindex); //it's in the same column, let's see the difference in rows
     }
+    cout << "function ended";
 }
 
 
