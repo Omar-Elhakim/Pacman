@@ -49,7 +49,7 @@ void Map::BFS(Vector2 prev[][vc], Vector2 from) {
         for (int i = 0; i < 4; i++) {
             col = s.x + dc[i];
             row = s.y + dr[i];
-            GetCell(s.x, s.y)->BackgroundColor = GREEN;
+            if(colorPath) GetCell(s.x, s.y)->BackgroundColor = GREEN;
             if (isPath(col, row) && !visited[row][col]) {
                 visited[row][col] = true;
                 prev[row][col] = s;
@@ -129,8 +129,7 @@ void Map::Draw() {
 }
 
 #include <iostream>
-void Map::FindPath(Vector2 from, Vector2 to) {
-    // if (posInGameCanvas(to)) std::cout << "hello" << std::endl;
+vector<Vector2> Map::FindPath(Vector2 from, Vector2 to) {
     std::vector<Vector2> Path;
     Vector2 prev[hc][vc];
     for (int i = 0; i < hc; i++)
@@ -147,11 +146,13 @@ void Map::FindPath(Vector2 from, Vector2 to) {
         Path.push_back(temp);
         temp = prev[row][col];
     } while (prev[row][col].x != -1);
-
-    SetPathColor(RED);
-    ColorClSubList(Path);
-    GetCell(to.x, to.y)->BackgroundColor = GOLD;
-    SetPathColor(GREEN);
+    if (colorPath) {
+        SetPathColor(RED);
+        ColorClSubList(Path);
+        GetCell(to.x, to.y)->BackgroundColor = GOLD;
+        SetPathColor(GREEN);
+    }
+    return Path;
 }
 
 Cell *Map::GetCell(int col, int row) {
