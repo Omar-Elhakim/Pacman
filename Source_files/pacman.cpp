@@ -119,11 +119,18 @@ void Pacman::goDown() {
     }
 };
 
+void Pacman::death() {
+    InitialPosition.x = -1000;
+    PlaySound(deathsound);
+
+}
+
 void Pacman::setSize() {
     PacmanImage = LoadImage("assets/pac2.png");
     Vector2 OldImageSize = ImageSize;
     eat1 = LoadSound("assets/chomp1.wav");
     eat2 = LoadSound("assets/chomp2.wav");
+    deathsound = LoadSound("assets/pacman-lose.wav");
     // image size equalles 95% of cell size
     // it needs to change in movment functions
     ImageSize = {2 * map->CellWidth * scalFactor, 4 * map->CellHeight * scalFactor};

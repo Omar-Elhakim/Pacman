@@ -17,9 +17,11 @@ class Pacman {
     float scalFactor;
 
   public:
+    Vector2 midpoint = { (InitialPosition.x + (map->CellWidth / 2)), (InitialPosition.y + (map->CellHeight / 2)) };
     Vector2 InitialPosition;
     Sound eat1;
     Sound eat2;
+    Sound deathsound;
     int eatc = 0;
     int score;
     Vector2 direction;
@@ -34,5 +36,5 @@ class Pacman {
     void goDown();
     void setSize();
     void eat();
-    void die();
+    void death();
 };

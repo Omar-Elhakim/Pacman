@@ -85,6 +85,11 @@ void Ghost::goRight() {
             (map->GetCell((pointerBR.x / map->CellWidth) + 0.01, (pointerBR.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD)) {
             move();
         }
+        for (int i = 0; i < 3; i++) {
+            Vector2 ghostmidpoint = { (InitialPosition[i].x + (map->CellWidth / 2)), (InitialPosition[i].y + (map->CellHeight / 2)) };
+            if ((ghostmidpoint.x / (map->CellWidth)) + 1 == pacman->midpoint.x)
+                pacman->death();
+        }
     }
     
 }
@@ -97,6 +102,11 @@ void Ghost::goLeft() {
         if ((map->GetCell((pointerTL.x / map->CellWidth) - 0.01, (pointerTL.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD) &&
             (map->GetCell((pointerBR.x / map->CellWidth) - 1, (pointerBR.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD)) {
             move();
+        }
+        for (int i = 0; i < 3; i++) {
+            Vector2 ghostmidpoint = { (InitialPosition[i].x + (map->CellWidth / 2)), (InitialPosition[i].y + (map->CellHeight / 2)) };
+            if ((ghostmidpoint.x / (map->CellWidth)) - 1 == pacman->midpoint.x)
+                pacman->death();
         }
     }
     
@@ -112,6 +122,11 @@ void Ghost::goUp() {
             (map->GetCell(pointerBR.x / map->CellWidth, ((pointerBR.y - map->infoBarHeight) / map->CellHeight) - 1)->TileType == ROAD)) {
             move();
         }
+        for (int i = 0; i < 3; i++) {
+            Vector2 ghostmidpoint = { (InitialPosition[i].x + (map->CellWidth / 2)), (InitialPosition[i].y + (map->CellHeight / 2)) };
+            if (((ghostmidpoint.y - map->infoBarHeight) / map->CellHeight) - 1 == pacman->midpoint.x)
+                pacman->death();
+        }
     }
     
     
@@ -126,6 +141,11 @@ void Ghost::goDown() {
         if ((map->GetCell(pointerTL.x / map->CellWidth, ((pointerTL.y - map->infoBarHeight) / map->CellHeight) + 1)->TileType == ROAD) &&
             (map->GetCell(pointerBR.x / map->CellWidth, ((pointerBR.y - map->infoBarHeight) / map->CellHeight) + 0.01)->TileType == ROAD)) {
             move();
+        }
+        for (int i = 0; i < 3; i++) {
+            Vector2 ghostmidpoint = { (InitialPosition[i].x + (map->CellWidth / 2)), (InitialPosition[i].y + (map->CellHeight / 2)) };
+            if (((ghostmidpoint.y - map->infoBarHeight) / map->CellHeight) + 1 == pacman->midpoint.x)
+                pacman->death();
         }
     }
     
