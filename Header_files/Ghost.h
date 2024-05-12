@@ -30,7 +30,7 @@ public:
     void goUp();
     void goDown();
     void move();
-    void moveto(vector<Vector2> path ,int ghostindex);
+    void moveto(Vector2 to,int ghostindex,Map* map);
     void moveRandomly(float);
 };
 #endif // GHOST_H

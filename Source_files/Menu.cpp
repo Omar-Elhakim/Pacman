@@ -222,11 +222,11 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                                 {
                                     continue; //implement try again
                                 }
-                                else f=0; //to main menu
+                                else return; //to main menu
                             }
                             else {
                                 if (LoseScreen(background, customFont)) continue; //implement try again
-                                else f = 0;//to main menu
+                                else return;//to main menu
                             }
                             delete level;
                             level = nullptr;
@@ -246,11 +246,11 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                             {
                                 continue; //implement try again
                             }
-                            else f = 0; //to main menu
+                            else return; //to main menu
                         }
                         else {
                             if (LoseScreen(background, customFont)) continue;
-                            else f = 0;
+                            else return;
                         }
                         delete level;
                         level = nullptr;
@@ -269,11 +269,11 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                                 {
                                     continue; //implement try again
                                 }
-                                else f = 0; //to main menu
+                                else return; //to main menu
                             }
                             else {
                                 if (LoseScreen(background, customFont)) continue;
-                                else f = 0;
+                                else return;
                             }
                         }
                         if (!f) break;
@@ -290,11 +290,11 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                                 {
                                     continue; //implement try again
                                 }
-                                else f = 0; //to main menu
+                                else return; //to main menu
                             }
                             else {
                                 if (LoseScreen(background, customFont)) continue;
-                                else f = 0;
+                                else return;
                             }
                             delete level;
                             level = nullptr;
@@ -312,11 +312,11 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                                 {
                                     continue; //implement try again
                                 }
-                                else f = 0; //to main menu
+                                else return; //to main menu
                             }
                             else {
                                 if (LoseScreen(background, customFont)) continue;
-                                else f = 0;
+                                else return;
                             }
                             delete level;
                             level = nullptr;
@@ -334,11 +334,11 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                                 {
                                     continue; //implement try again
                                 }
-                                else f = 0; //to main menu
+                                else return; //to main menu
                             }
                             else {
                                 if (LoseScreen(background, customFont)) continue;
-                                else f = 0;
+                                else return;
                             }
                             delete level;
                             level = nullptr;
@@ -356,11 +356,11 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                                 {
                                     continue; //implement try again
                                 }
-                                else f = 0; //to main menu
+                                else return; //to main menu
                             }
                             else {
                                 if (LoseScreen(background, customFont)) continue;
-                                else f = 0;
+                                else return;
                             }
                             delete level;
                             level = nullptr;
@@ -378,11 +378,11 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                                 {
                                     continue; //implement try again
                                 }
-                                else f = 0; //to main menu
+                                else return; //to main menu
                             }
                             else {
                                 if (LoseScreen(background, customFont)) continue;
-                                else f = 0;
+                                else return;
                             }
                             delete level;
                             level = nullptr;
@@ -400,11 +400,11 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                                 {
                                     continue; //implement try again
                                 }
-                                else f = 0; //to main menu
+                                else return; //to main menu
                             }
                             else {
                                 if (LoseScreen(background, customFont)) continue;
-                                else f = 0;
+                                else return;
                             }
                             delete level;
                             level = nullptr;
