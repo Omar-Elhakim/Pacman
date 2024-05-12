@@ -222,11 +222,11 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                                 {
                                     continue; //implement try again
                                 }
-                                else return; //to main menu
+                                else f=0; //to main menu
                             }
                             else {
                                 if (LoseScreen(background, customFont)) continue; //implement try again
-                                else return;//to main menu
+                                else f = 0;//to main menu
                             }
                             delete level;
                             level = nullptr;

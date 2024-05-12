@@ -156,7 +156,7 @@ void Ghost::moveRandomly(float speed) {
 
 }
 void Ghost::moveto(vector<Vector2> path,int ghostindex) {
-    //InitialPosition[ghostindex].x-
+    InitialPosition[ghostindex].x-
 }
 
 
