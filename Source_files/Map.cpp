@@ -1,4 +1,5 @@
 #include "../Header_files/Map.h"
+#include <algorithm>
 
 Map::Map() {
     MakeList();
@@ -131,14 +132,18 @@ void Map::Draw() {
 #include <iostream>
 vector<Vector2i> Map::FindPath(Vector2i from, Vector2i to) {
     std::vector<Vector2i> Path;
+    Vector2i temp = to;
+    int row = temp.y, col = temp.x;
+    if(to.x < 0 || to.x >= vc || to.y < 0 || to.y >= hc){
+        Path.push_back(from);
+        return Path;
+    }
     Vector2i prev[hc][vc];
     for (int i = 0; i < hc; i++)
         for (int j = 0; j < vc; j++)
             prev[i][j] = {-1, -1};
 
     BFS(prev, from);
-    Vector2i temp = to;
-    int row = temp.y, col = temp.x;
 
     do {
         row = temp.y;
@@ -152,6 +157,7 @@ vector<Vector2i> Map::FindPath(Vector2i from, Vector2i to) {
         GetCell(to.x, to.y)->BackgroundColor = GOLD;
         SetPathColor(GREEN);
     }
+    std::reverse(Path.begin(),Path.end());
     return Path;
 }
 
