@@ -66,21 +66,25 @@ bool Level::start() {
                            pacman->InitialPosition.y + map->CellHeight / 2 };
 
             vector<Vector2i> path = map->FindPath({ 1,1 },map->getClArrPos(pacmanCenter));
-            for(auto pat :path)
-            cout << pat.x<<"\t"<<pat.y<<"\n";
-            cout << endl;
+            // for(auto pat :path)
+            // cout << pat.x<<"\t"<<pat.y<<"\n";
+            // cout << endl;
             Vector2 relativePos;
-            relativePos.x = pacman->InitialPosition.x - map->getClPos(path[1]).x;
-            relativePos.y = pacman->InitialPosition.y - map->getClPos(path[1]).y;
+
+            for(int i = 0 ; i < 4 ; i++){
+            relativePos.x = ghost->InitialPosition[0].x - map->getClPos(path[2]).x;
+            relativePos.y = ghost->InitialPosition[0].y - map->getClPos(path[2]).y;
+            cout <<relativePos.x <<"\t" << relativePos.y << endl;
             if (relativePos.x == 0) { //it's in the same column, let's see the difference in rows
-                if (relativePos.y == 1) pacman->goUp();//it's on top of it
-                else if (relativePos.y == -1) pacman->goDown();
+                if (relativePos.y >= 1)       ghost->goUp(i);//it's on top of it
+                else if (relativePos.y <=  -1) ghost->goDown(i);
             }
             else {
-                if (relativePos.x == 1) pacman->goLeft();//it's in the same column, let's see the difference in rows
-                else if (relativePos.x == -1) pacman->goRight(); //it's in the same column, let's see the difference in rows
+                if (relativePos.x >= 1)       ghost->goLeft(i);//it's in the same column, let's see the difference in rows
+                else if (relativePos.x <= -1) ghost->goRight(i); //it's in the same column, let's see the difference in rows
             }
-            cout << "function ended";
+            }
+            // cout << "function ended";
            // pacmanCenter = { pacman->InitialPosition.x + map->CellWidth / 2,
              //               pacman->InitialPosition.y + map->CellHeight / 2 };
             //ghost->moveto(pacmanCenter, 0, map);
@@ -114,4 +118,5 @@ bool Level::start() {
         }
         EndDrawing();
     }
+    return 0;
 }

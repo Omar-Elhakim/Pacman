@@ -58,19 +58,16 @@ void Ghost::draw() {
     }
 }
 
-
-
-
-void Ghost::move() {
-    for (int i = 0; i < 4; i++)
-    {
+void Ghost::move(int i) {
+    // for (int i = 0; i < 4; i++)
+    // {
         a++;
         if (a % 9 == 0)
             x = (x + 1) % 3;
         ghostbox[i].x = x * ghostbox[i].width;
         InitialPosition[i].x += Direction.x;
         InitialPosition[i].y += Direction.y;
-    }
+    // }
    
 }
 
@@ -81,9 +78,10 @@ void Ghost::goRight(int i) {
         ghostbox[i].y = 0 * ghostbox[i].height;
         if ((map->GetCell((pointerTL.x / map->CellWidth) + 1, (pointerTL.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD) &&
             (map->GetCell((pointerBR.x / map->CellWidth) + 0.01, (pointerBR.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD)) {
-            move();
+            move(i);
         }
 }
+
 void Ghost::goLeft(int i) {
         Vector2 pointerTL = { InitialPosition[i].x + 1,InitialPosition[i].y + 2};
         Vector2 pointerBR = { InitialPosition[i].x + map->CellWidth - 1,InitialPosition[i].y + map->CellHeight - 2};
@@ -91,9 +89,10 @@ void Ghost::goLeft(int i) {
         ghostbox[i].y = 1 * ghostbox[i].height;
         if ((map->GetCell((pointerTL.x / map->CellWidth) - 0.01, (pointerTL.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD) &&
             (map->GetCell((pointerBR.x / map->CellWidth) - 1, (pointerBR.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD)) {
-            move();
+            move(i);
         }
 }
+
 void Ghost::goUp(int i) {
         Vector2 pointerTL = { InitialPosition[i].x + 1,InitialPosition[i].y + 2};
         Vector2 pointerBR = { InitialPosition[i].x + map->CellWidth - 1,InitialPosition[i].y + map->CellHeight - 2};
@@ -101,9 +100,10 @@ void Ghost::goUp(int i) {
         ghostbox[i].y = 2 * ghostbox[i].height;
         if ((map->GetCell(pointerTL.x / map->CellWidth, ((pointerTL.y - map->infoBarHeight) / map->CellHeight) - 0.01)->TileType == ROAD) &&
             (map->GetCell(pointerBR.x / map->CellWidth, ((pointerBR.y - map->infoBarHeight) / map->CellHeight) - 1)->TileType == ROAD)) {
-            move();
+            move(i);
         }
 }
+
 void Ghost::goDown(int i) {
         Vector2 pointerTL = { InitialPosition[i].x + 1,InitialPosition[i].y + 2};
         Vector2 pointerBR = { InitialPosition[i].x + map->CellWidth - 1,InitialPosition[i].y + map->CellHeight - 2};
@@ -111,9 +111,10 @@ void Ghost::goDown(int i) {
         ghostbox[i].y = 3 * ghostbox[i].height;
         if ((map->GetCell(pointerTL.x / map->CellWidth, ((pointerTL.y - map->infoBarHeight) / map->CellHeight) + 1)->TileType == ROAD) &&
             (map->GetCell(pointerBR.x / map->CellWidth, ((pointerBR.y - map->infoBarHeight) / map->CellHeight) + 0.01)->TileType == ROAD)) {
-            move();
+            move(i);
         }
 }
+
 Vector2 Ghost::GenerateRandomDirection() {
     Vector2 dir;
     dir.x = GetRandomValue(-1, 1); 
@@ -126,6 +127,7 @@ Vector2 Ghost::GenerateRandomDirection() {
     }
     return dir;
 }
+
 void Ghost::moveRandomly(float speed) {
 
     

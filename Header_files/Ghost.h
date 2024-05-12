@@ -29,7 +29,7 @@ public:
     void goLeft(int i);
     void goUp(int i);
     void goDown(int i);
-    void move();
+    void move(int i);
     void moveto(Vector2 to,int ghostindex,Map* map);
     void moveRandomly(float);
 };
