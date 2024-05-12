@@ -138,8 +138,9 @@ void Ghost::moveRandomly(float speed) {
     }
 
 }
+
 void Ghost::moveto(Vector2 to,int ghostindex,Map* map) {
-    vector<Vector2> path = map->FindPath(map->getClPos(InitialPosition[ghostindex]), to);
+    vector<Vector2i> path = map->FindPath(map->getClArrPos(InitialPosition[ghostindex]), map->getClArrPos(to));
     cout << path[0].x;
     Vector2 relativePos;
     relativePos.x= InitialPosition[ghostindex].x- path[0].x;

@@ -12,7 +12,7 @@ const int vc = 20; // number of columns
 const int hc = 15; //number of rows
 
 class Map {
-    void BFS(Vector2 prev[][vc], Vector2 from);
+    void BFS(Vector2i prev[][vc], Vector2i from);
     void SetCellsPos();
     void SetCellsSize();
     void MakeList();
@@ -26,18 +26,18 @@ public:
     int infoBarHeight = 50;
     void ColorClList();
     void ColorMap();
-    void ColorClSubList(vector<Vector2> list);
+    void ColorClSubList(vector<Vector2i> list);
     void SetPathColor(Color color);
     void Update();
     void Draw();
-    vector<Vector2> FindPath(Vector2 from, Vector2 to);
+    vector<Vector2i> FindPath(Vector2i from, Vector2i to);
     bool posInGameCanvas(Vector2 Pos);
     bool posInInfoBar(Vector2 Pos);
     bool posInBoundaries(Vector2 Pos);
     bool isPath(int x, int y);
     Cell *GetCell(int col, int row);
-    Vector2 getClArrPos(Vector2 Position);
-    Vector2 getClPos(Vector2 ArrPos);
+    Vector2i getClArrPos(Vector2 Position);
+    Vector2 getClPos(Vector2i ArrPos);
     Map();
     ~Map();
 };

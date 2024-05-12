@@ -65,12 +65,13 @@ bool Level::start() {
             pacmanCenter = { pacman->InitialPosition.x + map->CellWidth / 2,
                            pacman->InitialPosition.y + map->CellHeight / 2 };
 
-            vector<Vector2> path = map->FindPath({ 1,1 },map->getClArrPos(pacmanCenter));
+            vector<Vector2i> path = map->FindPath({ 1,1 },map->getClArrPos(pacmanCenter));
+            cout << map->getClArrPos(pacmanCenter).x<<"\t"<<map->getClArrPos(pacmanCenter).y<<"\n";
             for(auto pat :path)
             cout << pat.x<<"\t"<<pat.y<<"\n";
             Vector2 relativePos;
-            relativePos.x = pacman->InitialPosition.x - path[1].x;
-            relativePos.y = pacman->InitialPosition.y - path[1].y;
+            relativePos.x = pacman->InitialPosition.x - map->getClPos(path[1]).x;
+            relativePos.y = pacman->InitialPosition.y - map->getClPos(path[1]).y;
             if (relativePos.x == 0) { //it's in the same column, let's see the difference in rows
                 if (relativePos.y == 1) pacman->goUp();//it's on top of it
                 else if (relativePos.y == -1) pacman->goDown();
@@ -88,9 +89,7 @@ bool Level::start() {
         pacmanCenter = {pacman->InitialPosition.x + map->CellWidth / 2,
                         pacman->InitialPosition.y + map->CellHeight / 2};
         if (map->posInGameCanvas(pacmanCenter))
-            map->FindPath(map->getClArrPos({ghost->InitialPosition[0].x + map->CellWidth / 2,
-                                            ghost->InitialPosition[0].y + map->CellHeight / 2}),
-                          map->getClArrPos(pacmanCenter));
+            map->FindPath(map->getClArrPos({ghost->InitialPosition[0].x + map->CellWidth / 2, ghost->InitialPosition[0].y + map->CellHeight / 2}), map->getClArrPos(pacmanCenter));
          }
         if (IsKeyPressed(KEY_UP) || pacman->direction.y < 0) {
             pacman->goUp();

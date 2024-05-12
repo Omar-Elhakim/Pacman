@@ -30,11 +30,11 @@ bool isPath(int x, int y) {
     return true;
 }
 
-void BFS(Vector2 prev[hc][vc], Vector2 from) {
+void BFS(Vector2i prev[hc][vc], Vector2i from) {
     int row = from.y, col = from.x;
     int dr[4] = {-1, 1, 0, 0};
     int dc[4] = {0, 0, -1, 1};
-    queue<Vector2> TN;
+    queue<Vector2i> TN;
     TN.push(from);
 
     bool visited[hc][vc];
@@ -44,7 +44,7 @@ void BFS(Vector2 prev[hc][vc], Vector2 from) {
 
     visited[row][col] = true;
     while (!TN.empty()) {
-        Vector2 s = TN.front();
+        Vector2i s = TN.front();
         for (int i = 0; i < 4; i++) {
             col = s.x + dc[i];
             row = s.y + dr[i];
@@ -52,7 +52,7 @@ void BFS(Vector2 prev[hc][vc], Vector2 from) {
             if (isPath(col, row) && !visited[row][col]) {
                 visited[row][col] = true;
                 prev[row][col] = s;
-                Vector2 newPos;
+                Vector2i newPos;
                 newPos.x = col;
                 newPos.y = row;
                 TN.push(newPos);
@@ -62,15 +62,15 @@ void BFS(Vector2 prev[hc][vc], Vector2 from) {
     }
 }
 
-void findPath(Vector2 from, Vector2 to) {
-    vector<Vector2> Path;
-    Vector2 prev[hc][vc];
+void findPath(Vector2i from, Vector2i to) {
+    vector<Vector2i> Path;
+    Vector2i prev[hc][vc];
     for (int i = 0; i < hc; i++)
         for (int j = 0; j < vc; j++)
             prev[i][j] = {-1, -1};
 
     BFS(prev, from);
-    Vector2 temp = to;
+    Vector2i temp = to;
     int row = temp.y, col = temp.x;
 
     do {
@@ -116,7 +116,7 @@ template <typename T> void destroyByPtr(T **obj) {
 void mapMaker() {
     gmap = new Map();
     bool startRandomSearch = false;
-    Vector2 source = {0, 0}, destination = {vc - 1, hc - 1};
+    Vector2i source = {0, 0}, destination = {vc - 1, hc - 1};
     SetRandomSeed(GetTime());
     Pacman *pacman = new Pacman(gmap);
 
@@ -145,11 +145,12 @@ void mapMaker() {
             startRandomSearch = false;
         }
         if (IsKeyPressed(KEY_S)) {
-            source = {(GetMouseX() / gmap->CellWidth), (GetMouseY() / gmap->CellHeight)};
+            source = gmap->getClArrPos(GetMousePosition());
             gmap->GetCell(source.x, source.y)->BackgroundColor = ORANGE;
         }
         if (IsKeyPressed(KEY_D)) {
-            destination = {(GetMouseX() / gmap->CellWidth), (GetMouseY() / gmap->CellHeight)};
+            // destination = {(GetMouseX() / gmap->CellWidth), (GetMouseY() / gmap->CellHeight)};
+            destination = gmap->getClArrPos(GetMousePosition());
             gmap->GetCell(destination.x, destination.y)->BackgroundColor = ORANGE;
         }
         if (IsKeyPressed(KEY_F) && !(IsKeyDown(KEY_RIGHT_SHIFT) || IsKeyDown(KEY_LEFT_SHIFT))) {
@@ -201,7 +202,7 @@ Exit:
 
 void mapMaker(Map *map) {
     gmap = map;
-    Vector2 source = {0, 0}, destination = {vc - 1, hc - 1};
+    Vector2i source = {0, 0}, destination = {vc - 1, hc - 1};
     bool startRandomSearch = false;
     SetRandomSeed(GetTime());
 
@@ -232,11 +233,11 @@ void mapMaker(Map *map) {
             startRandomSearch = false;
         }
         if (IsKeyPressed(KEY_S)) {
-            source = {(GetMouseX() / gmap->CellWidth), (GetMouseY() / gmap->CellHeight)};
+            source = gmap->getClArrPos(GetMousePosition());
             gmap->GetCell(source.x, source.y)->BackgroundColor = ORANGE;
         }
         if (IsKeyPressed(KEY_D)) {
-            destination = {(GetMouseX() / gmap->CellWidth),(GetMouseY() / gmap->CellHeight)};
+            destination = gmap->getClArrPos(GetMousePosition());
             gmap->GetCell(destination.x, destination.y)->BackgroundColor = ORANGE;
         }
         if (IsKeyPressed(KEY_F) && !(IsKeyDown(KEY_RIGHT_SHIFT) || IsKeyDown(KEY_LEFT_SHIFT))) {
@@ -266,11 +267,11 @@ void mapMaker(Map *map) {
             }
         }
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && map->posInGameCanvas(GetMousePosition())) {
-            Vector2 ClArrPos = map->getClArrPos(GetMousePosition());
+            Vector2i ClArrPos = map->getClArrPos(GetMousePosition());
             makeWall(ClArrPos.x, ClArrPos.y);
         }
         if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT) && map->posInGameCanvas(GetMousePosition())) {
-            Vector2 ClArrPos = map->getClArrPos(GetMousePosition());
+            Vector2i ClArrPos = map->getClArrPos(GetMousePosition());
             makePath(ClArrPos.x, ClArrPos.y);
         }
         EndDrawing();
