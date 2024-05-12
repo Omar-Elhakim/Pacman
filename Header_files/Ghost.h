@@ -18,6 +18,8 @@ private:
 public:
     Vector2 InitialPosition[4];
     Vector2 Direction;
+    Vector2 currPosition;
+    void followPath(std::vector<Vector2> path, Ghost* ghost);
     Color color;
     // Map* map;
     Ghost(Map* map);
@@ -29,7 +31,7 @@ public:
     void goLeft();
     void goUp();
     void goDown();
-    void move();
+    void move(Vector2 path);
     void moveRandomly(float);
 };
 #endif // GHOST_H

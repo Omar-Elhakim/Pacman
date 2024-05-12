@@ -14,6 +14,8 @@ Level::Level(int WindowWidth, int WindowHeight, int n) : WindowWidth(WindowWidth
     source = {0, 0}, dest = {vc - 1, hc - 1};
 }
 
+// Function to calculate the length of a vector
+
 Level::~Level() {
     delete map;
     delete pacman;
@@ -25,6 +27,7 @@ Level::~Level() {
 bool Level::start() {
     bool mapdrawn = false;
     Vector2 pacmanCenter = {0};
+    float speed = 2.0f;
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(BLACK);
@@ -53,20 +56,21 @@ bool Level::start() {
             writeScore(pacman->score);
             return 0;
         }
-        if (IsKeyPressed(KEY_T)) 
+        if (IsKeyPressed(KEY_T))
         {
             map->colorPath = !map->colorPath;
             map->ColorMap();
 
         }
+        pacmanCenter = { pacman->InitialPosition.x + map->CellWidth / 2,
+                        pacman->InitialPosition.y + map->CellHeight / 2 };
+        if (map->posInGameCanvas(pacmanCenter))
+            
+        ghost->followPath(map->FindPath(ghost->currPosition,
+            map->getClArrPos(pacmanCenter)),ghost);
 
         // if (IsKeyPressed(KEY_F)) {
-        pacmanCenter = {pacman->InitialPosition.x + map->CellWidth / 2,
-                        pacman->InitialPosition.y + map->CellHeight / 2};
-        if (map->posInGameCanvas(pacmanCenter))
-            map->FindPath(map->getClArrPos({ghost->InitialPosition[0].x + map->CellWidth / 2,
-                                            ghost->InitialPosition[0].y + map->CellHeight / 2}),
-                          map->getClArrPos(pacmanCenter));
+        
       /*  pacmanCenter = { pacman->InitialPosition.x + map->CellWidth / 2,
                         pacman->InitialPosition.y + map->CellHeight / 2 };
         if (map->posInGameCanvas(pacmanCenter))
@@ -86,7 +90,12 @@ bool Level::start() {
                                             ghost->InitialPosition[3].y + map->CellHeight / 2 }),
                 map->getClArrPos(pacmanCenter));*/
 
-        
+    
+
+        // Function to normalize a vector
+    }
+       
+           
            
         // }
         if (IsKeyPressed(KEY_UP) || pacman->direction.y < 0) {
@@ -124,4 +133,3 @@ bool Level::start() {
         }
         EndDrawing();
     }
-}

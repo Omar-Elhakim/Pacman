@@ -9,6 +9,8 @@
 #include "../Header_files/pacman.h"
 using namespace std;
 
+
+
 Ghost::Ghost(Map* map) :map(map) {
     
     ghostImages[0] = LoadImage("assets/cyanGhost.png");
@@ -26,7 +28,8 @@ Ghost::Ghost(Map* map) :map(map) {
     InitialPosition[1] = map->getClPos(map->GetCell(17, 10)->arrPos);
     InitialPosition[2] = map->getClPos(map->GetCell(17, 11)->arrPos);
     InitialPosition[3] = map->getClPos(map->GetCell(17, 12)->arrPos);
-
+    currPosition = map->getClArrPos({ InitialPosition[0].x + map->CellWidth / 2,
+                                            InitialPosition[0].y + map->CellHeight / 2 });
     Direction = { 0, 0 };
 
     // UnloadImage(GhostImage);
@@ -58,20 +61,40 @@ void Ghost::draw() {
     }
 }
 
+float Vector2Length(const Vector2& vec) {
+    return std::sqrt(vec.x * vec.x + vec.y * vec.y);
+}
+
+//// Function to normalize a vector
+//Vector2 Vector2Normalize(const Vector2& vec) {
+//    float length = Vector2Length(vec);
+//    if (length != 0) {
+//        return { vec.x / length, vec.y / length };
+//    }
+//    else {
+//        return { 0, 0 }; // Avoid division by zero
+//    }
+//}
 
 
+void Ghost::move(Vector2 path) {
+    
+            Vector2 direction = { path.x - currPosition.x,path.y - currPosition.y};
+            float length = Vector2Length(direction);
+            direction.x /= length;
+            direction.y /= length;
+            currPosition.x += direction.x * speed;
+            currPosition.y += direction.y * speed;
 
-void Ghost::move() {
-    for (int i = 0; i < 1; i++)
-    {
-        a++;
-        if (a % 9 == 0)
-            x = (x + 1) % 3;
-        ghostbox[i].x = x * ghostbox[i].width;
-        InitialPosition[i].x += Direction.x;
-        InitialPosition[i].y += Direction.y;
-    }
+
    
+}
+
+void Ghost::followPath(std::vector<Vector2> path, Ghost* ghost) {
+    for (Vector2 position : path) {
+        ghost->move(position);
+        // Update the game state here
+    }
 }
 
 void Ghost::goRight() {
@@ -83,7 +106,7 @@ void Ghost::goRight() {
         ghostbox[i].y = 0 * ghostbox[i].height;
         if ((map->GetCell((pointerTL.x / map->CellWidth) + 1, (pointerTL.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD) &&
             (map->GetCell((pointerBR.x / map->CellWidth) + 0.01, (pointerBR.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD)) {
-            move();
+            
         }
     }
     
@@ -96,7 +119,7 @@ void Ghost::goLeft() {
         ghostbox[i].y = 1 * ghostbox[i].height;
         if ((map->GetCell((pointerTL.x / map->CellWidth) - 0.01, (pointerTL.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD) &&
             (map->GetCell((pointerBR.x / map->CellWidth) - 1, (pointerBR.y - map->infoBarHeight) / map->CellHeight)->TileType == ROAD)) {
-            move();
+            
         }
     }
     
@@ -110,7 +133,7 @@ void Ghost::goUp() {
         ghostbox[i].y = 2 * ghostbox[i].height;
         if ((map->GetCell(pointerTL.x / map->CellWidth, ((pointerTL.y - map->infoBarHeight) / map->CellHeight) - 0.01)->TileType == ROAD) &&
             (map->GetCell(pointerBR.x / map->CellWidth, ((pointerBR.y - map->infoBarHeight) / map->CellHeight) - 1)->TileType == ROAD)) {
-            move();
+            
         }
     }
     
@@ -125,7 +148,7 @@ void Ghost::goDown() {
         ghostbox[i].y = 3 * ghostbox[i].height;
         if ((map->GetCell(pointerTL.x / map->CellWidth, ((pointerTL.y - map->infoBarHeight) / map->CellHeight) + 1)->TileType == ROAD) &&
             (map->GetCell(pointerBR.x / map->CellWidth, ((pointerBR.y - map->infoBarHeight) / map->CellHeight) + 0.01)->TileType == ROAD)) {
-            move();
+            
         }
     }
     
