@@ -66,15 +66,12 @@ bool Level::start() {
                            pacman->InitialPosition.y + map->CellHeight / 2 };
 
             vector<Vector2i> path = map->FindPath({ 1,1 },map->getClArrPos(pacmanCenter));
-            // for(auto pat :path)
-            // cout << pat.x<<"\t"<<pat.y<<"\n";
-            // cout << endl;
             Vector2 relativePos;
 
             for(int i = 0 ; i < 4 ; i++){
             relativePos.x = ghost->InitialPosition[0].x - map->getClPos(path[2]).x;
             relativePos.y = ghost->InitialPosition[0].y - map->getClPos(path[2]).y;
-            cout <<relativePos.x <<"\t" << relativePos.y << endl;
+            // cout <<relativePos.x <<"\t" << relativePos.y << endl;
             if (relativePos.x == 0) { //it's in the same column, let's see the difference in rows
                 if (relativePos.y >= 1)       ghost->goUp(i);//it's on top of it
                 else if (relativePos.y <=  -1) ghost->goDown(i);

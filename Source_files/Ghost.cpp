@@ -1,12 +1,9 @@
 #include <raylib.h>
 #include <random>
-#include <map>
-#include <chrono>
-#include <thread>
 #include "../Header_files/Map.h"
 #include "../Header_files/Ghost.h"
 #include "../Header_files/Level.h"
-#include "../Header_files/pacman.h"
+
 using namespace std;
 
 Ghost::Ghost(Map* map) :map(map) {
@@ -28,11 +25,12 @@ Ghost::Ghost(Map* map) :map(map) {
     InitialPosition[3] = map->getClPos(map->GetCell(17, 12)->arrPos);
 
     Direction = { 0, 0 };
-
-    // UnloadImage(GhostImage);
-   // UnloadTexture(ghostText); 
 }
 
+Ghost::~Ghost(){
+    for(int i  = 0 ; i < 4 ; i++)
+        UnloadTexture(ghostText[i]);
+}
 
 void Ghost::setSize() {
     Vector2 OldImageSize = imageSize;
@@ -44,9 +42,8 @@ void Ghost::setSize() {
         ImageResize(&ghostImages[i], imageSize.x, imageSize.y);
         ghostText[i] = LoadTextureFromImage(ghostImages[i]);
         ghostbox[i] = { 0,0,ghostImages[i].width / 2.f,ghostText[i].height / 4.f };
+        UnloadImage(ghostImages[i]);
     }
-
-    //UnloadImage(GhostImage);
 }
 
 void Ghost::draw() {
@@ -54,21 +51,16 @@ void Ghost::draw() {
     for (size_t i = 0; i < 4; i++)
     {
         DrawTextureRec(ghostText[i], ghostbox[i], InitialPosition[i], WHITE);
-      
     }
 }
 
 void Ghost::move(int i) {
-    // for (int i = 0; i < 4; i++)
-    // {
         a++;
         if (a % 9 == 0)
             x = (x + 1) % 3;
         ghostbox[i].x = x * ghostbox[i].width;
         InitialPosition[i].x += Direction.x;
         InitialPosition[i].y += Direction.y;
-    // }
-   
 }
 
 void Ghost::goRight(int i) {

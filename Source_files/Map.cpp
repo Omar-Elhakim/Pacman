@@ -129,7 +129,6 @@ void Map::Draw() {
     }
 }
 
-#include <iostream>
 vector<Vector2i> Map::FindPath(Vector2i from, Vector2i to) {
     std::vector<Vector2i> Path;
     Vector2i temp = to;
