@@ -57,12 +57,10 @@ void mainMenu() {
     double lastButtonClickTime = 0.0;
     // Minimum time between button presses (in seconds)
     const double buttonCooldown = 0.5; // Adjust as needed
-
     // Main menu loop
     while (!WindowShouldClose()) {
         if (s % 8000 == 0) PlaySound(backgroundSound);
-        s++;
-
+            s++;
         BeginDrawing();
 
         // Draw background image
@@ -88,6 +86,8 @@ void mainMenu() {
                 if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
                     if (CheckCollisionPointRec(GetMousePosition(), buttons[NUM_OPTIONS - 1]) &&
                         (GetTime() - lastButtonClickTime >= buttonCooldown)) {
+                // // Stop and unload the background music
+                        StopSound(backgroundSound);
                         // Call createMap function when the last button is clicked and debounce button click
                         createMap(background, logo, customFont, arrowTexture, backgroundSound);
                         lastButtonClickTime = GetTime(); // Update last button click time
@@ -98,6 +98,8 @@ void mainMenu() {
                 DrawCustomButton(button);
             }
             else if (GuiButton(buttons[i], menuOptions[i])) {
+                // Stop and unload the background music
+                StopSound(backgroundSound);
                 // Debounce button click for other buttons
                 if (GetTime() - lastButtonClickTime >= buttonCooldown) {
                     switch (i) {
@@ -126,9 +128,6 @@ void mainMenu() {
     UnloadTexture(logo);
     UnloadTexture(background);
     UnloadTexture(arrowTexture);
-
-    // Stop and unload the background music
-    StopSound(backgroundSound);
     UnloadSound(backgroundSound);
 }
 
