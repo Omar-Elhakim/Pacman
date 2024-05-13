@@ -50,7 +50,13 @@ bool Level::start() {
                     to[i] = GetRandomCl(map);
                 path = map->FindPath(map->getClArrPos(ghostCenter), to[i]);
                 }
-                if(map->posInGameCanvas(pacmanCenter)) if (map->FindPath(map->getClArrPos(ghostCenter), map->getClArrPos(pacmanCenter)).size() == 1) return 0;
+                if (map->posInGameCanvas(pacmanCenter)) {
+                    if (map->FindPath(map->getClArrPos(ghostCenter), map->getClArrPos(pacmanCenter)).size() == 1) {
+                        StopSound(startsound);
+                        writeScore(pacman->score);
+                        return 0;
+                    }
+                }
                 nextcellCenter = { map->getClPos(path[1]).x + map->CellWidth / 2,
                                map->getClPos(path[1]).y + map->CellHeight / 2 };
                 ghostCenter = { ghost->InitialPosition[i].x + map->CellWidth / 2,
@@ -71,7 +77,11 @@ bool Level::start() {
                 ghostCenter = { ghost->InitialPosition[i].x + map->CellWidth / 2,
                                ghost->InitialPosition[i].y + map->CellHeight / 2  };
                 path = map->FindPath(map->getClArrPos(ghostCenter), map->getClArrPos(pacmanCenter));
-                if (path.size() == 1) return 0;
+                if (path.size() == 1) {
+                    StopSound(startsound);
+                    writeScore(pacman->score);
+                    return 0;
+                }
                 nextcellCenter = { map->getClPos(path[1]).x + map->CellWidth / 2,
                                map->getClPos(path[1]).y + map->CellHeight / 2 };
                ghostCenter = { ghost->InitialPosition[i].x + map->CellWidth / 2,
