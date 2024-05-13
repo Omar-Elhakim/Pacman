@@ -19,5 +19,6 @@ Window::Window(int Width, int Height, const char *title) {
 }
 
 Window::~Window() {
+    CloseAudioDevice();
     CloseWindow();
 }

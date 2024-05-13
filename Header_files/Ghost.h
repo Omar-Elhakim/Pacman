@@ -10,17 +10,17 @@ private:
     Texture2D  ghostText[4];
     Rectangle ghostbox[4];
     int frameIndex;
-    float speed;
     int animationDirection;
     int a;
     int x;
     Map* map;
 public:
+    float speed;
     Vector2 InitialPosition[4];
     Vector2 Direction;
     Color color;
     // Map* map;
-    Ghost(Map* map);
+    Ghost(Map* map,float speed);
     ~Ghost();
     Vector2 GenerateRandomDirection();
     void draw();

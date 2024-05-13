@@ -12,6 +12,16 @@ Cell *GetRandomCl() {
     int row = GetRandomValue(0, hc - 1);
     return gmap->GetCell(col, row);
 }
+Vector2i GetRandomCl(Map* map) {
+    int col, row;
+    while (1) {
+        col = GetRandomValue(0, vc - 1);
+        row = GetRandomValue(0, hc - 1);
+        if (map->GetCell(col, row)->TileType == ROAD) break;
+    }
+    Vector2i to = { col,row };
+    return to;
+}
 
 bool isSecPassed(float seconds) {
     static double previousTime = 0.0f;

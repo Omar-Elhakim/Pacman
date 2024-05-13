@@ -6,7 +6,8 @@
 #include <raylib.h>
 
 extern int WindowWidth, WindowHeight;
-
+Cell* GetRandomCl();
+Vector2i GetRandomCl(Map *map);
 void BFS(Vector2i prev[hc][vc], Vector2i from);
 void findPath(Vector2i from, Vector2i to);
 void makeWall(int x, int y);

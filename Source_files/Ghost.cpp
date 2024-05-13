@@ -1,39 +1,30 @@
 #include <raylib.h>
 #include <random>
-#include <map>
-#include <chrono>
-#include <thread>
 #include "../Header_files/Map.h"
 #include "../Header_files/Ghost.h"
 #include "../Header_files/Level.h"
 #include "../Header_files/pacman.h"
 using namespace std;
 
-Ghost::Ghost(Map* map) :map(map) {
+Ghost::Ghost(Map* map,float speed) :map(map),speed(speed) {
     
     ghostImages[0] = LoadImage("assets/cyanGhost.png");
     ghostImages[1] = LoadImage("assets/redGhost.png");
     ghostImages[2] = LoadImage("assets/orangeGhost.png");
     ghostImages[3] = LoadImage("assets/pinkGhost.png");
     imageSize = { 0, 0 };
-    speed = 2.0f;
     a = 0;
     x = 0;
-    //map = nullptr;
     imageSize = { 2 * map->CellWidth, 2 * map->CellHeight };
     setSize();
-    InitialPosition[0] = map->getClPos(map->GetCell(17, 9)->arrPos);
-    InitialPosition[1] = map->getClPos(map->GetCell(17, 10)->arrPos);
-    InitialPosition[2] = map->getClPos(map->GetCell(17, 11)->arrPos);
-    InitialPosition[3] = map->getClPos(map->GetCell(17, 12)->arrPos);
-
+    for (int i = 0; i < 4;i++) InitialPosition[i] = map->getClPos(GetRandomCl(map));
     Direction = { 0, 0 };
-
-    // UnloadImage(GhostImage);
-   // UnloadTexture(ghostText); 
 }
 
-
+Ghost::~Ghost() {
+    for (int i = 0; i < 4; i++)
+        UnloadTexture(ghostText[i]);
+}
 void Ghost::setSize() {
     Vector2 OldImageSize = imageSize;
     imageSize = { 2 * map->CellWidth, 4 * map->CellHeight };
@@ -44,9 +35,8 @@ void Ghost::setSize() {
         ImageResize(&ghostImages[i], imageSize.x, imageSize.y);
         ghostText[i] = LoadTextureFromImage(ghostImages[i]);
         ghostbox[i] = { 0,0,ghostImages[i].width / 2.f,ghostText[i].height / 4.f };
+        UnloadImage(ghostImages[i]);
     }
-
-    //UnloadImage(GhostImage);
 }
 
 void Ghost::draw() {
@@ -72,7 +62,7 @@ void Ghost::move(int i) {
 }
 
 void Ghost::goRight(int i) {
-        Vector2 pointerTL = { InitialPosition[i].x + 1,InitialPosition[i].y + 2};
+        Vector2 pointerTL = { InitialPosition[i].x +1,InitialPosition[i].y + 2};
         Vector2 pointerBR = { InitialPosition[i].x + map->CellWidth - 1,InitialPosition[i].y + map->CellHeight - 2};
         Direction = { speed, 0 };
         ghostbox[i].y = 0 * ghostbox[i].height;
