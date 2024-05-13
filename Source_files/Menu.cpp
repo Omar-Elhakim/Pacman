@@ -219,9 +219,9 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                     switch (i * 3 + j) {
                     case 0:
                         while (f) {
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 1); //easy
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 1,1); //easy
                             if (level->start()) {
-                                o=WinScreen(background, customFont);
+                                o=WinScreen(background, customFont,level->pacman->score);
                                 if (o==1) {
                                     f = 1; break;
                                 }//implement next level
@@ -232,7 +232,7 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                                 else return; //to main menu
                             }
                             else {
-                                if (LoseScreen(background, customFont)) continue; //implement try again
+                                if (LoseScreen(background, customFont,level->pacman->score)) continue; //implement try again
                                 else return;//to main menu
                             }
                             delete level;
@@ -243,9 +243,9 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                         // toLevelMenu("Level 1", 1);
                     case 1:
                         while (f) {
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 2); //easy
+                        level = new Level(GetScreenWidth(), GetScreenHeight(), 2, 1); //easy
                         if (level->start()) {
-                            o = WinScreen(background, customFont);
+                            o = WinScreen(background, customFont,level->pacman->score);
                             if (o == 1) {
                                 f = 1; break;
                             }//implement next level
@@ -256,7 +256,7 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                             else return; //to main menu
                         }
                         else {
-                            if (LoseScreen(background, customFont)) continue;
+                            if (LoseScreen(background, customFont,level->pacman->score)) continue;
                             else return;
                         }
                         delete level;
@@ -266,9 +266,9 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                           // Repeat for the rest of the cases
                     case 2:
                         while (f) {
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 3); //easy
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 3, 1); //easy
                             if (level->start()) {
-                                o = WinScreen(background, customFont);
+                                o = WinScreen(background, customFont,level->pacman->score);
                                 if (o == 1) {
                                     f = 1; break;
                                 }//implement next level
@@ -279,7 +279,7 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                                 else return; //to main menu
                             }
                             else {
-                                if (LoseScreen(background, customFont)) continue;
+                                if (LoseScreen(background, customFont,level->pacman->score)) continue;
                                 else return;
                             }
                         }
@@ -287,9 +287,9 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
 
                     case 3:
                         while (f) {
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 1); //easy
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 1, 2); //easy
                             if (level->start()) {
-                                o = WinScreen(background, customFont);
+                                o = WinScreen(background, customFont,level->pacman->score);
                                 if (o == 1) {
                                     f = 1; break;
                                 }//implement next level
@@ -300,7 +300,7 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                                 else return; //to main menu
                             }
                             else {
-                                if (LoseScreen(background, customFont)) continue;
+                                if (LoseScreen(background, customFont,level->pacman->score)) continue;
                                 else return;
                             }
                             delete level;
@@ -309,9 +309,9 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                         if (!f) break;
                     case 4:
                         while (f) {
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 2); //easy
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 2, 2); //easy
                             if (level->start()) {
-                                o = WinScreen(background, customFont);
+                                o = WinScreen(background, customFont,level->pacman->score);
                                 if (o == 1) {
                                     f = 1; break;
                                 }//implement next level
@@ -322,7 +322,7 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                                 else return; //to main menu
                             }
                             else {
-                                if (LoseScreen(background, customFont)) continue;
+                                if (LoseScreen(background, customFont,level->pacman->score)) continue;
                                 else return;
                             }
                             delete level;
@@ -331,9 +331,9 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                         if (!f) break;
                     case 5:
                         while (f) {
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 3); //easy
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 3, 2); //easy
                             if (level->start()) {
-                                o = WinScreen(background, customFont);
+                                o = WinScreen(background, customFont,level->pacman->score);
                                 if (o == 1) {
                                     f = 1; break;
                                 }//implement next level
@@ -344,7 +344,7 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                                 else return; //to main menu
                             }
                             else {
-                                if (LoseScreen(background, customFont)) continue;
+                                if (LoseScreen(background, customFont,level->pacman->score)) continue;
                                 else return;
                             }
                             delete level;
@@ -353,9 +353,9 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                         if (!f) break;
                     case 6:
                         while (f) {
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 1); //easy
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 1, 3); //easy
                             if (level->start()) {
-                                o = WinScreen(background, customFont);
+                                o = WinScreen(background, customFont,level->pacman->score);
                                 if (o == 1) {
                                     f = 1; break;
                                 }//implement next level
@@ -366,7 +366,7 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                                 else return; //to main menu
                             }
                             else {
-                                if (LoseScreen(background, customFont)) continue;
+                                if (LoseScreen(background, customFont,level->pacman->score)) continue;
                                 else return;
                             }
                             delete level;
@@ -375,9 +375,9 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                         if (!f) break;
                     case 7:
                         while (f) {
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 2); //easy
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 2, 3); //easy
                             if (level->start()) {
-                                o = WinScreen(background, customFont);
+                                o = WinScreen(background, customFont,level->pacman->score);
                                 if (o == 1) {
                                     f = 1; break;
                                 }//implement next level
@@ -388,7 +388,7 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                                 else return; //to main menu
                             }
                             else {
-                                if (LoseScreen(background, customFont)) continue;
+                                if (LoseScreen(background, customFont,level->pacman->score)) continue;
                                 else return;
                             }
                             delete level;
@@ -397,9 +397,10 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                         if (!f) break;
                     case 8:
                         while (f) {
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 3); //easy
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 3, 3); //easy
                             if (level->start()) {
-                                o = WinScreen(background, customFont);
+                                
+                                o = WinScreen(background, customFont,level->pacman->score);
                                 if (o == 1) {
                                     f = 1; break;
                                 }//implement next level
@@ -410,7 +411,7 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                                 else return; //to main menu
                             }
                             else {
-                                if (LoseScreen(background, customFont)) continue;
+                                if (LoseScreen(background, customFont,level->pacman->score)) continue;
                                 else return;
                             }
                             delete level;
@@ -437,20 +438,23 @@ void toHowToPlay(Texture2D background, Texture2D logo, Font customFont, Texture2
     // How to play text
     string howToPlayText = "HOW TO PLAY PAC-MAN:\n\n"
         "1.OBJECTIVE: NAVIGATE THE MAZE, GOBBLING UP PELLETS WHILE AVOIDING GHOSTS.\n\n"
-        "2.CONTROLS: USE ARROW KEYS OR SWIPE GESTURES TO MOVE PAC-MAN.\n\n"
+        "2.CONTROLS: USE ARROW KEYS.\n\n"
         "3.PELLETS: EAT ALL THE SMALL PELLETS FOR POINTS.\n\n"
-        "4.POWER PELLETS: TURN GHOSTS BLUE, EAT THEM FOR EXTRA POINTS.\n\n"
-        "5.GHOSTS: AVOID THEM; THEY COST LIVES IF THEY TOUCH PAC-MAN.\n\n"
-        "6.FRUIT: BONUS POINTS FOR EATING FRUITS THAT APPEAR.\n\n"
-        "7.EXTRA LIVES: EARNED BY REACHING POINT MILESTONES.\n\n"
-        "8.MAZE PATTERNS: COMPLEXITY INCREASES AS YOU PROGRESS.\n\n"
-        "9.STRATEGY: PLAN MOVES TO AVOID TRAPS.\n\n"
-        "10.SCORING: AIM FOR HIGH SCORES!";
+        "4.GHOSTS: AVOID THEM; YOU LOSE IF THEY TOUCH PAC-MAN.\n\n"
+        "5.MAZE PATTERNS: COMPLEXITY INCREASES AS YOU PROGRESS.\n\n"
+        "6.STRATEGY: PLAN MOVES TO AVOID TRAPS.\n\n"
+        "7.SCORING: AIM FOR HIGH SCORES!\n\n"
+        "8.TO CREATE A MAP,DRAW  THE WALLS WITH YOUR MOUSE.\n\n"
+        "9.LEFT CLICK ON THE CELLS YOU WANT TO CHOOSE AS WALLS.\n\n"
+        "10.IF YOU PRESSED ON A CELL BY MISTAKE AND YOU WANT TO ERASE IT,\n\n"
+        "11.RIGHT CLICK ON IT WOTH THE MOUSE.\n\n"
+        "12.WHEN YOU ARE DONE DRAWING,PRESS Q TO START THE GAME\n\n"
+        "13.TO GET OUT OF THE GAME , PRESS Q OR ESC.\n\n";
 
     // Calculate text position to match Figma design
     Vector2 textPosition;
     textPosition.x = 39;
-    textPosition.y = 150;
+    textPosition.y = 80;
 
     // Arrow button position and size
     const float arrowButtonWidth = 64;
@@ -608,9 +612,9 @@ void createMap(Texture2D background, Texture2D logo, Font customFont, Texture2D 
                     {
                     case 0:
                         while (f) {
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 4); //easy
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 4, 1); //easy
                             if (level->start()) {
-                                o = WinScreen(background, customFont);
+                                o = WinScreen(background, customFont,level->pacman->score);
                                 if (o == 1) {
                                     f = 1; break;
                                 }//implement next level
@@ -621,7 +625,7 @@ void createMap(Texture2D background, Texture2D logo, Font customFont, Texture2D 
                                 else f = 0; //to main menu
                             }
                             else {
-                                if (LoseScreen(background, customFont)) continue; //implement try again
+                                if (LoseScreen(background, customFont,level->pacman->score)) continue; //implement try again
                                 else f = 0;//to main menu
                             }
                             delete level;
@@ -632,9 +636,9 @@ void createMap(Texture2D background, Texture2D logo, Font customFont, Texture2D 
                         // toLevelMenu("Level 1", 1);
                     case 1:
                         while (f) {
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 4); //easy
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 4, 2); //easy
                             if (level->start()) {
-                                o = WinScreen(background, customFont);
+                                o = WinScreen(background, customFont,level->pacman->score);
                                 if (o == 1) {
                                     f = 1; break;
                                 }//implement next level
@@ -645,7 +649,7 @@ void createMap(Texture2D background, Texture2D logo, Font customFont, Texture2D 
                                 else f = 0; //to main menu
                             }
                             else {
-                                if (LoseScreen(background, customFont)) continue;
+                                if (LoseScreen(background, customFont,level->pacman->score)) continue;
                                 else f = 0;
                             }
                             delete level;
@@ -655,9 +659,9 @@ void createMap(Texture2D background, Texture2D logo, Font customFont, Texture2D 
                         // Repeat for the rest of the cases
                     case 2:
                         while (f) {
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 4); //easy
+                            level = new Level(GetScreenWidth(), GetScreenHeight(), 4, 3); //easy
                             if (level->start()) {
-                                o = WinScreen(background, customFont);
+                                o = WinScreen(background, customFont,level->pacman->score);
                                 if (o == 1) {
                                     f = 1; break;
                                 }//implement next level
@@ -668,7 +672,7 @@ void createMap(Texture2D background, Texture2D logo, Font customFont, Texture2D 
                                 else f = 0; //to main menu
                             }
                             else {
-                                if (LoseScreen(background, customFont)) continue;
+                                if (LoseScreen(background, customFont,level->pacman->score)) continue;
                                 else f = 0;
                             }
                         }
@@ -720,7 +724,7 @@ void createMap(Texture2D background, Texture2D logo, Font customFont, Texture2D 
 }
     
 // win/lose screens
-int WinScreen(Texture2D background, Font customFont)
+int WinScreen(Texture2D background, Font customFont,int score)
 {
     // Custom button colors
     Color Yellow = { 249, 195, 40, 255 };
@@ -763,14 +767,14 @@ int WinScreen(Texture2D background, Font customFont)
         // Draw "YOU WON !!" text
         DrawTextEx(customFont, "YOU WON !!", { (GetScreenWidth() - MeasureTextEx(customFont, "YOU WON !!", 60, 2).x) / 2, 109 }, 60, 2, YELLOW);
         // Draw "Your Score" text
-        DrawTextEx(customFont, TextFormat("YOUR SCORE: %d", 5), { 54, 182 }, 20, 2, Red);
+        DrawTextEx(customFont, TextFormat("YOUR SCORE: %d", score), { 54, 182 }, 30, 2, Red);
 
         // Draw "Highest Scores" text
-        DrawTextEx(customFont, "HIGHEST SCORE:", { 617, 182 }, 20, 2, Red);
+        DrawTextEx(customFont, "HIGHEST SCORES:", { 560, 182 }, 30, 2, Red);
         vector<int>highestScores = readScore();
         // Draw individual highest scores
         for (size_t i = 0; i < 3; ++i) {
-            DrawTextEx(customFont, TextFormat("%d - %d", i + 1, highestScores[i]), { 617, 182 + static_cast<float>(i + 1) * 35 }, 20, 2, Red);
+            DrawTextEx(customFont, TextFormat("%d - %d", i + 1, highestScores[i]), { 560, 182 + static_cast<float>(i + 1) * 35 }, 30, 2, Red);
         }
 
 
@@ -812,7 +816,7 @@ int WinScreen(Texture2D background, Font customFont)
     return 0;
 }
 
-bool LoseScreen(Texture2D background, Font customFont)
+bool LoseScreen(Texture2D background, Font customFont, int score)
 {
     // Custom button colors
     Color Yellow = { 249, 195, 40, 255 };
@@ -852,7 +856,7 @@ bool LoseScreen(Texture2D background, Font customFont)
         // Draw "YOU LOST !!" text
         DrawTextEx(customFont, "YOU LOST !!", { (GetScreenWidth() - MeasureTextEx(customFont, "YOU LOST !!", 60, 2).x) / 2, 109 }, 60, 2, Yellow);
         // Draw "Your Score" text
-        DrawTextEx(customFont, TextFormat("YOUR SCORE: %d", 5), { 54, 182 }, 30, 2, Red);
+        DrawTextEx(customFont, TextFormat("YOUR SCORE: %d", score), { (GetScreenWidth() - MeasureTextEx(customFont, TextFormat("YOUR SCORE: %d", score), 40, 2).x) / 2, 220 }, 40, 2, Red);
 
         // Set default button colors before the loop
         GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, ColorToInt(textColor));
