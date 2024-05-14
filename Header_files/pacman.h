@@ -1,4 +1,5 @@
 #pragma once
+#include "Cell.h"
 #include "Food.h"
 #include "Map.h"
 #include "raylib.h"
@@ -8,7 +9,7 @@ class Pacman {
     Image PacmanImage;
     Texture2D pacmanText;
     Rectangle AnimationBox;
-    Vector2 ImageSize;
+    Vector2i ImageSize;
     int x;
     float speed;
     int a;
@@ -22,10 +23,12 @@ class Pacman {
     Sound eat2;
     int eatc = 0;
     int score;
-    Vector2 direction;
+    Vector2i direction;
     Pacman(Map *map, Food *food);
     Pacman(Map *map);
     ~Pacman();
+    bool CheckCollisionWall(Rectangle wall,Vector2i direction);
+    bool CheckCollisionFood(Vector2 foodCenter);
     void draw();
     void move();
     void goRight();
