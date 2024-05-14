@@ -4,10 +4,9 @@
 
 typedef enum { ROAD, WALL } TileType_t;
 
-
-typedef struct{
-    int x,y;
-}Vector2i;
+typedef struct {
+    int x, y;
+} Vector2i;
 
 struct Cell {
     Rectangle rec;

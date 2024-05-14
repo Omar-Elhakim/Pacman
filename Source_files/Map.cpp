@@ -28,7 +28,7 @@ Map::~Map() {
 
 bool Map::isPath(int x, int y) {
     if (y >= hc || x >= vc || y < 0 || x < 0) return false;
-    if (GetCell(x, y)->TileType == WALL) return false;
+    if (GetCell({x, y})->TileType == WALL) return false;
     return true;
 }
 
@@ -50,7 +50,7 @@ void Map::BFS(Vector2i prev[][vc], Vector2i from) {
         for (int i = 0; i < 4; i++) {
             col = s.x + dc[i];
             row = s.y + dr[i];
-            if(colorPath) GetCell(s.x, s.y)->BackgroundColor = GREEN;
+            if (colorPath) GetCell(s)->BackgroundColor = GREEN;
             if (isPath(col, row) && !visited[row][col]) {
                 visited[row][col] = true;
                 prev[row][col] = s;
@@ -124,17 +124,16 @@ void Map::Update() {
 void Map::Draw() {
     for (int i = 0; i < hc; i++) {
         for (int j = 0; j < vc; j++) {
-            GetCell(j, i)->Draw();
+            GetCell({j, i})->Draw();
         }
     }
 }
 
-#include <iostream>
 vector<Vector2i> Map::FindPath(Vector2i from, Vector2i to) {
     std::vector<Vector2i> Path;
     Vector2i temp = to;
     int row = temp.y, col = temp.x;
-    if(to.x < 0 || to.x >= vc || to.y < 0 || to.y >= hc){
+    if (to.x < 0 || to.x >= vc || to.y < 0 || to.y >= hc) {
         Path.push_back(from);
         return Path;
     }
@@ -154,14 +153,15 @@ vector<Vector2i> Map::FindPath(Vector2i from, Vector2i to) {
     if (colorPath) {
         SetPathColor(RED);
         ColorClSubList(Path);
-        GetCell(to.x, to.y)->BackgroundColor = GOLD;
+        GetCell(to)->BackgroundColor = GOLD;
         SetPathColor(GREEN);
     }
-    std::reverse(Path.begin(),Path.end());
+    std::reverse(Path.begin(), Path.end());
     return Path;
 }
 
-Cell *Map::GetCell(int col, int row) {
+Cell *Map::GetCell(Vector2i ArrPos) {
+    int col = ArrPos.x, row = ArrPos.y;
     if (col < vc && row < hc && col >= 0 && row >= 0) {
         return &list[row][col];
     } else
@@ -181,7 +181,8 @@ bool Map::posInBoundaries(Vector2 Position) {
 }
 
 Vector2i Map::getClArrPos(Vector2 Position) {
-    if (posInGameCanvas(Position)) return {(int)(Position.x / CellWidth), ((int)((Position.y - infoBarHeight) / CellHeight))};
+    if (posInGameCanvas(Position))
+        return {(int)(Position.x / CellWidth), ((int)((Position.y - infoBarHeight) / CellHeight))};
     return {-1, -1};
 }
 

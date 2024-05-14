@@ -1,24 +1,23 @@
 #pragma once
 #include "Cell.h"
-#include <vector>
-#include <string>
 #include <queue>
 #include <raylib.h>
+#include <string>
+#include <vector>
 using namespace std;
 
 #define isEven(x) ((x) % 2 == 0 ? true : false)
 
 const int vc = 20; // number of columns
-const int hc = 15; //number of rows
+const int hc = 15; // number of rows
 
 class Map {
     void BFS(Vector2i prev[][vc], Vector2i from);
     void SetCellsPos();
     void SetCellsSize();
     void MakeList();
-    
 
-public:
+  public:
     bool colorPath = false;
     Color pathColor = GREEN;
     Cell **list;
@@ -35,7 +34,7 @@ public:
     bool posInInfoBar(Vector2 Pos);
     bool posInBoundaries(Vector2 Pos);
     bool isPath(int x, int y);
-    Cell *GetCell(int col, int row);
+    Cell *GetCell(Vector2i ArrPos);
     Vector2i getClArrPos(Vector2 Position);
     Vector2 getClPos(Vector2i ArrPos);
     Map();

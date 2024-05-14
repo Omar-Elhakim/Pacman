@@ -10,16 +10,16 @@ Map *gmap = nullptr;
 Cell *GetRandomCl() {
     int col = GetRandomValue(0, vc - 1);
     int row = GetRandomValue(0, hc - 1);
-    return gmap->GetCell(col, row);
+    return gmap->GetCell({col, row});
 }
-Vector2i GetRandomCl(Map* map) {
+Vector2i GetRandomCl(Map *map) {
     int col, row;
     while (1) {
         col = GetRandomValue(0, vc - 1);
         row = GetRandomValue(0, hc - 1);
-        if (map->GetCell(col, row)->TileType == ROAD) break;
+        if (map->GetCell({col, row})->TileType == ROAD) break;
     }
-    Vector2i to = { col,row };
+    Vector2i to = {col, row};
     return to;
 }
 
@@ -33,10 +33,8 @@ bool isSecPassed(float seconds) {
 }
 
 bool isPath(int x, int y) {
-    if (y >= hc || x >= vc || y < 0 || x < 0)
-        return false;
-    if (gmap->GetCell(x, y)->TileType == WALL)
-        return false;
+    if (y >= hc || x >= vc || y < 0 || x < 0) return false;
+    if (gmap->GetCell({x, y})->TileType == WALL) return false;
     return true;
 }
 
@@ -58,7 +56,7 @@ void BFS(Vector2i prev[hc][vc], Vector2i from) {
         for (int i = 0; i < 4; i++) {
             col = s.x + dc[i];
             row = s.y + dr[i];
-            gmap->GetCell(s.x, s.y)->BackgroundColor = GREEN;
+            gmap->GetCell(s)->BackgroundColor = GREEN;
             if (isPath(col, row) && !visited[row][col]) {
                 visited[row][col] = true;
                 prev[row][col] = s;
@@ -92,23 +90,23 @@ void findPath(Vector2i from, Vector2i to) {
 
     gmap->SetPathColor(RED);
     gmap->ColorClSubList(Path);
-    gmap->GetCell(to.x, to.y)->BackgroundColor = GOLD;
+    gmap->GetCell(to)->BackgroundColor = GOLD;
     gmap->SetPathColor(GREEN);
 }
 
 void makeWall(int x, int y) {
-    gmap->GetCell(x, y)->TileType = WALL;
-    gmap->GetCell(x, y)->BackgroundColor = BLACK;
+    gmap->GetCell({x, y})->TileType = WALL;
+    gmap->GetCell({x, y})->BackgroundColor = BLACK;
 }
 
 void makePath(int x, int y) {
-    gmap->GetCell(x, y)->TileType = ROAD;
+    gmap->GetCell({x, y})->TileType = ROAD;
     Color temp = BLACK;
     if (isEven(x + y)) {
         temp = BROWN;
     } else
         temp = WHITE;
-    gmap->GetCell(x, y)->BackgroundColor = temp;
+    gmap->GetCell({x, y})->BackgroundColor = temp;
 }
 
 bool MouseInBoundries(Vector2 MousePos) {
@@ -146,7 +144,7 @@ void mapMaker() {
         if (IsKeyPressed(KEY_R)) {
             for (int i = 0; i < hc; i++) {
                 for (int j = 0; j < vc; j++) {
-                    gmap->GetCell(j, i)->TileType = ROAD;
+                    gmap->GetCell({j, i})->TileType = ROAD;
                 }
             }
             source = {0, 0};
@@ -156,12 +154,12 @@ void mapMaker() {
         }
         if (IsKeyPressed(KEY_S)) {
             source = gmap->getClArrPos(GetMousePosition());
-            gmap->GetCell(source.x, source.y)->BackgroundColor = ORANGE;
+            gmap->GetCell(source)->BackgroundColor = ORANGE;
         }
         if (IsKeyPressed(KEY_D)) {
             // destination = {(GetMouseX() / gmap->CellWidth), (GetMouseY() / gmap->CellHeight)};
             destination = gmap->getClArrPos(GetMousePosition());
-            gmap->GetCell(destination.x, destination.y)->BackgroundColor = ORANGE;
+            gmap->GetCell(destination)->BackgroundColor = ORANGE;
         }
         if (IsKeyPressed(KEY_F) && !(IsKeyDown(KEY_RIGHT_SHIFT) || IsKeyDown(KEY_LEFT_SHIFT))) {
             findPath(source, destination);
@@ -189,14 +187,10 @@ void mapMaker() {
                 findPath(from->arrPos, to->arrPos);
             }
         }
-        if (IsKeyDown(KEY_UP))
-            pacman->goUp();
-        if (IsKeyDown(KEY_DOWN))
-            pacman->goDown();
-        if (IsKeyDown(KEY_RIGHT))
-            pacman->goRight();
-        if (IsKeyDown(KEY_LEFT))
-            pacman->goLeft();
+        if (IsKeyDown(KEY_UP)) pacman->goUp();
+        if (IsKeyDown(KEY_DOWN)) pacman->goDown();
+        if (IsKeyDown(KEY_RIGHT)) pacman->goRight();
+        if (IsKeyDown(KEY_LEFT)) pacman->goLeft();
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && MouseInBoundries(GetMousePosition())) {
             makeWall((int)(GetMouseX() / gmap->CellWidth), (int)(GetMouseY() / gmap->CellHeight));
         }
@@ -234,7 +228,7 @@ void mapMaker(Map *map) {
         if (IsKeyPressed(KEY_R)) {
             for (int i = 0; i < hc; i++) {
                 for (int j = 0; j < vc; j++) {
-                    gmap->GetCell(j, i)->TileType = ROAD;
+                    gmap->GetCell({j, i})->TileType = ROAD;
                 }
             }
             source = {0, 0};
@@ -244,11 +238,11 @@ void mapMaker(Map *map) {
         }
         if (IsKeyPressed(KEY_S)) {
             source = gmap->getClArrPos(GetMousePosition());
-            gmap->GetCell(source.x, source.y)->BackgroundColor = ORANGE;
+            gmap->GetCell(source)->BackgroundColor = ORANGE;
         }
         if (IsKeyPressed(KEY_D)) {
             destination = gmap->getClArrPos(GetMousePosition());
-            gmap->GetCell(destination.x, destination.y)->BackgroundColor = ORANGE;
+            gmap->GetCell(destination)->BackgroundColor = ORANGE;
         }
         if (IsKeyPressed(KEY_F) && !(IsKeyDown(KEY_RIGHT_SHIFT) || IsKeyDown(KEY_LEFT_SHIFT))) {
             findPath(source, destination);
@@ -288,7 +282,7 @@ void mapMaker(Map *map) {
     }
     for (int i = 0; i < hc; i++) {
         for (int j = 0; j < vc; j++) {
-            map->GetCell(j, i)->BackgroundColor = (map->GetCell(j, i)->TileType == WALL) ? BLUE : BLACK;
+            map->GetCell({j, i})->BackgroundColor = (map->GetCell({j, i})->TileType == WALL) ? BLUE : BLACK;
         }
     }
 }

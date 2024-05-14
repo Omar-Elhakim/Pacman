@@ -27,7 +27,7 @@ class Pacman {
     Pacman(Map *map, Food *food);
     Pacman(Map *map);
     ~Pacman();
-    bool CheckCollisionWall(Rectangle wall,Vector2i direction);
+    bool CheckCollisionWall(Rectangle wall, Vector2i direction);
     bool CheckCollisionFood(Vector2 foodCenter);
     void draw();
     void move();

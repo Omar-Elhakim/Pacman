@@ -6,7 +6,7 @@ int WindowWidth = 800, WindowHeight = 600;
 
 int main() {
     Window window = Window(WindowWidth, WindowHeight, "Pac-Man");
-    Level level = Level(GetScreenWidth(),GetScreenHeight(),1,1);
+    Level level = Level(GetScreenWidth(), GetScreenHeight(), 1, 1);
     level.start();
     // mainMenu();
     return 0;
