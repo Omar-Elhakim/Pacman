@@ -1,5 +1,6 @@
 #include "../Header_files/Map.h"
 #include <algorithm>
+#include <raylib.h>
 
 Map::Map() {
     MakeList();
@@ -127,6 +128,10 @@ void Map::Draw() {
             GetCell({j, i})->Draw();
         }
     }
+}
+
+void Map::DrawInfoBar() {
+    DrawRectangle(0, 0, GetScreenWidth(), infoBarHeight, GOLD);
 }
 
 vector<Vector2i> Map::FindPath(Vector2i from, Vector2i to) {

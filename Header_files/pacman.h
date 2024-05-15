@@ -15,7 +15,9 @@ class Pacman {
     int a;
     Map *map;
     Food *food;
-    float scalFactor;
+    float scaleFactor;
+    Cell *currentCell();
+    Cell *nextCell();
 
   public:
     Vector2 InitialPosition;
@@ -24,11 +26,10 @@ class Pacman {
     int eatc = 0;
     int score;
     Vector2i direction;
-    Pacman(Map *map, Food *food);
     Pacman(Map *map);
     ~Pacman();
-    bool CheckCollisionWall(Rectangle wall, Vector2i direction);
-    bool CheckCollisionFood(Vector2 foodCenter);
+    bool CheckCollisionWall();
+    bool CheckCollisionFood();
     void draw();
     void move();
     void goRight();

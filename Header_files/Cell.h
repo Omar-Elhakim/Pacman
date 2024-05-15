@@ -16,7 +16,13 @@ struct Cell {
     bool hasFood;
     void Draw() {
         DrawRectangleRec(rec, BackgroundColor);
-    }
+    };
+    Vector2 getCenter() {
+        return {
+            rec.x + (rec.width / 2),
+            rec.y + (rec.height / 2),
+        };
+    };
 };
 
 #endif // CELL_H

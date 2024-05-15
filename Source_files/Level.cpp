@@ -1,4 +1,5 @@
 #include "../Header_files/Level.h"
+#include <raylib.h>
 #include <vector>
 
 Level::Level(int WindowWidth, int WindowHeight, int n, int l)
@@ -9,7 +10,7 @@ Level::Level(int WindowWidth, int WindowHeight, int n, int l)
         map->ColorMap();
     }
     food = new Food(map);
-    pacman = new Pacman(map, food);
+    pacman = new Pacman(map);
     if (l == 1)
         ghost = new Ghost(map, 0.4);
     else
@@ -42,6 +43,7 @@ bool Level::start() {
         food->draw(map);
         pacman->draw();
         ghost->draw();
+        map->DrawInfoBar();
         if (startc == 0) PlaySound(startsound);
         startc++;
         if (l != 3) {
@@ -128,22 +130,14 @@ bool Level::start() {
             writeScore(pacman->score);
             return 0;
         }
-        if (IsKeyPressed(KEY_UP) || pacman->direction.y < 0) {
-            pacman->goUp();
-            pacman->eat();
-        }
-        if (IsKeyPressed(KEY_DOWN) || pacman->direction.y > 0) {
-            pacman->goDown();
-            pacman->eat();
-        }
-        if (IsKeyPressed(KEY_RIGHT) || pacman->direction.x > 0) {
-            pacman->goRight();
-            pacman->eat();
-        }
-        if (IsKeyPressed(KEY_LEFT) || pacman->direction.x < 0) {
-            pacman->goLeft();
-            pacman->eat();
-        }
+
+        if (IsKeyPressed(KEY_UP)) pacman->goUp();
+        if (IsKeyPressed(KEY_DOWN)) pacman->goDown();
+        if (IsKeyPressed(KEY_RIGHT)) pacman->goRight();
+        if (IsKeyPressed(KEY_LEFT)) pacman->goLeft();
+        pacman->move();
+        pacman->eat();
+
         if (pacman->score == food->count * 10 || IsKeyPressed(KEY_Y)) {
             StopSound(startsound);
             writeScore(pacman->score);
@@ -161,7 +155,7 @@ int Level::ghostsMovement(int l) {
                             pacman->InitialPosition.y + map->CellHeight / 2};
             ghostCenter = {ghost->InitialPosition[i].x + map->CellWidth / 2,
                            ghost->InitialPosition[i].y + map->CellHeight / 2 + 10};
-            // Vector2i to = GetRandomCl(map);
+            Vector2i to = GetRandomCl(map);
             // cout << to.x << "\t" << to.y;
             path = map->FindPath(map->getClArrPos(ghostCenter), map->getClArrPos(pacmanCenter));
             if (path.size() == 1) return 1;

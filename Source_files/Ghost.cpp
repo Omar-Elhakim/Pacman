@@ -49,14 +49,12 @@ void Ghost::draw() {
 void Ghost::move(int i) {
     // for (int i = 0; i < 4; i++)
     // {
-    // a++;
-    // if (a % 9 == 0) x = (x + 1) % 3;
-    // ghostbox[i].x = x * ghostbox[i].width;
-    // InitialPosition[i].x += Direction.x;
-    // InitialPosition[i].y += Direction.y;
-    //
-    // // }
-    cout << "move random" << endl;
+    a++;
+    if (a % 9 == 0) x = (x + 1) % 3;
+    ghostbox[i].x = x * ghostbox[i].width;
+    InitialPosition[i].x += Direction.x;
+    InitialPosition[i].y += Direction.y;
+    // }
 }
 
 void Ghost::goRight(int i) {
@@ -64,12 +62,12 @@ void Ghost::goRight(int i) {
     Vector2 pointerBR = {InitialPosition[i].x + map->CellWidth - 1, InitialPosition[i].y + map->CellHeight - 2};
     Direction = {speed, 0};
     ghostbox[i].y = 0 * ghostbox[i].height;
-    if ((map->GetCell(map->getClArrPos(pointerTL))->TileType == ROAD) &&
-        (map->GetCell(map->getClArrPos(pointerBR))->TileType == ROAD)) {
-        // if ((map->GetCell((pointerTL.x / map->CellWidth) + 1, (pointerTL.y - map->infoBarHeight) /
-        // map->CellHeight)->TileType == ROAD) &&
-        //     (map->GetCell((pointerBR.x / map->CellWidth) + 0.01, (pointerBR.y - map->infoBarHeight) /
-        //     map->CellHeight)->TileType == ROAD)) {
+    if ((map->GetCell({(int)((pointerTL.x / map->CellWidth) + 1),
+                       (int)((pointerTL.y - map->infoBarHeight) / map->CellHeight)})
+             ->TileType == ROAD) &&
+        (map->GetCell({(int)((pointerBR.x / map->CellWidth) + 0.01f),
+                       (int)((pointerBR.y - map->infoBarHeight) / map->CellHeight)})
+             ->TileType == ROAD)) {
         move(i);
     }
 }
@@ -133,34 +131,31 @@ Vector2 Ghost::GenerateRandomDirection() {
 }
 
 void Ghost::moveRandomly(float speed) {
-
-    cout << "move random" << endl;
-    // Vector2 randomDir = GenerateRandomDirection();
-    // if (GetRandomValue(0, 100) < 5) {
-    //     Vector2 direction = GenerateRandomDirection();
-    //     Vector2 velocity = {direction.x * speed, direction.y * speed};
-    //     InitialPosition[0].x += velocity.x;
-    //     InitialPosition[0].y += velocity.y;
-    // }
+    Vector2 randomDir = GenerateRandomDirection();
+    if (GetRandomValue(0, 100) < 5) {
+        Vector2 direction = GenerateRandomDirection();
+        Vector2 velocity = {direction.x * speed, direction.y * speed};
+        InitialPosition[0].x += velocity.x;
+        InitialPosition[0].y += velocity.y;
+    }
 }
 
 void Ghost::moveto(Vector2 to, int ghostindex, Map *map) {
-    cout << "move random" << endl;
-    // vector<Vector2i> path = map->FindPath(map->getClArrPos(InitialPosition[ghostindex]), map->getClArrPos(to));
-    // cout << path[0].x;
-    // Vector2 relativePos;
-    // relativePos.x = InitialPosition[ghostindex].x - path[0].x;
-    // relativePos.y = InitialPosition[ghostindex].y - path[0].y;
-    // if (relativePos.x == 0) { // it's in the same column, let's see the difference in rows
-    //     if (relativePos.y == 1)
-    //         goUp(ghostindex); // it's on top of it
-    //     else if (relativePos.y == -1)
-    //         goDown(ghostindex);
-    // } else {
-    //     if (relativePos.x == 1)
-    //         goLeft(ghostindex); // it's in the same column, let's see the difference in rows
-    //     else if (relativePos.x == -1)
-    //         goRight(ghostindex); // it's in the same column, let's see the difference in rows
-    // }
+    vector<Vector2i> path = map->FindPath(map->getClArrPos(InitialPosition[ghostindex]), map->getClArrPos(to));
+    cout << path[0].x;
+    Vector2 relativePos;
+    relativePos.x = InitialPosition[ghostindex].x - path[0].x;
+    relativePos.y = InitialPosition[ghostindex].y - path[0].y;
+    if (relativePos.x == 0) { // it's in the same column, let's see the difference in rows
+        if (relativePos.y == 1)
+            goUp(ghostindex); // it's on top of it
+        else if (relativePos.y == -1)
+            goDown(ghostindex);
+    } else {
+        if (relativePos.x == 1)
+            goLeft(ghostindex); // it's in the same column, let's see the difference in rows
+        else if (relativePos.x == -1)
+            goRight(ghostindex); // it's in the same column, let's see the difference in rows
+    }
     cout << "function ended";
 }

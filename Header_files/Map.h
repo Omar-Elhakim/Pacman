@@ -29,6 +29,7 @@ class Map {
     void SetPathColor(Color color);
     void Update();
     void Draw();
+    void DrawInfoBar();
     vector<Vector2i> FindPath(Vector2i from, Vector2i to);
     bool posInGameCanvas(Vector2 Pos);
     bool posInInfoBar(Vector2 Pos);
