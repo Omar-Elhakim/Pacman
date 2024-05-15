@@ -31,10 +31,10 @@ class Map {
     void Draw();
     void DrawInfoBar();
     vector<Vector2i> FindPath(Vector2i from, Vector2i to);
-    bool posInGameCanvas(Vector2 Pos);
-    bool posInInfoBar(Vector2 Pos);
-    bool posInBoundaries(Vector2 Pos);
-    bool isPath(int x, int y);
+    inline bool posInGameCanvas(Vector2 Pos);
+    inline bool posInInfoBar(Vector2 Pos);
+    inline bool posInBoundaries(Vector2 Pos);
+    inline bool isPath(int x, int y);
     Cell *GetCell(Vector2i ArrPos);
     Vector2i getClArrPos(Vector2 Position);
     Vector2 getClPos(Vector2i ArrPos);

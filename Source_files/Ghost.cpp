@@ -131,7 +131,6 @@ Vector2 Ghost::GenerateRandomDirection() {
 }
 
 void Ghost::moveRandomly(float speed) {
-    Vector2 randomDir = GenerateRandomDirection();
     if (GetRandomValue(0, 100) < 5) {
         Vector2 direction = GenerateRandomDirection();
         Vector2 velocity = {direction.x * speed, direction.y * speed};

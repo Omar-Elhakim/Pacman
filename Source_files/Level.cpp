@@ -155,7 +155,7 @@ int Level::ghostsMovement(int l) {
                             pacman->InitialPosition.y + map->CellHeight / 2};
             ghostCenter = {ghost->InitialPosition[i].x + map->CellWidth / 2,
                            ghost->InitialPosition[i].y + map->CellHeight / 2 + 10};
-            Vector2i to = GetRandomCl(map);
+            // Vector2i to = GetRandomCl(map);
             // cout << to.x << "\t" << to.y;
             path = map->FindPath(map->getClArrPos(ghostCenter), map->getClArrPos(pacmanCenter));
             if (path.size() == 1) return 1;
@@ -180,4 +180,5 @@ int Level::ghostsMovement(int l) {
                 ghost->goRight(i); // it's in the same column, let's see the difference in rows
         }
     }
+    return 0;
 }

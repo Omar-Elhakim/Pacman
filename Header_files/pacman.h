@@ -13,7 +13,6 @@ class Pacman {
     float speed;
     int a;
     Map *map;
-    Food *food;
     float scaleFactor;
     Cell *currentCell();
     Cell *nextCell();

@@ -12,6 +12,7 @@ Cell *GetRandomCl() {
     int row = GetRandomValue(0, hc - 1);
     return gmap->GetCell({col, row});
 }
+
 Vector2i GetRandomCl(Map *map) {
     int col, row;
     while (1) {

@@ -1,7 +1,7 @@
 
 H_FILES := $(wildcard ./Header_files/*)
 C_FILES := $(wildcard ./Source_files/*)
-C_FLAGS := -g -Wall -Wno-enum-compare 
+C_FLAGS := -g -Wall -Wextra -Wno-enum-compare -Wno-missing-field-initializers
 LINK := -lraylib
 
 CC := g++
