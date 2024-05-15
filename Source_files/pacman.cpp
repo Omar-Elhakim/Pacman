@@ -4,16 +4,19 @@
 #include "raylib.h"
 
 Pacman::Pacman(Map *map) : map(map) {
-    this->scaleFactor = 0.80f;
+    scaleFactor = 0.80f;
     score = x = a = 0;
-    speed = 10.8f;
-    ImageSize = {(int)(2 * map->CellWidth * scaleFactor), (int)(4 * map->CellHeight * scaleFactor)};
+    speed = 11.f;
     setSize();
     InitialPosition = map->getClPos(map->GetCell({1, 1})->arrPos);
     direction = {0, 0};
+    eat1 = LoadSound("assets/chomp1.wav");
+    eat2 = LoadSound("assets/chomp2.wav");
 }
 
 Pacman::~Pacman() {
+    UnloadSound(eat1);
+    UnloadSound(eat2);
     UnloadTexture(pacmanText);
 }
 
@@ -23,16 +26,16 @@ void Pacman::draw() {
 
 void Pacman::eat() {
     Vector2 midpoint = {(InitialPosition.x + (map->CellWidth / 2)), (InitialPosition.y + (map->CellHeight / 2))};
-    if ((midpoint.x < WindowWidth) && (midpoint.x > 0))
-        if (map->GetCell(map->getClArrPos(midpoint))->hasFood == true) {
-            if (eatc % 2 == 0)
-                PlaySound(eat1);
-            else
-                PlaySound(eat2);
-            map->GetCell(map->getClArrPos(midpoint))->hasFood = false;
-            score += 10;
-            eatc++;
-        }
+    if (!((midpoint.x < WindowWidth) && (midpoint.x > 0))) return;
+    if (map->GetCell(map->getClArrPos(midpoint))->hasFood == true) {
+        if (eatc % 2 == 0)
+            PlaySound(eat1);
+        else
+            PlaySound(eat2);
+        map->GetCell(map->getClArrPos(midpoint))->hasFood = false;
+        score += 10;
+        eatc++;
+    }
 }
 
 Cell *Pacman::currentCell() {
@@ -57,6 +60,7 @@ void Pacman::move() {
 
     if (CheckCollisionWall()) return;
 
+    // center pacman relative to the non changing axix
     if (currentCell()) {
         if (direction.x != 0) InitialPosition.y = currentCell()->getCenter().y - AnimationBox.width / 2;
         if (direction.y != 0) InitialPosition.x = currentCell()->getCenter().x - AnimationBox.height / 2;
@@ -79,22 +83,10 @@ bool Pacman::CheckCollisionWall() {
         (float)AnimationBox.width,
         (float)AnimationBox.height,
     };
-    bool res = false;
-    Cell *nextCheck = nullptr, *nextCl = nextCell();
-    int dir[] = {-1, 0, 1};
-
-    if (!nextCl) return res;
-    // if there is collision then don't continue the loop to not change the res value;
-    for (int i = 0; i < 3 && !res; i++) {
-        if (direction.x == 0) {
-            nextCheck = map->GetCell(sumV2i(nextCl->arrPos, {dir[i], 0}));
-        } else
-            nextCheck = map->GetCell(sumV2i(nextCl->arrPos, {0, dir[i]}));
-        if (!nextCheck) continue;
-        if (nextCheck->TileType != WALL) continue;
-        res = CheckCollisionRecs(pacmanRect, nextCheck->rec);
-    }
-    return res;
+    Cell *nextCl = nextCell();
+    if (!nextCl) return false;
+    if (nextCl->TileType != WALL) return false;
+    return CheckCollisionRecs(pacmanRect, nextCl->rec);
 }
 
 void Pacman::goRight() {
@@ -118,19 +110,22 @@ void Pacman::goDown() {
 };
 
 void Pacman::setSize() {
-    // Vector2i OldImageSize = ImageSize;
-    PacmanImage = LoadImage("assets/pac.png");
-    ImageSize = {(int)(2 * map->CellWidth * scaleFactor), (int)(4 * map->CellHeight * scaleFactor)};
+    ImageSize = V2toV2i(mulV2({2.f, 4.f}, scaleV2({map->CellWidth, map->CellHeight}, scaleFactor)));
+    update();
+    InitialPosition.x += (map->CellWidth - AnimationBox.x) / 2;
+    InitialPosition.y += (map->CellHeight - AnimationBox.y) / 2;
+}
+
+void Pacman::update() {
+    Vector2i OldImageSize = ImageSize;
+    Image PacmanImage = LoadImage("assets/pac.png");
+    ImageSize = V2toV2i(mulV2({2.f, 4.f}, scaleV2({map->CellWidth, map->CellHeight}, scaleFactor)));
     ImageResize(&PacmanImage, ImageSize.x, ImageSize.y);
-    eat1 = LoadSound("assets/chomp1.wav");
-    eat2 = LoadSound("assets/chomp2.wav");
     // image size equalles 95% of cell size
     // it needs to change in movment functions
     // if window got resized change speed by the change ration of window size
-    speed = 2.2f * (GetScreenHeight() + GetScreenWidth()) / (800 + 600);
     pacmanText = LoadTextureFromImage(PacmanImage);
     AnimationBox = {0, 0, PacmanImage.width / 2.f, PacmanImage.height / 4.f};
-    InitialPosition.x += (map->CellWidth - AnimationBox.x) / 2;
-    InitialPosition.y += (map->CellHeight - AnimationBox.y) / 2;
     UnloadImage(PacmanImage);
+    speed = 2.2f * (GetScreenHeight() + GetScreenWidth()) / (800 + 600);
 }

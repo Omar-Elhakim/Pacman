@@ -6,7 +6,6 @@
 
 class Pacman {
   private:
-    Image PacmanImage;
     Texture2D pacmanText;
     Rectangle AnimationBox;
     Vector2i ImageSize;
@@ -18,6 +17,9 @@ class Pacman {
     float scaleFactor;
     Cell *currentCell();
     Cell *nextCell();
+    bool CheckCollisionWall();
+    bool CheckCollisionFood();
+    void update();
 
   public:
     Vector2 InitialPosition;
@@ -28,8 +30,6 @@ class Pacman {
     Vector2i direction;
     Pacman(Map *map);
     ~Pacman();
-    bool CheckCollisionWall();
-    bool CheckCollisionFood();
     void draw();
     void move();
     void goRight();

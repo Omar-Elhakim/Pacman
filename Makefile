@@ -1,11 +1,11 @@
 
 H_FILES := $(wildcard ./Header_files/*)
 C_FILES := $(wildcard ./Source_files/*)
-C_FLAGS := -g
+C_FLAGS := -g -Wall -Wno-enum-compare 
 LINK := -lraylib
 
 CC := g++
 
 build: $(H_FILES) $(C_FILES)
-	$(CC) $(CXX_FLAGS) -o game $(C_FILES) $(LINK)
+	$(CC) $(C_FLAGS) -o game $(C_FILES) $(LINK)
 

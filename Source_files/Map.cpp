@@ -131,7 +131,7 @@ void Map::Draw() {
 }
 
 void Map::DrawInfoBar() {
-    DrawRectangle(0, 0, GetScreenWidth(), infoBarHeight, GOLD);
+    DrawRectangle(0, 0, GetScreenWidth(), infoBarHeight, MAROON);
 }
 
 vector<Vector2i> Map::FindPath(Vector2i from, Vector2i to) {
