@@ -1,7 +1,16 @@
 #include "../Header_files/Menu.h"
+#include "../Header_files/Level.h"
+#include <raylib.h>
+
 #define RAYGUI_IMPLEMENTATION
 #include "../raylib/include/raygui.h"
-// Custom button structure
+
+// Custom button colors
+Color Yellow = {249, 195, 40, 255};
+Color Red = {238, 35, 39, 255};
+Color Cyan = {127, 209, 218, 255}; // B0EFF5
+Color textColor = BLACK;           // Black color for text
+// Custom button colors
 
 void mainMenu() {
     // Load background music
@@ -14,14 +23,10 @@ void mainMenu() {
     Texture2D logo = LoadTexture("assets/logo.png");
     Font customFont = LoadFont("assets/Itim-Regular.ttf");
 
-    // Custom button colors
-    Color Yellow = {249, 195, 40, 255};
-    Color Red = {238, 35, 39, 255};
-    Color Cyan = {127, 209, 218, 255}; // B0EFF5
-    Color textColor = BLACK;           // Black color for text
-
     // Arrow button texture
     Texture2D arrowTexture = LoadTexture("assets/arrow.png");
+
+    Menu startMenu{background, logo, arrowTexture, customFont, backgroundSound};
 
     // Main menu variables
     const int NUM_OPTIONS = 5; // Number of buttons
@@ -50,11 +55,19 @@ void mainMenu() {
     double lastButtonClickTime = 0.0;
     // Minimum time between button presses (in seconds)
     const double buttonCooldown = 0.5; // Adjust as needed
-
+    PlaySound(backgroundSound);
+    // Set default button colors before the loop
+    GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, ColorToInt(textColor));
+    GuiSetStyle(BUTTON, TEXT_COLOR_FOCUSED, ColorToInt(textColor));
+    GuiSetStyle(BUTTON, TEXT_SIZE, 60);
+    GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, ColorToInt(Yellow));
+    GuiSetStyle(BUTTON, BASE_COLOR_FOCUSED, ColorToInt(Red));
+    GuiSetStyle(BUTTON, BORDER_COLOR_NORMAL, ColorToInt(textColor));
+    GuiSetStyle(BUTTON, BORDER_COLOR_FOCUSED, ColorToInt(textColor));
+    GuiSetFont(customFont);
+    GuiSetStyle(DEFAULT, TEXT_SIZE, 30);
     // Main menu loop
     while (!WindowShouldClose()) {
-        if (s % 8000 == 0) PlaySound(backgroundSound);
-        s++;
 
         BeginDrawing();
 
@@ -64,17 +77,6 @@ void mainMenu() {
         // Draw logo
         DrawTextureRec(logo, {0, 0, 499, 213}, {151, 9}, WHITE);
 
-        // Set default button colors before the loop
-        GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, ColorToInt(textColor));
-        GuiSetStyle(BUTTON, TEXT_COLOR_FOCUSED, ColorToInt(textColor));
-        GuiSetStyle(BUTTON, TEXT_SIZE, 60);
-        GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, ColorToInt(Yellow));
-        GuiSetStyle(BUTTON, BASE_COLOR_FOCUSED, ColorToInt(Red));
-        GuiSetStyle(BUTTON, BORDER_COLOR_NORMAL, ColorToInt(textColor));
-        GuiSetStyle(BUTTON, BORDER_COLOR_FOCUSED, ColorToInt(textColor));
-        GuiSetFont(customFont);
-        GuiSetStyle(DEFAULT, TEXT_SIZE, 30);
-
         for (int i = 0; i < NUM_OPTIONS; ++i) {
             if (i == NUM_OPTIONS - 1) {
                 // Check collision only for the last button
@@ -82,11 +84,10 @@ void mainMenu() {
                     if (CheckCollisionPointRec(GetMousePosition(), buttons[NUM_OPTIONS - 1]) &&
                         (GetTime() - lastButtonClickTime >= buttonCooldown)) {
                         // Call createMap function when the last button is clicked and debounce button click
-                        createMap(background, logo, customFont, arrowTexture, backgroundSound);
+                        // createMap(background, logo, customFont, arrowTexture, backgroundSound);
                         lastButtonClickTime = GetTime(); // Update last button click time
                     }
                 }
-
                 // Draw the last button with custom font size
                 DrawCustomButton(button);
             } else if (GuiButton(buttons[i], menuOptions[i])) {
@@ -103,6 +104,7 @@ void mainMenu() {
                         toCredits(background, logo, customFont, arrowTexture);
                         break;
                     case 3: // Quit Game button
+                        EndDrawing();
                         return;
                     }
                     lastButtonClickTime = GetTime(); // Update last button click time
@@ -124,10 +126,10 @@ void mainMenu() {
     UnloadSound(backgroundSound);
 }
 
+void toStartMenu();
 void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2D arrowTexture, Sound backgroundSound) {
     GuiSetStyle(DEFAULT, TEXT_SIZE, 17);
     // Custom button color (F9C328)
-    Color Yellow = {249, 195, 40, 255};
     Color textColor = WHITE; // White color for text
 
     // Main menu variables
@@ -197,6 +199,9 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
             DrawTextEx(customFont, difficultyNames[i], difficultyTextPos[i], 36, 0, textColor);
         }
 
+        // Draw arrow button
+        DrawTexture(arrowTexture, arrowButtonX, arrowButtonY, WHITE);
+
         // Draw level buttons and text
         for (int i = 0; i < NUM_LEVELS; ++i) {
             for (int j = 0; j < 3; ++j) {
@@ -209,223 +214,59 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                     int o;
                     switch (i * 3 + j) {
                     case 0:
-                        while (f) {
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 1, 1); // easy
-                            if (level->start()) {
-                                o = WinScreen(background, customFont, level->pacman->score);
-                                if (o == 1) {
-                                    f = 1;
-                                    break;
-                                } // implement next level
-                                else if (o == 2) {
-                                    continue; // implement try again
-                                } else
-                                    return; // to main menu
-                            } else {
-                                if (LoseScreen(background, customFont, level->pacman->score))
-                                    continue; // implement try again
-                                else
-                                    return; // to main menu
-                            }
-                            delete level;
-                            level = nullptr;
-                        }
-                        if (!f) break;
+                        level = new Level(GetScreenWidth(), GetScreenHeight(), 1, 1); // easy
+                        break;
                         // Handle Level 1 button click
                         // toLevelMenu("Level 1", 1);
                     case 1:
-                        while (f) {
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 2, 1); // easy
-                            if (level->start()) {
-                                o = WinScreen(background, customFont, level->pacman->score);
-                                if (o == 1) {
-                                    f = 1;
-                                    break;
-                                } // implement next level
-                                else if (o == 2) {
-                                    continue; // implement try again
-                                } else
-                                    return; // to main menu
-                            } else {
-                                if (LoseScreen(background, customFont, level->pacman->score))
-                                    continue;
-                                else
-                                    return;
-                            }
-                            delete level;
-                            level = nullptr;
-                        }
-                        if (!f) break;
-                        // Repeat for the rest of the cases
+                        level = new Level(GetScreenWidth(), GetScreenHeight(), 2, 1); // easy
+                        break;
                     case 2:
-                        while (f) {
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 3, 1); // easy
-                            if (level->start()) {
-                                o = WinScreen(background, customFont, level->pacman->score);
-                                if (o == 1) {
-                                    f = 1;
-                                    break;
-                                } // implement next level
-                                else if (o == 2) {
-                                    continue; // implement try again
-                                } else
-                                    return; // to main menu
-                            } else {
-                                if (LoseScreen(background, customFont, level->pacman->score))
-                                    continue;
-                                else
-                                    return;
-                            }
-                        }
-                        if (!f) break;
-
+                        level = new Level(GetScreenWidth(), GetScreenHeight(), 3, 1); // easy
+                        break;
                     case 3:
-                        while (f) {
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 1, 2); // easy
-                            if (level->start()) {
-                                o = WinScreen(background, customFont, level->pacman->score);
-                                if (o == 1) {
-                                    f = 1;
-                                    break;
-                                } // implement next level
-                                else if (o == 2) {
-                                    continue; // implement try again
-                                } else
-                                    return; // to main menu
-                            } else {
-                                if (LoseScreen(background, customFont, level->pacman->score))
-                                    continue;
-                                else
-                                    return;
-                            }
-                            delete level;
-                            level = nullptr;
-                        }
-                        if (!f) break;
+                        level = new Level(GetScreenWidth(), GetScreenHeight(), 1, 2); // easy
+                        break;
                     case 4:
-                        while (f) {
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 2, 2); // easy
-                            if (level->start()) {
-                                o = WinScreen(background, customFont, level->pacman->score);
-                                if (o == 1) {
-                                    f = 1;
-                                    break;
-                                } // implement next level
-                                else if (o == 2) {
-                                    continue; // implement try again
-                                } else
-                                    return; // to main menu
-                            } else {
-                                if (LoseScreen(background, customFont, level->pacman->score))
-                                    continue;
-                                else
-                                    return;
-                            }
-                            delete level;
-                            level = nullptr;
-                        }
-                        if (!f) break;
+                        level = new Level(GetScreenWidth(), GetScreenHeight(), 2, 2); // easy
+                        break;
                     case 5:
-                        while (f) {
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 3, 2); // easy
-                            if (level->start()) {
-                                o = WinScreen(background, customFont, level->pacman->score);
-                                if (o == 1) {
-                                    f = 1;
-                                    break;
-                                } // implement next level
-                                else if (o == 2) {
-                                    continue; // implement try again
-                                } else
-                                    return; // to main menu
-                            } else {
-                                if (LoseScreen(background, customFont, level->pacman->score))
-                                    continue;
-                                else
-                                    return;
-                            }
-                            delete level;
-                            level = nullptr;
-                        }
-                        if (!f) break;
+                        level = new Level(GetScreenWidth(), GetScreenHeight(), 3, 2); // easy
+                        break;
                     case 6:
-                        while (f) {
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 1, 3); // easy
-                            if (level->start()) {
-                                o = WinScreen(background, customFont, level->pacman->score);
-                                if (o == 1) {
-                                    f = 1;
-                                    break;
-                                } // implement next level
-                                else if (o == 2) {
-                                    continue; // implement try again
-                                } else
-                                    return; // to main menu
-                            } else {
-                                if (LoseScreen(background, customFont, level->pacman->score))
-                                    continue;
-                                else
-                                    return;
-                            }
-                            delete level;
-                            level = nullptr;
-                        }
-                        if (!f) break;
+                        level = new Level(GetScreenWidth(), GetScreenHeight(), 1, 3); // easy
+                        break;
                     case 7:
-                        while (f) {
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 2, 3); // easy
-                            if (level->start()) {
-                                o = WinScreen(background, customFont, level->pacman->score);
-                                if (o == 1) {
-                                    f = 1;
-                                    break;
-                                } // implement next level
-                                else if (o == 2) {
-                                    continue; // implement try again
-                                } else
-                                    return; // to main menu
-                            } else {
-                                if (LoseScreen(background, customFont, level->pacman->score))
-                                    continue;
-                                else
-                                    return;
-                            }
-                            delete level;
-                            level = nullptr;
-                        }
-                        if (!f) break;
+                        level = new Level(GetScreenWidth(), GetScreenHeight(), 2, 3); // easy
+                        break;
                     case 8:
-                        while (f) {
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 3, 3); // easy
-                            if (level->start()) {
-
-                                o = WinScreen(background, customFont, level->pacman->score);
-                                if (o == 1) {
-                                    f = 1;
-                                    break;
-                                } // implement next level
-                                else if (o == 2) {
-                                    continue; // implement try again
-                                } else
-                                    return; // to main menu
-                            } else {
-                                if (LoseScreen(background, customFont, level->pacman->score))
-                                    continue;
-                                else
-                                    return;
-                            }
-                            delete level;
-                            level = nullptr;
-                        }
-                        if (!f) break;
+                        level = new Level(GetScreenWidth(), GetScreenHeight(), 3, 3); // easy
+                        break;
                     }
+                    while (f) {
+                        if (level->start()) {
+                            o = WinScreen(background, customFont, level->pacman->score);
+                            switch (o) {
+                            case 1:
+                                f = 1;
+                                break;
+                            case 2:
+                                continue;
+                            default:
+                                return;
+                            }
+                        } else {
+                            if (LoseScreen(background, customFont, level->pacman->score))
+                                continue; // implement try again
+                            return;       // to main menu
+                        }
+                    }
+                    delete level;
+                    level = nullptr;
                     PlaySound(backgroundSound);
                 }
             }
         }
-
-        // Draw arrow button
-        DrawTexture(arrowTexture, arrowButtonX, arrowButtonY, WHITE);
 
         EndDrawing();
     }
@@ -552,12 +393,6 @@ void toCredits(Texture2D background, Texture2D logo, Font customFont, Texture2D 
 }
 
 void createMap(Texture2D background, Texture2D logo, Font customFont, Texture2D arrowTexture, Sound backgroundSound) {
-    // Custom button colors
-    Color Yellow = {249, 195, 40, 255};
-    Color Red = {238, 35, 39, 255};
-    Color Cyan = {127, 209, 218, 255}; // B0EFF5
-    Color textColor = BLACK;           // Black color for text
-
     // Main menu variables
     const int NUM_OPTIONS = 3;
     const char *menuOptions[NUM_OPTIONS] = {"EASY", "MEDIUM", "HARD"};
@@ -581,6 +416,17 @@ void createMap(Texture2D background, Texture2D logo, Font customFont, Texture2D 
     const float arrowButtonX = 55;
     const float arrowButtonY = 504;
 
+    // Set default button colors before the loop
+    GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, ColorToInt(textColor));
+    GuiSetStyle(BUTTON, TEXT_COLOR_FOCUSED, ColorToInt(textColor));
+    GuiSetStyle(BUTTON, TEXT_SIZE, 60);
+    GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, ColorToInt(Yellow));
+    GuiSetStyle(BUTTON, BASE_COLOR_FOCUSED, ColorToInt(Red));
+    GuiSetStyle(BUTTON, BORDER_COLOR_NORMAL, ColorToInt(textColor));
+    GuiSetStyle(BUTTON, BORDER_COLOR_FOCUSED, ColorToInt(textColor));
+    GuiSetFont(customFont);
+    GuiSetStyle(DEFAULT, TEXT_SIZE, 30);
+
     while (!WindowShouldClose()) {
 
         if (IsKeyPressed(KEY_ESCAPE)) {
@@ -597,91 +443,45 @@ void createMap(Texture2D background, Texture2D logo, Font customFont, Texture2D 
             }
         }
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+            Level *level;
             // Check for clicks on Menu buttons
             for (int i = 0; i < NUM_OPTIONS; ++i) {
                 if (CheckCollisionPointRec(GetMousePosition(), buttons[i])) {
-                    Level *level;
                     bool f = 1;
                     int o;
                     StopSound(backgroundSound);
 
                     switch (i) {
                     case 0:
-                        while (f) {
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 4, 1); // easy
-                            if (level->start()) {
-                                o = WinScreen(background, customFont, level->pacman->score);
-                                if (o == 1) {
-                                    f = 1;
-                                    break;
-                                } // implement next level
-                                else if (o == 2) {
-                                    continue; // implement try again
-                                } else
-                                    return; // to main menu
-                            } else {
-                                if (LoseScreen(background, customFont, level->pacman->score))
-                                    continue; // implement try again
-                                return;       // to main menu
-                            }
-                            delete level;
-                            level = nullptr;
-                        }
-                        if (!f) break;
+                        level = new Level(GetScreenWidth(), GetScreenHeight(), 4, 1); // easy
+                        break;
                         // Handle Level 1 button click
                         // toLevelMenu("Level 1", 1);
                     case 1:
-                        while (f) {
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 4, 2); // easy
-                            if (level->start()) {
-                                o = WinScreen(background, customFont, level->pacman->score);
-                                if (o == 1) {
-                                    f = 1;
-                                    break;
-                                } // implement next level
-                                else if (o == 2) {
-                                    continue; // implement try again
-                                } else
-                                    return; // to main menu
-                            } else {
-                                if (LoseScreen(background, customFont, level->pacman->score))
-                                    continue;
-                                else
-                                    return;
-                            }
-                            delete level;
-                            level = nullptr;
-                        }
-                        if (!f) break;
+                        level = new Level(GetScreenWidth(), GetScreenHeight(), 4, 2); // easy
+                        break;
                         // Repeat for the rest of the cases
                     case 2:
-                        while (f) {
-                            level = new Level(GetScreenWidth(), GetScreenHeight(), 4, 3); // easy
-                            if (level->start()) {
-                                o = WinScreen(background, customFont, level->pacman->score);
-                                if (o == 1) {
-                                    f = 1;
-                                    break;
-                                } // implement next level
-                                else if (o == 2) {
-                                    continue; // implement try again
-                                } else
-                                    return; // to main menu
-                            } else {
-                                if (LoseScreen(background, customFont, level->pacman->score))
-                                    continue;
-                                else
-                                    return;
-                            }
-                        }
-                        if (!f) break;
+                        level = new Level(GetScreenWidth(), GetScreenHeight(), 4, 3); // easy
+                        break;
                     }
-                    PlaySound(backgroundSound);
-
-                    //                    delete level;
-                    //                  level = nullptr;
+                    if (level->start()) {
+                        o = WinScreen(background, customFont, level->pacman->score);
+                        if (o == 1)
+                            f = 1;
+                        else if (o == 2)
+                            continue;
+                        else
+                            break;
+                    } else {
+                        if (LoseScreen(background, customFont, level->pacman->score)) continue; // implement try again
+                        return;                                                                 // to main menu
+                    }
                 }
             }
+            delete level;
+            level = nullptr;
+            PlaySound(backgroundSound);
         }
         BeginDrawing();
 
@@ -696,17 +496,6 @@ void createMap(Texture2D background, Texture2D logo, Font customFont, Texture2D 
                    YELLOW);
         // DrawText("CHOOSE THE DIFFICULTY", 120,109,48,Yellow);
         // DrawTextureRec(logo, { 0, 0, 499, 213 }, { 151, 9 }, WHITE);
-
-        // Set default button colors before the loop
-        GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, ColorToInt(textColor));
-        GuiSetStyle(BUTTON, TEXT_COLOR_FOCUSED, ColorToInt(textColor));
-        GuiSetStyle(BUTTON, TEXT_SIZE, 60);
-        GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, ColorToInt(Yellow));
-        GuiSetStyle(BUTTON, BASE_COLOR_FOCUSED, ColorToInt(Red));
-        GuiSetStyle(BUTTON, BORDER_COLOR_NORMAL, ColorToInt(textColor));
-        GuiSetStyle(BUTTON, BORDER_COLOR_FOCUSED, ColorToInt(textColor));
-        GuiSetFont(customFont);
-        GuiSetStyle(DEFAULT, TEXT_SIZE, 30);
 
         for (int i = 0; i < NUM_OPTIONS; ++i) {
 
@@ -886,23 +675,17 @@ bool LoseScreen(Texture2D background, Font customFont, int score) {
 
 // Custom drawing function for the last button with specific font size
 void DrawCustomButton(CustomButton button) {
-
     Font customFont = LoadFont("assets/Itim-Regular.ttf");
-
     // Draw button background
     DrawRectangleRec(button.bounds, button.color);
-
     // Draw button border
     DrawRectangleLinesEx(button.bounds, 2, BLACK);
-
     // Calculate text width and height
     float textWidth = MeasureText(button.text, button.fontSize);
     float textHeight = button.fontSize;
-
     // Calculate text position to center it within the button
     float textX = button.bounds.x + (button.bounds.width - textWidth) / 2;
     float textY = button.bounds.y + (button.bounds.height - textHeight) / 2;
-
     // Draw button text
     DrawTextEx(customFont,            // Font to use for drawing
                button.text,           // Text string to draw
@@ -911,4 +694,5 @@ void DrawCustomButton(CustomButton button) {
                2,                     // Spacing between characters
                BLACK                  // Text color
     );
+    UnloadFont(customFont);
 }
