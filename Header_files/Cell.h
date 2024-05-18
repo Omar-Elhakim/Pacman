@@ -4,10 +4,9 @@
 
 typedef enum { ROAD, WALL } TileType_t;
 
-
-typedef struct{
-    int x,y;
-}Vector2i;
+typedef struct {
+    int x, y;
+} Vector2i;
 
 struct Cell {
     Rectangle rec;
@@ -17,7 +16,13 @@ struct Cell {
     bool hasFood;
     void Draw() {
         DrawRectangleRec(rec, BackgroundColor);
-    }
+    };
+    Vector2 getCenter() {
+        return {
+            rec.x + (rec.width / 2),
+            rec.y + (rec.height / 2),
+        };
+    };
 };
 
 #endif // CELL_H

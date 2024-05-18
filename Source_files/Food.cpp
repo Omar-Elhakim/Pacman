@@ -1,46 +1,43 @@
 #include "../Header_files/Food.h"
 
-Food::Food(Map* map) {
+Food::Food(Map *map) {
     count = 0;
     for (int i = 0; i < hc; i++) {
         for (int j = 0; j < vc; j++) {
-            if (map->GetCell(j, i)->TileType == ROAD) {
-                map->GetCell(j, i)->hasFood = true;
+            if (map->GetCell({j, i})->TileType == ROAD) {
+                map->GetCell({j, i})->hasFood = true;
                 count++;
-            }
-            else {
-                map->GetCell(j, i)->hasFood = false;
+            } else {
+                map->GetCell({j, i})->hasFood = false;
                 continue;
             }
         }
     }
 }
 
-void Food::draw(Map* map) {
+void Food::draw(Map *map) {
     for (int i = 0; i < hc; i++) {
         for (int j = 0; j < vc; j++) {
-            centerx = map->getClPos(map->GetCell(j, i)->arrPos).x + map->CellWidth / 2;
-            centery = map->getClPos(map->GetCell(j, i)->arrPos).y + map->CellHeight / 2;
-            if (map->GetCell(j, i)->hasFood) {
+            centerx = map->getClPos(map->GetCell({j, i})->arrPos).x + map->CellWidth / 2;
+            centery = map->getClPos(map->GetCell({j, i})->arrPos).y + map->CellHeight / 2;
+            if (map->GetCell({j, i})->hasFood) {
                 DrawCircle(centerx, centery, FRadius, YELLOW);
-            }
-            else {
+            } else {
                 continue;
             }
         }
     }
 }
 
-void Food::update(Map* map) {
+void Food::update(Map *map) {
     count = 0;
     for (int i = 0; i < hc; i++) {
         for (int j = 0; j < vc; j++) {
-            if (map->GetCell(j, i)->TileType == ROAD) {
-                map->GetCell(j, i)->hasFood = true;
+            if (map->GetCell({j, i})->TileType == ROAD) {
+                map->GetCell({j, i})->hasFood = true;
                 count++;
-            }
-            else {
-                map->GetCell(j, i)->hasFood = false;
+            } else {
+                map->GetCell({j, i})->hasFood = false;
                 continue;
             }
         }
@@ -48,5 +45,5 @@ void Food::update(Map* map) {
 }
 
 void Food::resize() {
-    FRadius = 5.0f* (GetScreenHeight() + GetScreenWidth()) / (800 + 600);
+    FRadius = 5.0f * (GetScreenHeight() + GetScreenWidth()) / (800 + 600);
 }

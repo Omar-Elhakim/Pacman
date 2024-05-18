@@ -1,20 +1,24 @@
 #pragma once
+#include "Cell.h"
 #include "Food.h"
 #include "Map.h"
 #include "raylib.h"
 
 class Pacman {
   private:
-    Image PacmanImage;
     Texture2D pacmanText;
     Rectangle AnimationBox;
-    Vector2 ImageSize;
+    Vector2i ImageSize;
     int x;
     float speed;
     int a;
     Map *map;
-    Food *food;
-    float scalFactor;
+    float scaleFactor;
+    Cell *currentCell();
+    Cell *nextCell();
+    bool CheckCollisionWall();
+    bool CheckCollisionFood();
+    void update();
 
   public:
     Vector2 InitialPosition;
@@ -22,8 +26,7 @@ class Pacman {
     Sound eat2;
     int eatc = 0;
     int score;
-    Vector2 direction;
-    Pacman(Map *map, Food *food);
+    Vector2i direction;
     Pacman(Map *map);
     ~Pacman();
     void draw();
