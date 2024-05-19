@@ -161,6 +161,7 @@
     <ClCompile Include="Source_files\mapmaker.cpp" />
     <ClCompile Include="Source_files\Menu.cpp" />
     <ClCompile Include="Source_files\pacman.cpp" />
+    <ClCompile Include="Source_files\VectorMath.cpp" />
     <ClCompile Include="Source_files\Window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
