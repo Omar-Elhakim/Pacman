@@ -6,27 +6,23 @@
 #include "../raylib/include/raygui.h"
 
 // Custom button colors
-Color Yellow = {249, 195, 40, 255};
-Color Red = {238, 35, 39, 255};
-Color Cyan = {127, 209, 218, 255}; // B0EFF5
-Color textColor = BLACK;           // Black color for text
-// Custom button colors
+const Color Yellow = {249, 195, 40, 255};
+const Color Red = {238, 35, 39, 255};
+const Color Cyan = {127, 209, 218, 255}; // B0EFF5
+const Color textColor = BLACK;           // Black color for text
+Font itimRegFont = {0};
 
 void mainMenu() {
     // Load background music
     Sound backgroundSound = LoadSound("assets/background_music.mp3");
-    int s = 0;
-    // Start playing the background music
-
-    // Load common resources
-    Texture2D background = LoadTexture("assets/background.png");
+    Texture2D backgroundPic = LoadTexture("assets/background.png");
     Texture2D logo = LoadTexture("assets/logo.png");
-    Font customFont = LoadFont("assets/Itim-Regular.ttf");
+    itimRegFont = LoadFont("assets/Itim-Regular.ttf");
 
     // Arrow button texture
     Texture2D arrowTexture = LoadTexture("assets/arrow.png");
 
-    Menu startMenu{background, logo, arrowTexture, customFont, backgroundSound};
+    // Menu startMenu{background, logo, arrowTexture, customFont, backgroundSound};
 
     // Main menu variables
     const int NUM_OPTIONS = 5; // Number of buttons
@@ -64,7 +60,7 @@ void mainMenu() {
     GuiSetStyle(BUTTON, BASE_COLOR_FOCUSED, ColorToInt(Red));
     GuiSetStyle(BUTTON, BORDER_COLOR_NORMAL, ColorToInt(textColor));
     GuiSetStyle(BUTTON, BORDER_COLOR_FOCUSED, ColorToInt(textColor));
-    GuiSetFont(customFont);
+    GuiSetFont(itimRegFont);
     GuiSetStyle(DEFAULT, TEXT_SIZE, 30);
     // Main menu loop
     while (!WindowShouldClose()) {
@@ -72,7 +68,7 @@ void mainMenu() {
         BeginDrawing();
 
         // Draw background image
-        DrawTexture(background, 0, 0, WHITE);
+        DrawTexture(backgroundPic, 0, 0, WHITE);
 
         // Draw logo
         DrawTextureRec(logo, {0, 0, 499, 213}, {151, 9}, WHITE);
@@ -84,7 +80,7 @@ void mainMenu() {
                     if (CheckCollisionPointRec(GetMousePosition(), buttons[NUM_OPTIONS - 1]) &&
                         (GetTime() - lastButtonClickTime >= buttonCooldown)) {
                         // Call createMap function when the last button is clicked and debounce button click
-                        // createMap(background, logo, customFont, arrowTexture, backgroundSound);
+                        createMap(backgroundPic, logo, itimRegFont, arrowTexture, backgroundSound);
                         lastButtonClickTime = GetTime(); // Update last button click time
                     }
                 }
@@ -95,30 +91,31 @@ void mainMenu() {
                 if (GetTime() - lastButtonClickTime >= buttonCooldown) {
                     switch (i) {
                     case 0: // Start Game button
-                        toStartMenu(background, logo, customFont, arrowTexture, backgroundSound);
+                        toStartMenu(backgroundPic, logo, itimRegFont, arrowTexture, backgroundSound);
                         break;
                     case 1: // How to play button
-                        toHowToPlay(background, logo, customFont, arrowTexture);
+                        toHowToPlay(backgroundPic, logo, itimRegFont, arrowTexture);
                         break;
                     case 2: // Credits button
-                        toCredits(background, logo, customFont, arrowTexture);
+                        toCredits(backgroundPic, logo, itimRegFont, arrowTexture);
                         break;
                     case 3: // Quit Game button
                         EndDrawing();
-                        return;
+                        goto EXIT_FUNCTION;
+                        // return;
                     }
                     lastButtonClickTime = GetTime(); // Update last button click time
                 }
             }
         }
-
         EndDrawing();
     }
 
+EXIT_FUNCTION:
     // Unload common resources
-    UnloadFont(customFont);
+    UnloadFont(itimRegFont);
     UnloadTexture(logo);
-    UnloadTexture(background);
+    UnloadTexture(backgroundPic);
     UnloadTexture(arrowTexture);
 
     // Stop and unload the background music
@@ -126,7 +123,7 @@ void mainMenu() {
     UnloadSound(backgroundSound);
 }
 
-void toStartMenu();
+// void toStartMenu();
 void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2D arrowTexture, Sound backgroundSound) {
     GuiSetStyle(DEFAULT, TEXT_SIZE, 17);
     // Custom button color (F9C328)
@@ -169,6 +166,8 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
     const float arrowButtonX = 55;
     const float arrowButtonY = 504;
 
+    Level *level = nullptr;
+    int lvl = 4, diff = 3;
     while (!WindowShouldClose()) {
         if (IsKeyPressed(KEY_ESCAPE)) {
             // Go back to main menu
@@ -209,64 +208,33 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                 if (GuiButton(buttonRect, levelNames[j])) {
                     StopSound(backgroundSound);
                     // Handle button clicks for each level
-                    Level *level;
-                    bool f = 1;
+                    // bool f = 1;
                     int o;
-                    switch (i * 3 + j) {
-                    case 0:
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 1, 1); // easy
-                        break;
-                        // Handle Level 1 button click
-                        // toLevelMenu("Level 1", 1);
-                    case 1:
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 2, 1); // easy
-                        break;
-                    case 2:
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 3, 1); // easy
-                        break;
-                    case 3:
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 1, 2); // easy
-                        break;
-                    case 4:
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 2, 2); // easy
-                        break;
-                    case 5:
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 3, 2); // easy
-                        break;
-                    case 6:
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 1, 3); // easy
-                        break;
-                    case 7:
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 2, 3); // easy
-                        break;
-                    case 8:
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 3, 3); // easy
-                        break;
-                    default:
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 4, 3); // easy
-                        break;
-                    }
-                    while (f) {
+                    diff = j + 1, lvl = i + 1;
+                    while (true) {
+                        level = new Level(GetScreenWidth(), GetScreenHeight(), diff, lvl); // easy
                         if (level->start()) {
                             o = WinScreen(background, customFont, level->pacman->score);
-                            switch (o) {
-                            case 1:
-                                f = 1;
+                            if (o == 1) {
                                 break;
-                            case 2:
+                            } else if (o == 2) {
+                                delete level;
                                 continue;
-                            default:
+                            } else {
+                                delete level;
                                 return;
                             }
                         } else {
-                            if (LoseScreen(background, customFont, level->pacman->score))
+                            if (LoseScreen(background, customFont, level->pacman->score)) {
+                                delete level;
                                 continue; // implement try again
-                            return;       // to main menu
+                            } else
+                                return; // to main menu
                         }
+                        delete level;
+                        level = nullptr;
+                        PlaySound(backgroundSound);
                     }
-                    delete level;
-                    level = nullptr;
-                    PlaySound(backgroundSound);
                 }
             }
         }
@@ -277,7 +245,6 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
 
 void toHowToPlay(Texture2D background, Texture2D logo, Font customFont, Texture2D arrowTexture) {
     // Custom button color (F9C328)
-    Color Yellow = {249, 195, 40, 255};
 
     // How to play text
     string howToPlayText = "HOW TO PLAY PAC-MAN:\n\n"
@@ -301,24 +268,16 @@ void toHowToPlay(Texture2D background, Texture2D logo, Font customFont, Texture2
     textPosition.y = 80;
 
     // Arrow button position and size
-    const float arrowButtonWidth = 64;
-    const float arrowButtonHeight = 64;
-    const float arrowButtonX = 55;
-    const float arrowButtonY = 504;
+    const Rectangle arrowRect = {55, 504, 64, 64};
 
     while (!WindowShouldClose()) {
         if (IsKeyPressed(KEY_ESCAPE)) {
-            // Go back to main menu
-            return;
+            return; // Go back to main menu
         }
 
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            // Check if the arrow button is clicked
-            if (CheckCollisionPointRec(GetMousePosition(),
-                                       {arrowButtonX, arrowButtonY, arrowButtonWidth, arrowButtonHeight})) {
-                // Go back to main menu
-                return;
-            }
+        // Check if the arrow button is clicked
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), arrowRect)) {
+            return; // to main menu
         }
 
         BeginDrawing();
@@ -332,7 +291,7 @@ void toHowToPlay(Texture2D background, Texture2D logo, Font customFont, Texture2
         DrawTextEx(customFont, howToPlayText.c_str(), textPosition, 24, 0, Yellow);
 
         // Draw arrow button
-        DrawTexture(arrowTexture, arrowButtonX, arrowButtonY, WHITE);
+        DrawTexture(arrowTexture, arrowRect.x, arrowRect.y, WHITE);
 
         EndDrawing();
     }
@@ -340,7 +299,6 @@ void toHowToPlay(Texture2D background, Texture2D logo, Font customFont, Texture2
 
 void toCredits(Texture2D background, Texture2D logo, Font customFont, Texture2D arrowTexture) {
     // Custom button color (F9C328)
-    Color Yellow = {249, 195, 40, 255};
 
     // Credits text
     string creditsText = "MADE BY :\n\n"
@@ -353,29 +311,22 @@ void toCredits(Texture2D background, Texture2D logo, Font customFont, Texture2D 
                          "AHMED ALI ";
 
     // Calculate text position to center it on the screen
-    Vector2 textPosition;
-    textPosition.x = (GetScreenWidth() - MeasureTextEx(customFont, creditsText.c_str(), 24, 0).x) / 2;
-    textPosition.y = (GetScreenHeight() - MeasureTextEx(customFont, creditsText.c_str(), 24, 0).y) / 2;
+    const Vector2 textPosition = {
+        (GetScreenWidth() - MeasureTextEx(customFont, creditsText.c_str(), 24, 0).x) / 2,
+        (GetScreenHeight() - MeasureTextEx(customFont, creditsText.c_str(), 24, 0).y) / 2,
+    };
 
     // Arrow button position and size
-    const float arrowButtonWidth = 64;
-    const float arrowButtonHeight = 64;
-    const float arrowButtonX = 55;
-    const float arrowButtonY = 504;
+    const Rectangle arrowRect = {55, 504, 64, 64};
 
     while (!WindowShouldClose()) {
         if (IsKeyPressed(KEY_ESCAPE)) {
-            // Go back to main menu
-            return;
+            return; // Go back to main menu
         }
 
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            // Check if the arrow button is clicked
-            if (CheckCollisionPointRec(GetMousePosition(),
-                                       {arrowButtonX, arrowButtonY, arrowButtonWidth, arrowButtonHeight})) {
-                // Go back to main menu
-                return;
-            }
+        // Check if the arrow button is clicked
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), arrowRect)) {
+            return; // Go back to main menu
         }
 
         BeginDrawing();
@@ -389,7 +340,7 @@ void toCredits(Texture2D background, Texture2D logo, Font customFont, Texture2D 
         DrawTextEx(customFont, creditsText.c_str(), textPosition, 32, 0, Yellow);
 
         // Draw arrow button
-        DrawTexture(arrowTexture, arrowButtonX, arrowButtonY, WHITE);
+        DrawTexture(arrowTexture, arrowRect.x, arrowRect.y, WHITE);
 
         EndDrawing();
     }
@@ -483,12 +434,11 @@ void createMap(Texture2D background, Texture2D logo, Font customFont, Texture2D 
                         if (LoseScreen(background, customFont, level->pacman->score)) continue; // implement try again
                         return;                                                                 // to main menu
                     }
-                    delete level;
-                    level = nullptr;
                     PlaySound(backgroundSound);
-
                 }
             }
+            delete level;
+            level = nullptr;
         }
         BeginDrawing();
 
@@ -519,10 +469,6 @@ void createMap(Texture2D background, Texture2D logo, Font customFont, Texture2D 
 // win/lose screens
 int WinScreen(Texture2D background, Font customFont, int score) {
     // Custom button colors
-    Color Yellow = {249, 195, 40, 255};
-    Color Red = {238, 35, 39, 255};
-    Color Cyan = {127, 209, 218, 255}; // B0EFF5
-    Color textColor = BLACK;           // Black color for text
 
     // Main menu variables
     const int NUM_OPTIONS = 3;
@@ -605,11 +551,6 @@ int WinScreen(Texture2D background, Font customFont, int score) {
 }
 
 bool LoseScreen(Texture2D background, Font customFont, int score) {
-    // Custom button colors
-    Color Yellow = {249, 195, 40, 255};
-    Color Red = {238, 35, 39, 255};
-    Color textColor = BLACK; // Black color for text
-
     // Lose menu variables
     const int NUM_OPTIONS = 2;
     const char *menuOptions[NUM_OPTIONS] = {"TRY AGAIN", "MAIN MENU"};
@@ -682,7 +623,6 @@ bool LoseScreen(Texture2D background, Font customFont, int score) {
 
 // Custom drawing function for the last button with specific font size
 void DrawCustomButton(CustomButton button) {
-    Font customFont = LoadFont("assets/Itim-Regular.ttf");
     // Draw button background
     DrawRectangleRec(button.bounds, button.color);
     // Draw button border
@@ -694,12 +634,11 @@ void DrawCustomButton(CustomButton button) {
     float textX = button.bounds.x + (button.bounds.width - textWidth) / 2;
     float textY = button.bounds.y + (button.bounds.height - textHeight) / 2;
     // Draw button text
-    DrawTextEx(customFont,            // Font to use for drawing
+    DrawTextEx(itimRegFont,           // Font to use for drawing
                button.text,           // Text string to draw
                Vector2{textX, textY}, // Position to draw the text
                button.fontSize,       // Font size
                2,                     // Spacing between characters
                BLACK                  // Text color
     );
-    UnloadFont(customFont);
 }
