@@ -242,6 +242,9 @@ void toStartMenu(Texture2D background, Texture2D logo, Font customFont, Texture2
                     case 8:
                         level = new Level(GetScreenWidth(), GetScreenHeight(), 3, 3); // easy
                         break;
+                    default:
+                        level = new Level(GetScreenWidth(), GetScreenHeight(), 4, 3); // easy
+                        break;
                     }
                     while (f) {
                         if (level->start()) {
@@ -464,6 +467,9 @@ void createMap(Texture2D background, Texture2D logo, Font customFont, Texture2D 
                     case 2:
                         level = new Level(GetScreenWidth(), GetScreenHeight(), 4, 3); // easy
                         break;
+                    default:
+                        level = new Level(GetScreenWidth(), GetScreenHeight(), 4, 3); // easy
+                        break;
                     }
                     if (level->start()) {
                         o = WinScreen(background, customFont, level->pacman->score);
@@ -477,11 +483,12 @@ void createMap(Texture2D background, Texture2D logo, Font customFont, Texture2D 
                         if (LoseScreen(background, customFont, level->pacman->score)) continue; // implement try again
                         return;                                                                 // to main menu
                     }
+                    delete level;
+                    level = nullptr;
+                    PlaySound(backgroundSound);
+
                 }
             }
-            delete level;
-            level = nullptr;
-            PlaySound(backgroundSound);
         }
         BeginDrawing();
 
