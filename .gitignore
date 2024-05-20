@@ -364,6 +364,9 @@ FodyWeavers.xsd
 
 
 *vcxp*
+Pacman.exp
+Pacman.pdb
+Pacman.lib
 # Cmake ignore
 
 CMakeLists.txt.user

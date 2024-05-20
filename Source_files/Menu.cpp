@@ -397,7 +397,6 @@ void createMap(Texture2D background, Texture2D logo, Font customFont, Texture2D 
             }
         }
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-            Level *level;
             // Check for clicks on Menu buttons
             for (int i = 0; i < NUM_OPTIONS; ++i) {
                 if (CheckCollisionPointRec(GetMousePosition(), buttons[i])) {
@@ -405,23 +404,8 @@ void createMap(Texture2D background, Texture2D logo, Font customFont, Texture2D 
                     int o;
                     StopSound(backgroundSound);
 
-                    switch (i) {
-                    case 0:
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 4, 1); // easy
-                        break;
-                        // Handle Level 1 button click
-                        // toLevelMenu("Level 1", 1);
-                    case 1:
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 4, 2); // easy
-                        break;
-                        // Repeat for the rest of the cases
-                    case 2:
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 4, 3); // easy
-                        break;
-                    default:
-                        level = new Level(GetScreenWidth(), GetScreenHeight(), 4, 3); // easy
-                        break;
-                    }
+					Level *level = new Level(GetScreenWidth(), GetScreenHeight(), 4, i+1); 
+
                     if (level->start()) {
                         o = WinScreen(background, customFont, level->pacman->score);
                         if (o == 1)
@@ -435,10 +419,10 @@ void createMap(Texture2D background, Texture2D logo, Font customFont, Texture2D 
                         return;                                                                 // to main menu
                     }
                     PlaySound(backgroundSound);
+					delete level;
+					level = nullptr;
                 }
             }
-            delete level;
-            level = nullptr;
         }
         BeginDrawing();
 
